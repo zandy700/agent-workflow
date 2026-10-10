@@ -76,7 +76,11 @@ Replaced files are backed up to `~/Scripts/agent-workflow-backups/<timestamp>/`.
 
 ## Part 2. Set up Obsidian
 
-Obsidian is a free notes app that works on a plain folder of Markdown files. The installer already created that folder: `~/Obsidian Sync/ObsidianVault`. ("Obsidian Sync" here is just the folder name; you don't need Obsidian's paid Sync service.)
+Obsidian is a free Mac app that stores notes as plain text files in a folder on your computer — no account or cloud subscription required. This workflow uses it as the agent's long-term memory: every chat is saved there automatically after each session, and the agent can search and read those notes in future sessions instead of asking you to repeat yourself.
+
+Once it's running, the vault holds a folder of your past chats organised by app and date, plus any notes you and the agent write together (decisions, handoffs, saved lessons). You browse it like a notebook in Obsidian, or just tell the agent what to look for.
+
+The installer already created the vault folder at `~/Obsidian Sync/ObsidianVault`. ("Obsidian Sync" is just the folder name — you don't need Obsidian's paid Sync service.)
 
 **1. Install Obsidian** from [obsidian.md](https://obsidian.md) and open it.
 
@@ -86,7 +90,7 @@ Obsidian is a free notes app that works on a plain folder of Markdown files. The
 
 **3. Hide generated graph notes** (they get numerous once you use Graphify). Open **Graph view**, click the gear icon at its top right, and under **Filters** type `-path:graphify` in the search box.
 
-The vault will hold the text of your agent chats. Use a personal vault on a personal machine.
+Use a personal vault on a personal machine — it holds the text of your agent conversations.
 
 ---
 
@@ -137,7 +141,17 @@ launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workf
 
 **5. Test it.** Send one message in any app, wait a few seconds, and look in `chats/` in Obsidian for today's chat.
 
-Now learn how to use the notes: **[docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md)**.
+### Using it day to day
+
+Three patterns cover most of what you'll do:
+
+**Save where you are** — before closing a long chat, say: *"Write the handoff note for this repo."* The agent writes a short summary (what's done, what's broken, what's next) to the vault. Takes 10 seconds.
+
+**Pick up in a new chat** — open a fresh session and say: *"Read the handoff note and continue."* The agent reads that note instead of asking you to re-explain everything.
+
+**Ask about past decisions** — say: *"Check the notes: why did we do X?"* The agent searches the vault and reads the matching notes. It never loads everything — only what matches.
+
+Everything else (decisions, saved lessons, long reference docs): **[docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md)**.
 
 ---
 
