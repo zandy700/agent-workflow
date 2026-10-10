@@ -22,6 +22,7 @@ FILES = {
     "payload/obsidian/graphify_bootstrap.sh": "Obsidian Sync/graphify_bootstrap.sh",
     "payload/obsidian/sync_claude_obsidian.sh": "Obsidian Sync/sync_claude_obsidian.sh",
     "payload/obsidian/vault_organize.py": "Obsidian Sync/vault_organize.py",
+    "payload/obsidian/obsidian-organization.md": "Obsidian Sync/ObsidianVault/knowledge/obsidian-organization.md",
 }
 
 

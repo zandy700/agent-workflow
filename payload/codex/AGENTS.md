@@ -16,6 +16,7 @@
 - Missing or graphify-only: write it from what the repo actually contains (unknowns = `TODO`), above the graphify section. Never overwrite existing content; no task progress.
 
 # Reading and tool output
+- On-demand vault recall: when a task needs past project context missing here, search `<vault>/<repo-id>/` for relevant terms with `rg -n -i -g '*.md'`, then read only matching notes. Search `<vault>/knowledge/` separately for reusable cross-project guidance. Do not scan on every prompt or load chat archives; if nothing relevant matches, use current code and say the note was not found.
 - Locate with summaries (graph, signatures, headings, schemas), then read the implementation, callers, and tests the change depends on. Correctness needs the real code.
 - Don't re-read content already in context unless it may have changed (edits, file-writing tools, git checkout/pull); then re-read only the relevant range.
 - Never read raw data or real secrets (`.env`, credential `config.json`); use schemas and example configs.

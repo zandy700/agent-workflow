@@ -25,7 +25,7 @@ For a repository that needs a graph, run `~/Scripts/graphify-bootstrap /path/to/
 
 ## What is and is not included
 
-- Included: exact Claude/Codex core instruction files as packaged, an adapted Cursor User Rules copy, on-demand workflow reference, MarkItDown scan script, chat-to-Obsidian pipeline, guarded Graphify bootstrap and Stop hook, and config merger.
+- Included: exact Claude/Codex core instruction files as packaged, an adapted Cursor User Rules copy, on-demand workflow reference, MarkItDown scan script, chat-to-Obsidian pipeline, a vault organization guide (installed to `ObsidianVault/knowledge/`, linked from generated project Home notes), guarded Graphify bootstrap and Stop hook, and config merger.
 - External dependencies: Graphify, MarkItDown, `claude-extract`, and any skills referenced by the instructions, including ICM. Install them from their own sources only when you need them. Their availability is not proven by this package.
 - The conversation note that prompted this export uses the third-party [Should I Build?](https://github.com/Endokelp/Should-I-build) skill. It is a separate, expensive multi-agent research workflow and is not part of the core token-saving rules. To reproduce that session, install it and its `last30days` and `deep-research` companion skills separately, then deliberately invoke it. This package does not run those agents.
 - No personal projects or repositories are bundled. Each repo should have a short project `CLAUDE.md` and `AGENTS.md` based on its actual structure; this is a per-project step.
