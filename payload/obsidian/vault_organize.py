@@ -115,7 +115,7 @@ def write_homes():
         top = "\n".join(f"- [[{p.stem}]]" for p in sorted(d.glob("*.md")) if p.stem != f"{rid} Home")
         (d / f"{rid} Home.md").write_text(
             f"---\ntitle: \"{rid} Home\"\ntags: [project, {rid}]\nupdated: {date.today()}\nstatus: active\ntype: index\n---\n{GENERATED}\n"
-            f"# {rid}\n\nBack to [[Home]]. Note organization: [[obsidian-organization]].\n\n{graph}{top}\n{body if sections or not top else ""}\n", encoding="utf-8")
+            f"# {rid}\n\nBack to [[Home]]. Note organization: [[obsidian-organization]].\n\n{graph}{top}\n{body if sections or not top else ''}\n", encoding="utf-8")
         projects.append(rid)
 
     chats = ""

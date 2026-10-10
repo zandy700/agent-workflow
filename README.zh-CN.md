@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple" alt="macOS">
+  <img src="https://img.shields.io/badge/platform-macOS_%7C_Windows-lightgrey" alt="macOS 和 Windows">
   <img src="https://img.shields.io/badge/Claude_Code-supported-D97757" alt="Claude Code">
   <img src="https://img.shields.io/badge/Codex-supported-412991" alt="Codex">
   <img src="https://img.shields.io/badge/Cursor-supported-000000" alt="Cursor">
@@ -25,7 +25,7 @@
   <a href="README.md">English</a> · <strong>简体中文</strong>
 </p>
 
-一套现成的 **Claude Code、Codex 和 Cursor** 配置：让智能体每次加载的指令保持精简，引导它做小改动、如实汇报，并把每次聊天保存到 Obsidian，下一次聊天就能接着上次继续。
+一套现成的 **Claude Code、Codex 和 Cursor** 配置，支持 **Mac 和 Windows**：让智能体每次加载的指令保持精简，引导它做小改动、如实汇报，并把每次聊天保存到 Obsidian，下一次聊天就能接着上次继续。
 
 <a id="contents"></a>
 <details>
@@ -135,12 +135,22 @@ Claude Code、Codex 和 Cursor 遵守同一套规则。
 <a id="quickstart"></a>
 ## 🚀 快速开始
 
-三条命令装好规则和辅助脚本。**输入位置：终端**
+三条命令装好规则和辅助脚本。**输入位置：终端**（Windows 上用 PowerShell）
+
+Mac：
 
 ```bash
 git clone https://github.com/zandy700/agent-workflow.git
 cd agent-workflow
 python3 install.py --install
+```
+
+Windows：
+
+```powershell
+git clone https://github.com/zandy700/agent-workflow.git
+cd agent-workflow
+python install.py --install
 ```
 
 核心部分就装好了。剩下的（Obsidian、你的应用、Ponytail）请从[完整安装](#setup)的第 2 步继续。
@@ -155,12 +165,16 @@ python3 install.py --install
 
 **你需要：**
 
-- [ ] 一台 Mac
+- [ ] 一台 **Mac** 或 **Windows** 电脑
 - [ ] 至少安装并登录 **Claude Code**、**Codex** 或 **Cursor** 之一
-- [ ] **Python 3** 和 **git**：在终端输入 `python3 --version` 和 `git --version` 检查
+- [ ] **Python 3.9 或更新版本**和 **git**
+  - Mac：在终端输入 `python3 --version` 和 `git --version` 检查
+  - Windows：从 [python.org](https://www.python.org/downloads/) 安装 Python，安装时勾选 **“Add python.exe to PATH”**；再安装 [Git for Windows](https://git-scm.com/download/win)。在 PowerShell 里输入 `python --version` 和 `git --version` 检查。
 - [ ] **Node**（Ponytail 需要）：用 `node --version` 检查
 
-**每条命令在哪里输入。** 每条命令都标明了位置。“终端”（Terminal）是 Mac 自带的应用，在“应用程序 → 实用工具”里。
+> **Windows 支持是新加的。** 已在 Mac 上模拟 Windows 检查过，但还没有在真实的 Windows 电脑上测试。如果遇到问题，欢迎[提交 issue](https://github.com/zandy700/agent-workflow/issues)。
+
+**每条命令在哪里输入。** 每条命令都标明了位置。Mac 上的“终端”（Terminal）在“应用程序 → 实用工具”里。Windows 上，本指南说“终端”的地方请使用 **PowerShell**（在开始菜单里搜索）。Mac 和 Windows 命令不同时，两种都会列出。
 
 <img src="docs/images/where-to-type.zh-CN.svg" alt="左：终端窗口，用于 python3、pip3 等命令。右：智能体的聊天框，用于以斜杠开头的命令和自然语言请求。" width="760">
 
@@ -191,14 +205,30 @@ cd agent-workflow
 
 **1.2 预览（不会改动任何东西）。** 输入位置：终端
 
+Mac：
+
 ```bash
 python3 install.py
 ```
 
+Windows：
+
+```powershell
+python install.py
+```
+
 **1.3 安装。** 输入位置：终端
+
+Mac：
 
 ```bash
 python3 install.py --install
+```
+
+Windows：
+
+```powershell
+python install.py --install
 ```
 
 被替换的文件会备份到 `~/Scripts/agent-workflow-backups/`。重复运行是安全的；没有变化时会提示 "Already installed"（已安装）。
@@ -206,7 +236,7 @@ python3 install.py --install
 <a id="step-2"></a>
 ### 第 2 步：设置 Obsidian
 
-Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你 Mac 上的一个文件夹里，不需要注册账号。本工作流把它当作智能体的“记忆”。
+Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你电脑上的一个文件夹里，不需要注册账号。本工作流把它当作智能体的“记忆”。
 
 **2.1 安装 Obsidian：** 从 [obsidian.md](https://obsidian.md) 下载并打开。
 
@@ -214,7 +244,7 @@ Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你 Mac 
 
 <img src="docs/images/obsidian-open-vault.zh-CN.svg" alt="Obsidian 启动界面，高亮显示“打开本地仓库”" width="760">
 
-> 找不到这个文件夹？在文件选择窗口按 `Cmd+Shift+G`，粘贴 `~/Obsidian Sync/ObsidianVault`。“Obsidian Sync”只是文件夹的名字，不需要购买 Obsidian 的付费同步服务。
+> 找不到这个文件夹？Mac 上在文件选择窗口按 `Cmd+Shift+G`，粘贴 `~/Obsidian Sync/ObsidianVault`；Windows 上把 `%USERPROFILE%\Obsidian Sync\ObsidianVault` 粘贴到选择窗口的地址栏。“Obsidian Sync”只是文件夹的名字，不需要购买 Obsidian 的付费同步服务。
 
 **2.3 在关系图谱中隐藏自动生成的笔记（可选）。** 只有开启 [Graphify](#extras) 后才需要。打开 **Graph view**（关系图谱），点击右上角的齿轮图标，在 **Filters**（筛选）搜索框输入 `-path:graphify`。
 
@@ -251,11 +281,19 @@ Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你 Mac 
 
 **保存聊天：** Claude Code 的聊天由一个叫 `claude-extract` 的小工具导出。输入位置：终端
 
+Mac：
+
 ```bash
 pip3 install claude-conversation-extractor
 ```
 
-如果提示 "externally managed environment"（外部管理的环境）而失败，改用：
+Windows：
+
+```powershell
+python -m pip install claude-conversation-extractor
+```
+
+Mac 上如果提示 "externally managed environment"（外部管理的环境）而失败，改用：
 
 ```bash
 brew install pipx
@@ -283,7 +321,7 @@ codex plugin add ponytail@ponytail
 /hooks
 ```
 
-批准（trust）运行 `agent_stop_hook.sh` 的钩子（它负责保存聊天）以及 Ponytail 的钩子，然后开一个新对话。
+批准（trust）运行 `agent_stop_hook.py` 的钩子（它负责保存聊天）以及 Ponytail 的钩子，然后开一个新对话。
 
 </details>
 
@@ -298,9 +336,11 @@ codex plugin add ponytail@ponytail
 
 **Ponytail：** 输入位置：终端
 
+Mac 和 Windows 通用：
+
 ```bash
-git clone https://github.com/DietrichGebert/ponytail ~/Scripts/ponytail
-node ~/Scripts/ponytail/scripts/cursor-hooks.js install
+git clone https://github.com/DietrichGebert/ponytail "$HOME/Scripts/ponytail"
+node "$HOME/Scripts/ponytail/scripts/cursor-hooks.js" install
 ```
 
 不要移动 `~/Scripts/ponytail` 文件夹，Cursor 从这里运行 Ponytail。
@@ -314,8 +354,16 @@ node ~/Scripts/ponytail/scripts/cursor-hooks.js install
 
 **4.1 把已有的聊天复制到 Obsidian。** 从现在起聊天会自动保存；这条只需运行一次的命令会把已有的聊天也复制过去。输入位置：终端
 
+Mac：
+
 ```bash
-"$HOME/Obsidian Sync/sync_claude_obsidian.sh" --all
+python3 "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
+```
+
+Windows：
+
+```powershell
+python "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
 ```
 
 **4.2 在 Obsidian 里查看。** 你应该能看到 `chats` 文件夹和 `Home.md` 笔记。用了一段时间后大致是这样：
@@ -332,9 +380,13 @@ node ~/Scripts/ponytail/scripts/cursor-hooks.js install
 
 **4.4 每晚自动全量同步（可选）。** 每天晚上 10 点重新同步所有内容并刷新索引笔记。输入位置：终端
 
+Mac：
+
 ```bash
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
+
+Windows：安装程序在第 1.3 步结束时打印了一行 `Register-ScheduledTask ...`，把它粘贴到 PowerShell 运行即可。想再看一次，运行 `python install.py`。
 
 <sub>[↑ 回到顶部](#contents)</sub>
 
@@ -374,19 +426,35 @@ launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workf
 <details>
 <summary><strong>Graphify：更快找到代码</strong></summary>
 
-为代码项目建一张“地图”，让智能体直接查找，而不用整个文件夹逐个读。在你的 Mac 本地运行，不消耗 AI 用量。输入位置：终端
+为代码项目建一张“地图”，让智能体直接查找，而不用整个文件夹逐个读。在你的电脑本地运行，不消耗 AI 用量。输入位置：终端
+
+Mac：
 
 ```bash
 pip3 install graphifyy          # 或：pipx install graphifyy
 ```
 
+Windows：
+
+```powershell
+python -m pip install graphifyy
+```
+
 然后每个项目运行一次（不要在个人文件夹根目录运行）：
+
+Mac：
 
 ```bash
 ~/Scripts/graphify-bootstrap /path/to/your/project
 ```
 
-如果想以后直接输入 `graphify-bootstrap`，运行 `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc`，再打开一个新的终端窗口。
+Windows：
+
+```powershell
+& "$HOME/Scripts/graphify-bootstrap.cmd" C:\path\to\your\project
+```
+
+Mac 上如果想以后直接输入 `graphify-bootstrap`，运行 `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc`，再打开一个新的终端窗口。
 
 </details>
 
@@ -395,8 +463,16 @@ pip3 install graphifyy          # 或：pipx install graphifyy
 
 让智能体把 PDF、Word 和 PowerPoint 文件转成文本，只读需要的部分。输入位置：终端
 
+Mac：
+
 ```bash
 pip3 install 'markitdown[all]'  # 或：pipx install 'markitdown[all]'
+```
+
+Windows：
+
+```powershell
+python -m pip install 'markitdown[all]'
 ```
 
 </details>
@@ -414,7 +490,7 @@ pip3 install 'markitdown[all]'  # 或：pipx install 'markitdown[all]'
 
 **问：我的聊天会被上传吗？**
 
-**答：** 脚本只会把聊天复制到你 Mac 上的仓库文件夹里。除非你把这个文件夹放到 iCloud 云盘之类会同步的地方，否则它只留在本机。
+**答：** 脚本只会把聊天复制到你电脑上的仓库文件夹里。除非你把这个文件夹放到 iCloud 云盘或 OneDrive 之类会同步的地方，否则它只留在本机。
 
 **问：三个应用都要装吗？**
 
@@ -432,20 +508,22 @@ pip3 install 'markitdown[all]'  # 或：pipx install 'markitdown[all]'
 
 **答：** 安装程序替换过的文件都在 `~/Scripts/agent-workflow-backups/<日期时间>/`，复制回去即可恢复原来的配置。第 1.2 步的预览会列出它涉及的所有文件。
 
-**问：支持 Windows 或 Linux 吗？**
+**问：支持 Windows 吗？Linux 呢？**
 
-**答：** 目前只支持 macOS。
+**答：** 支持 Mac 和 Windows。Windows 支持是新加的，遇到问题请反馈。暂不支持 Linux。
 
 <a id="troubleshooting"></a>
 ## 🩺 问题排查
 
 | 问题 | 怎么办 |
 |---|---|
-| Obsidian 里没有聊天记录 | 在终端运行 `tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"`，看最后几行 |
+| Obsidian 里没有聊天记录 | 查看日志最后几行。Mac：`tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"` · Windows：`Get-Content "$HOME/Obsidian Sync/claude_obsidian_sync.log" -Tail 20` |
 | 缺少 Claude Code 的聊天 | 在终端运行 `claude-extract --help`。如果报错，重做 [Claude Code 的保存聊天](#app-claude) |
 | 缺少 Codex 的聊天 | 你在 `/hooks` 里批准钩子了吗？见 [Codex](#app-codex) |
 | 智能体不遵守规则 | 开一个新聊天；规则只在聊天开始时加载 |
-| 每晚同步没有运行 | 在终端运行 `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` |
+| 每晚同步没有运行 | Mac：`launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` · Windows：`Get-ScheduledTask agent-workflow-obsidian-sync` |
+| Windows：输入 `python` 却打开了 Microsoft Store | 从 [python.org](https://www.python.org/downloads/) 重新安装 Python 并勾选“Add python.exe to PATH”，然后重新运行安装程序 |
+| 在 Windows 上移动或升级了 Python | 再运行一次 `python install.py --install`，让钩子指向新的 Python |
 
 <sub>[↑ 回到顶部](#contents)</sub>
 
@@ -483,10 +561,11 @@ agent-workflow/
 不需要调用 AI 的检查：
 
 ```bash
-python3 -m py_compile install.py payload/obsidian/*.py
-bash -n payload/obsidian/*.sh payload/scripts/*.sh
+python3 -m py_compile install.py payload/obsidian/*.py payload/scripts/*.py
 python3 install.py --home "$(mktemp -d)" --install
 ```
+
+想在 Mac 上检查 Windows 的输出：先导入标准库，再设置 `sys.platform = "win32"`，然后用 `runpy` 对一个临时的 `--home` 运行 `install.py`。
 
 <a id="credits"></a>
 ## 🙏 致谢

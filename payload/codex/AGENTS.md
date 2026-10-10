@@ -7,7 +7,7 @@
 # graphify
 - Skill: `~/.agents/skills/graphify/SKILL.md` (`/graphify`). If `graphify-out/graph.json` exists and the question is structural ("where is X", "what calls Y"), try `graphify query|path|explain` before broad grep.
 - No graph and the task needs real exploration: run `graphify-bootstrap` once (free, idempotent, refuses `$HOME`). Skip it for trivial edits, a known single file, or docs questions. If it fails, say so once and continue with grep/reads.
-- The Stop hook (`~/Obsidian Sync/agent_stop_hook.sh`) already runs `graphify update .` each turn; run it by hand only to query right after edits in the same turn.
+- The Stop hook (`~/Obsidian Sync/agent_stop_hook.py`) already runs `graphify update .` each turn; run it by hand only to query right after edits in the same turn.
 - One repo = one graph = one vault namespace: `<repo>/graphify-out/`, `<vault>/<repo-id>/`, `<vault>/graphify/<repo-id>/`. `<vault>` = `~/Obsidian Sync/ObsidianVault`; `<repo-id>` = repo name (`<owner>--<repo>` on a clash). Never merge repos or graphs unless asked for that exact merge.
 - Chats sync automatically to `<vault>/chats/` (log: `~/Obsidian Sync/claude_obsidian_sync.log`). Don't hand-copy chats.
 

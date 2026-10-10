@@ -92,7 +92,7 @@ Every chat is saved under `chats/<tool>/<YYYY-MM>/` automatically. Agents never 
 
 Better: once you find what mattered in an old chat, have it written into a handoff, a decision, or a knowledge note, so nobody needs the transcript again.
 
-To find a chat, use Obsidian's search (`Cmd+Shift+F`), or ask the agent: *"Search the chats folder for 'graphify-bootstrap' and list matching files."*
+To find a chat, use Obsidian's search (`Cmd+Shift+F` on Mac, `Ctrl+Shift+F` on Windows), or ask the agent: *"Search the chats folder for 'graphify-bootstrap' and list matching files."*
 
 ## 3. Ask about past decisions
 

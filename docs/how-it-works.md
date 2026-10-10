@@ -52,7 +52,7 @@ Locating with a graph or a targeted search replaces reading whole directories. L
 ```mermaid
 flowchart TD
     TURN([Agent turn ends]) --> STOP["Stop hook<br/>runs detached, agent never waits"]
-    STOP --> SYNC["sync_claude_obsidian.sh"]
+    STOP --> SYNC["sync_claude_obsidian.py"]
     SYNC --> X1["claude-extract<br/>Claude Code chats"]
     SYNC --> X2["agent_chats_to_md.py<br/>Codex and Cursor chats"]
     X1 --> CO["claude_to_obsidian.py<br/>frontmatter, tags, wikilinks"]
@@ -61,7 +61,7 @@ flowchart TD
     STOP --> GU{"Project has<br/>a graph?"}
     GU -->|yes| GUP["graphify update .<br/>AST only, no model calls"]
     GU -->|no| SKIP([skip])
-    NIGHT(["launchd, nightly 22:00"]) -->|"--all"| SYNC
+    NIGHT(["Nightly 22:00<br/>launchd on macOS, Task Scheduler on Windows"]) -->|"--all"| SYNC
     SYNC -->|"--all only"| VO["vault_organize.py<br/>refresh each repo's graph notes"]
 ```
 

@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple" alt="macOS">
+  <img src="https://img.shields.io/badge/platform-macOS_%7C_Windows-lightgrey" alt="macOS and Windows">
   <img src="https://img.shields.io/badge/Claude_Code-supported-D97757" alt="Claude Code">
   <img src="https://img.shields.io/badge/Codex-supported-412991" alt="Codex">
   <img src="https://img.shields.io/badge/Cursor-supported-000000" alt="Cursor">
@@ -25,7 +25,7 @@
   <strong>English</strong> · <a href="README.zh-CN.md">简体中文</a>
 </p>
 
-A ready-made setup for **Claude Code, Codex, and Cursor**. It keeps the instructions agents load short, steers them toward small changes, makes them report honestly, and saves every chat to Obsidian so the next chat can pick up where the last one left off.
+A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**. It keeps the instructions agents load short, steers them toward small changes, makes them report honestly, and saves every chat to Obsidian so the next chat can pick up where the last one left off.
 
 <a id="contents"></a>
 <details>
@@ -135,12 +135,22 @@ The no-rules agent pasted the whole, growing piece of code into every reply, and
 <a id="quickstart"></a>
 ## 🚀 Quickstart
 
-Three commands install the rules and helper scripts. **Type in: Terminal**
+Three commands install the rules and helper scripts. **Type in: Terminal** (PowerShell on Windows)
+
+Mac:
 
 ```bash
 git clone https://github.com/zandy700/agent-workflow.git
 cd agent-workflow
 python3 install.py --install
+```
+
+Windows:
+
+```powershell
+git clone https://github.com/zandy700/agent-workflow.git
+cd agent-workflow
+python install.py --install
 ```
 
 That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full setup](#setup) from Step 2.
@@ -155,12 +165,16 @@ That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full set
 
 **You need:**
 
-- [ ] A Mac
+- [ ] A **Mac** or a **Windows** PC
 - [ ] At least one of **Claude Code**, **Codex**, or **Cursor**, installed and signed in
-- [ ] **Python 3** and **git**: check with `python3 --version` and `git --version` in Terminal
+- [ ] **Python 3.9 or newer** and **git**
+  - Mac: check with `python3 --version` and `git --version` in Terminal
+  - Windows: install Python from [python.org](https://www.python.org/downloads/) and tick **"Add python.exe to PATH"** in the installer; install [Git for Windows](https://git-scm.com/download/win). Check with `python --version` and `git --version` in PowerShell.
 - [ ] **Node** (for Ponytail): check with `node --version`
 
-**Where to type each command.** Every command is labeled. Terminal is the Mac app in Applications → Utilities.
+> **Windows support is new.** It has been checked on a Mac by simulating Windows, but not yet on a real Windows PC. If something breaks, please [open an issue](https://github.com/zandy700/agent-workflow/issues).
+
+**Where to type each command.** Every command is labeled. On a Mac, **Terminal** is the app in Applications → Utilities. On Windows, use **PowerShell** (search for it in the Start menu) wherever this guide says Terminal. Where Mac and Windows commands differ, both are shown.
 
 <img src="docs/images/where-to-type.svg" alt="Left: Terminal window for commands like python3 and pip3. Right: the agent's chat box for commands starting with a slash and plain-English requests." width="760">
 
@@ -191,14 +205,30 @@ cd agent-workflow
 
 **1.2 Preview (changes nothing).** Type in: Terminal
 
+Mac:
+
 ```bash
 python3 install.py
 ```
 
+Windows:
+
+```powershell
+python install.py
+```
+
 **1.3 Install.** Type in: Terminal
+
+Mac:
 
 ```bash
 python3 install.py --install
+```
+
+Windows:
+
+```powershell
+python install.py --install
 ```
 
 Replaced files are backed up to `~/Scripts/agent-workflow-backups/`. Running it again is safe; it says "Already installed" if nothing changed.
@@ -206,7 +236,7 @@ Replaced files are backed up to `~/Scripts/agent-workflow-backups/`. Running it 
 <a id="step-2"></a>
 ### Step 2. Set up Obsidian
 
-Obsidian is a free notes app that keeps notes as plain text files in a folder on your Mac, with no account needed. This workflow uses it as the agents' memory.
+Obsidian is a free notes app that keeps notes as plain text files in a folder on your computer, with no account needed. This workflow uses it as the agents' memory.
 
 **2.1 Install Obsidian** from [obsidian.md](https://obsidian.md) and open it.
 
@@ -214,7 +244,7 @@ Obsidian is a free notes app that keeps notes as plain text files in a folder on
 
 <img src="docs/images/obsidian-open-vault.svg" alt="Obsidian start screen with 'Open folder as vault' highlighted" width="760">
 
-> Can't find the folder? In the file picker, press `Cmd+Shift+G` and paste `~/Obsidian Sync/ObsidianVault`. "Obsidian Sync" is only the folder's name; you don't need Obsidian's paid Sync service.
+> Can't find the folder? On a Mac, press `Cmd+Shift+G` in the file picker and paste `~/Obsidian Sync/ObsidianVault`. On Windows, paste `%USERPROFILE%\Obsidian Sync\ObsidianVault` into the picker's address bar. "Obsidian Sync" is only the folder's name; you don't need Obsidian's paid Sync service.
 
 **2.3 Hide generated notes in the graph (optional).** Only matters if you turn on [Graphify](#extras). Open **Graph view**, click the gear icon in its top right, and type `-path:graphify` in the **Filters** search box.
 
@@ -251,11 +281,19 @@ Only do the apps you use. Each has the same three parts: **Rules**, **Ponytail**
 
 **Saving chats:** Claude Code chats are exported by a small tool called `claude-extract`. Type in: Terminal
 
+Mac:
+
 ```bash
 pip3 install claude-conversation-extractor
 ```
 
-If that fails with "externally managed environment", use this instead:
+Windows:
+
+```powershell
+python -m pip install claude-conversation-extractor
+```
+
+On a Mac, if that fails with "externally managed environment", use this instead:
 
 ```bash
 brew install pipx
@@ -283,7 +321,7 @@ codex plugin add ponytail@ponytail
 /hooks
 ```
 
-Approve (trust) the hook that runs `agent_stop_hook.sh` (it saves your chats) and Ponytail's hooks. Then start a new thread.
+Approve (trust) the hook that runs `agent_stop_hook.py` (it saves your chats) and Ponytail's hooks. Then start a new thread.
 
 </details>
 
@@ -298,9 +336,11 @@ Approve (trust) the hook that runs `agent_stop_hook.sh` (it saves your chats) an
 
 **Ponytail:** type in: Terminal
 
+Works as-is on Mac and Windows:
+
 ```bash
-git clone https://github.com/DietrichGebert/ponytail ~/Scripts/ponytail
-node ~/Scripts/ponytail/scripts/cursor-hooks.js install
+git clone https://github.com/DietrichGebert/ponytail "$HOME/Scripts/ponytail"
+node "$HOME/Scripts/ponytail/scripts/cursor-hooks.js" install
 ```
 
 Leave the `~/Scripts/ponytail` folder where it is; Cursor runs Ponytail from there.
@@ -314,8 +354,16 @@ Leave the `~/Scripts/ponytail` folder where it is; Cursor runs Ponytail from the
 
 **4.1 Copy your existing chats into Obsidian.** From now on chats save automatically; this one-time command also copies the ones you already have. Type in: Terminal
 
+Mac:
+
 ```bash
-"$HOME/Obsidian Sync/sync_claude_obsidian.sh" --all
+python3 "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
+```
+
+Windows:
+
+```powershell
+python "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
 ```
 
 **4.2 Look in Obsidian.** You should see a `chats` folder and a `Home.md` note. Once you've used it for a while, it looks like this:
@@ -332,9 +380,13 @@ It should mention checking its work, keeping output short, handoff notes in Obsi
 
 **4.4 Nightly full sync (optional).** Re-syncs everything and refreshes the index notes every night at 10 pm. Type in: Terminal
 
+Mac:
+
 ```bash
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
+
+Windows: the installer printed a `Register-ScheduledTask ...` line at the end of Step 1.3. Paste that line into PowerShell. To see it again, run `python install.py`.
 
 <sub>[↑ Back to top](#contents)</sub>
 
@@ -374,19 +426,35 @@ Skip these until you want them. Everything works without them.
 <details>
 <summary><strong>Graphify: find code faster</strong></summary>
 
-Builds a map of a code project so agents can look things up instead of reading whole folders. Runs on your Mac with no AI cost. Type in: Terminal
+Builds a map of a code project so agents can look things up instead of reading whole folders. Runs on your computer with no AI cost. Type in: Terminal
+
+Mac:
 
 ```bash
 pip3 install graphifyy          # or: pipx install graphifyy
 ```
 
+Windows:
+
+```powershell
+python -m pip install graphifyy
+```
+
 Then once per project (not your home folder):
+
+Mac:
 
 ```bash
 ~/Scripts/graphify-bootstrap /path/to/your/project
 ```
 
-To type just `graphify-bootstrap` in future, run `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc` and open a new Terminal window.
+Windows:
+
+```powershell
+& "$HOME/Scripts/graphify-bootstrap.cmd" C:\path\to\your\project
+```
+
+On a Mac, to type just `graphify-bootstrap` in future, run `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc` and open a new Terminal window.
 
 </details>
 
@@ -395,8 +463,16 @@ To type just `graphify-bootstrap` in future, run `echo 'export PATH="$HOME/Scrip
 
 Lets agents turn PDFs, Word, and PowerPoint files into text and read only the parts they need. Type in: Terminal
 
+Mac:
+
 ```bash
 pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
+```
+
+Windows:
+
+```powershell
+python -m pip install 'markitdown[all]'
 ```
 
 </details>
@@ -414,7 +490,7 @@ pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 
 **Q: Are my chats uploaded anywhere?**
 
-**A:** The scripts only copy chats into the vault folder on your Mac. They stay there unless you put that folder somewhere that syncs, like iCloud Drive.
+**A:** The scripts only copy chats into the vault folder on your computer. They stay there unless you put that folder somewhere that syncs, like iCloud Drive or OneDrive.
 
 **Q: Do I need all three apps?**
 
@@ -432,20 +508,22 @@ pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 
 **A:** Every file the installer replaced is in `~/Scripts/agent-workflow-backups/<date-and-time>/`. Copy those back to restore your old setup. The preview in Step 1.2 lists every file it touches.
 
-**Q: Windows or Linux?**
+**Q: Does it work on Windows? Linux?**
 
-**A:** macOS only for now.
+**A:** Mac and Windows, yes. Windows support is new, so please report anything that breaks. Linux isn't supported yet.
 
 <a id="troubleshooting"></a>
 ## 🩺 Troubleshooting
 
 | Problem | What to try |
 |---|---|
-| No chats in Obsidian | In Terminal: `tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"` and read the last lines |
+| No chats in Obsidian | Read the last lines of the log. Mac: `tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"` · Windows: `Get-Content "$HOME/Obsidian Sync/claude_obsidian_sync.log" -Tail 20` |
 | Claude Code chats missing | In Terminal: `claude-extract --help`. If that errors, redo [Saving chats for Claude Code](#app-claude) |
 | Codex chats missing | Did you approve the hook in `/hooks`? See [Codex](#app-codex) |
 | Agent ignores the rules | Start a new chat; rules only load when a chat starts |
-| Nightly sync not running | In Terminal: `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` |
+| Nightly sync not running | Mac: `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` · Windows: `Get-ScheduledTask agent-workflow-obsidian-sync` |
+| Windows: typing `python` opens the Microsoft Store | Reinstall Python from [python.org](https://www.python.org/downloads/) and tick "Add python.exe to PATH", then run the installer again |
+| You moved or upgraded Python on Windows | Run `python install.py --install` again so the hooks point at the new Python |
 
 <sub>[↑ Back to top](#contents)</sub>
 
@@ -481,10 +559,11 @@ agent-workflow/
 Checks that need no AI calls:
 
 ```bash
-python3 -m py_compile install.py payload/obsidian/*.py
-bash -n payload/obsidian/*.sh payload/scripts/*.sh
+python3 -m py_compile install.py payload/obsidian/*.py payload/scripts/*.py
 python3 install.py --home "$(mktemp -d)" --install
 ```
+
+To check the Windows output from a Mac, import the standard library first, then set `sys.platform = "win32"` and run `install.py` with `runpy` against a disposable `--home`.
 
 <a id="credits"></a>
 ## 🙏 Credits
