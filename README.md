@@ -1,55 +1,221 @@
-# Shareable agent workflow (macOS)
+# Agent workflow (macOS)
 
-This package carries the same core workflow rules used with Claude Code and Codex: focused code reading, acceptance checks, small tool output, per-repository Graphify/Obsidian namespaces, concise handoffs, and sensible context resets. It includes the chat sync and Graphify bootstrap scripts for Claude Code, Codex, and Cursor. No transcripts, vault notes, tokens, credentials, account settings, or personal backups are included.
+Rules, hooks, and scripts that make Claude Code, Codex, and Cursor read less, check more, and spend fewer tokens. Every agent chat is saved to an Obsidian vault, so a new session can pick up from a short note instead of a long transcript.
 
-The installer copies files into **your** home directory. It previews changes by default, backs up each file it replaces, and merges only its hook commands into existing JSON settings. Inspect the preview and included files before installing. It does not sign into apps, download dependencies, start a Graphify scan, or activate the nightly schedule.
+- **How it works and where it saves tokens:** [docs/how-it-works.md](docs/how-it-works.md)
+- **Using the Obsidian notes day to day** (handoffs, decisions, saved lessons): [docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md)
 
-**How it works and where it saves tokens:** see the diagrams in [docs/how-it-works.md](docs/how-it-works.md).
-**Using the Obsidian notes** (handing context to a new session, decisions, saved lessons): see [docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md).
+## Setup overview
 
-## Install on your Mac
+Do the parts in order. Only Parts 1 to 3 are needed for the core workflow; the rest add to it.
 
-1. Install and sign into Claude Code, Codex, Cursor, and Obsidian. Use a personal machine and a personal vault, because the chat sync copies conversation text into that vault.
-2. Extract this package, open Terminal in the extracted folder, and run `python3 install.py`. Read its proposed file list. Then run `python3 install.py --install` to apply it. Existing files are backed up under `~/Scripts/agent-workflow-backups/<timestamp>/`.
-3. Set **Cursor User Rules**: Cursor → Customize → Rules → User Rules; paste all of `payload/cursor/USER_RULES.md`. Cursor keeps these rules in its app/account rather than this installer. [Cursor rules documentation](https://cursor.com/docs/rules).
-4. Install these separately if you want the related steps to work: [Graphify](https://pypi.org/project/graphifyy/) (`graphify` CLI and its skill), [MarkItDown](https://github.com/microsoft/markitdown) (`markitdown` command), and `claude-conversation-extractor` (`claude-extract` command). The core reading/editing rules still apply when these are absent, but graph creation, document conversion, or Claude transcript extraction cannot run. The bundle does not include third-party skill code.
-5. Install **Ponytail** (keeps agents to the smallest working change), using the commands in [Ponytail](#ponytail) below.
-6. Add `~/Scripts` to your shell `PATH` if it is not already there; the installed `graphify-bootstrap` wrapper lives there. Or call `~/Scripts/graphify-bootstrap` with its full path.
-7. Start fresh chats in each app to load the new instructions. Ask each one to state its loaded workflow rule and check its hook status. A config file on disk alone does not prove the app loaded it.
+| Part | What you get | Time |
+|---|---|---|
+| [1. Install the workflow](#part-1-install-the-workflow) | Rules and hooks for all three apps | 5 min |
+| [2. Set up Obsidian](#part-2-set-up-obsidian) | A vault to hold notes and chats | 5 min |
+| [3. Connect agent chats to Obsidian](#part-3-connect-agent-chats-to-obsidian) | Every chat saved to the vault automatically | 10 min |
+| [4. Add the rules to Cursor](#part-4-add-the-rules-to-cursor) | Cursor follows the same rules | 2 min |
+| [5. Install Ponytail](#part-5-install-ponytail) | Agents stick to the smallest working change | 5 min |
+| [6. Optional extras](#part-6-optional-extras) | Code graphs, document conversion | 5 min |
+| [7. Check that it works](#part-7-check-that-it-works) | Confidence each app loaded everything | 5 min |
 
-The installer writes a **disabled until loaded** launchd definition for the full nightly Obsidian export at 22:00. After dependencies work, enable it with:
+**Before you start:** install and sign into the apps you use (Claude Code, Codex, Cursor). You need Python 3 (`python3 --version` in Terminal) and `git`.
+
+---
+
+## Part 1. Install the workflow
+
+The installer copies the rules and scripts into your home folder and adds its hooks to each app's settings. It shows what it will change first, and backs up any file it replaces.
+
+**1. Download the package.** In Terminal:
+
+```bash
+git clone https://github.com/zandy700/agent-workflow.git
+cd agent-workflow
+```
+
+**2. Preview.** Nothing is written yet:
+
+```bash
+python3 install.py
+```
+
+Read the list of files it would write.
+
+**3. Install:**
+
+```bash
+python3 install.py --install
+```
+
+Replaced files are backed up to `~/Scripts/agent-workflow-backups/<timestamp>/`. Running it again is safe; it reports "Already installed" when nothing changed.
+
+---
+
+## Part 2. Set up Obsidian
+
+Obsidian is a free notes app that works on a plain folder of Markdown files. The installer already created that folder: `~/Obsidian Sync/ObsidianVault`. ("Obsidian Sync" here is just the folder name; you don't need Obsidian's paid Sync service.)
+
+**1. Install Obsidian** from [obsidian.md](https://obsidian.md) and open it.
+
+**2. Open the vault.** On the start screen choose **Open folder as vault**, then pick `ObsidianVault` inside the `Obsidian Sync` folder in your home folder.
+
+> Tip: in Finder, press `Cmd+Shift+G` and paste `~/Obsidian Sync/ObsidianVault` to jump there.
+
+**3. Hide generated graph notes** (they get numerous once you use Graphify). Open **Graph view**, click the gear icon at its top right, and under **Filters** type `-path:graphify` in the search box.
+
+The vault will hold the text of your agent chats. Use a personal vault on a personal machine.
+
+---
+
+## Part 3. Connect agent chats to Obsidian
+
+After every agent turn, a hook runs the sync script in the background. It copies new chats into `ObsidianVault/chats/<app>/<YYYY-MM>/`. The agent never waits for it, and it uses no model tokens.
+
+| App | How its chats are read | What you do |
+|---|---|---|
+| Claude Code | the `claude-extract` tool | Install it (step 1) |
+| Codex | read directly from `~/.codex/sessions` | Trust the hook (step 3) |
+| Cursor | read directly from `~/.cursor/projects` | Nothing; Cursor picks up the hook itself |
+
+**1. Install the Claude Code chat extractor:**
+
+```bash
+pip3 install claude-conversation-extractor
+```
+
+If pip refuses with "externally managed environment" (Homebrew Python), use `brew install pipx` then `pipx install claude-conversation-extractor`.
+
+**2. Run the first full sync by hand.** This exports existing chats and builds the vault's `Home.md`:
+
+```bash
+"$HOME/Obsidian Sync/sync_claude_obsidian.sh" --all
+```
+
+Open Obsidian: you should see `Home.md` and a `chats/` folder. If it's empty, read the log:
+
+```bash
+tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"
+```
+
+**3. Trust the Codex hook.** Codex runs a new hook only after you approve it. Start `codex`, type `/hooks`, review the Stop hook that runs `agent_stop_hook.sh`, and trust it.
+
+**4. Turn on the nightly full sync** (optional; it also refreshes the generated index notes each night at 22:00):
 
 ```bash
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
 
-The Stop hooks already request incremental sync after agent turns. The actual timing and loading of hooks must be checked in each app; the package only verifies the local configuration and scripts. Cursor user hooks run from `~/.cursor`, so the packaged Stop hook uses `CURSOR_PROJECT_DIR` for its project Graphify check.
+**5. Test it.** Send one message in any app, wait a few seconds, and look in `chats/` in Obsidian for today's chat.
 
-For a repository that needs a graph, run `~/Scripts/graphify-bootstrap /path/to/repository` once. It refuses `$HOME`. It will use `~/Obsidian Sync/ObsidianVault` by default, and creates that repository's own graph and vault folders. Do this only after Graphify is installed and after reviewing the repo. The `~/Obsidian Sync/ObsidianVault/chats/` folder holds synced transcripts; it is **not** part of this package.
+Now learn how to use the notes: **[docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md)**.
 
-## Ponytail
+---
 
-The workflow runs [Ponytail](https://github.com/DietrichGebert/ponytail) (MIT, by DietrichGebert) in all three apps. It is not bundled; install it from upstream so it keeps updating. Its hooks need `node` on your PATH.
+## Part 4. Add the rules to Cursor
 
-- **Claude Code:** send `/plugin marketplace add DietrichGebert/ponytail`, then, as a separate prompt, `/plugin install ponytail@ponytail`.
-- **Codex:** run `codex plugin marketplace add DietrichGebert/ponytail` and `codex plugin add ponytail@ponytail`, then open `/hooks` in `codex`, review and trust its lifecycle hooks, and start a new thread.
-- **Cursor:** run `git clone https://github.com/DietrichGebert/ponytail ~/Scripts/ponytail` and `node ~/Scripts/ponytail/scripts/cursor-hooks.js install`. This merges two hooks into `~/.cursor/hooks.json` next to this package's Stop hook. The hooks run from that clone, so leave it in place.
+Claude Code and Codex read their rules from files the installer wrote. Cursor keeps its global rules inside the app, so paste them in once.
 
-Check it in a fresh chat: the agent should state that Ponytail is active. Switch levels with `/ponytail lite|full|ultra`, or turn it off with `stop ponytail`. To uninstall, follow [Ponytail's uninstall table](https://github.com/DietrichGebert/ponytail#uninstall).
+1. Open `payload/cursor/USER_RULES.md` from this package and copy all of it.
+2. In Cursor: **Customize → Rules → User Rules**, paste, and save.
 
-## What is and is not included
+([Cursor rules docs](https://cursor.com/docs/rules))
 
-- Included: exact Claude/Codex core instruction files as packaged, an adapted Cursor User Rules copy, on-demand workflow reference, MarkItDown scan script, chat-to-Obsidian pipeline, a vault organization guide (installed to `ObsidianVault/knowledge/`, linked from generated project Home notes), guarded Graphify bootstrap and Stop hook, and config merger.
-- External dependencies: Graphify, MarkItDown, `claude-extract`, Ponytail, and any skills referenced by the instructions, including ICM. Install them from their own sources only when you need them. Their availability is not proven by this package.
-- The conversation note that prompted this export uses the third-party [Should I Build?](https://github.com/Endokelp/Should-I-build) skill. It is a separate, expensive multi-agent research workflow and is not part of the core token-saving rules. To reproduce that session, install it and its `last30days` and `deep-research` companion skills separately, then deliberately invoke it. This package does not run those agents.
-- No personal projects or repositories are bundled. Each repo should have a short project `CLAUDE.md` and `AGENTS.md` based on its actual structure; this is a per-project step.
+---
 
-## Local checks without model calls
+## Part 5. Install Ponytail
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) (MIT, by DietrichGebert) keeps agents to the smallest change that works: reuse before writing, standard library before new dependencies, shortest diff. It installs from its own repo so it keeps updating. It needs `node` (`node --version`).
+
+**Claude Code:** send these as two separate prompts:
+
+```text
+/plugin marketplace add DietrichGebert/ponytail
+```
+```text
+/plugin install ponytail@ponytail
+```
+
+**Codex:** in Terminal:
+
+```bash
+codex plugin marketplace add DietrichGebert/ponytail
+codex plugin add ponytail@ponytail
+```
+
+Then start `codex`, open `/hooks`, trust Ponytail's hooks, and start a new thread.
+
+**Cursor:** in Terminal:
+
+```bash
+git clone https://github.com/DietrichGebert/ponytail ~/Scripts/ponytail
+node ~/Scripts/ponytail/scripts/cursor-hooks.js install
+```
+
+Leave the clone where it is; Cursor's hooks run from it.
+
+**Using it:** switch levels with `/ponytail lite`, `/ponytail full`, or `/ponytail ultra`; turn it off with `stop ponytail`. To remove it, see [Ponytail's uninstall steps](https://github.com/DietrichGebert/ponytail#uninstall).
+
+---
+
+## Part 6. Optional extras
+
+Skip these until you want them. The rules work without them; the related steps are simply skipped.
+
+**Code graphs (Graphify).** Lets agents find code by asking a graph instead of reading whole folders.
+
+```bash
+pip3 install graphifyy
+```
+
+Then, once per repository (not your home folder):
+
+```bash
+~/Scripts/graphify-bootstrap /path/to/your/repo
+```
+
+That builds the graph (no model calls, no cost), keeps it fresh on each commit, and creates the repo's notebook in the vault. To run it as plain `graphify-bootstrap`, add `~/Scripts` to your `PATH`:
+
+```bash
+echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc
+```
+
+**Document conversion (MarkItDown).** Lets agents turn PDFs, Word, and PowerPoint files into Markdown and read only the parts they need.
+
+```bash
+pip3 install 'markitdown[all]'
+```
+
+---
+
+## Part 7. Check that it works
+
+A file on disk doesn't prove the app loaded it. In each app, **start a fresh chat** and ask:
+
+```text
+What workflow rules did you load from your global instructions? Is Ponytail active?
+```
+
+You should hear about acceptance checks, small tool output, handoff notes in the Obsidian vault, and Ponytail. Then send one more message and confirm the chat appears in `ObsidianVault/chats/`.
+
+**Something not working?**
+
+| Problem | Check |
+|---|---|
+| No chats in the vault | `tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"` |
+| Codex chats missing | Did you trust the hook in `/hooks`? |
+| Claude Code chats missing | `claude-extract --help` works? If not, redo Part 3 step 1 |
+| Nightly sync not running | `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` |
+| Rules not followed | Start a new chat; rules load at session start |
+
+---
+
+## For contributors: checks without model calls
 
 ```bash
 python3 -m py_compile install.py payload/obsidian/*.py
 bash -n payload/obsidian/*.sh payload/scripts/*.sh
-python3 install.py
+python3 install.py --home "$(mktemp -d)" --install
 ```
 
-The package does not claim a measured token reduction on your machine. A short pilot on the original setup found lower average input on one task, with quality edge cases in every candidate. Do not turn on a costly benchmark just to install this workflow.
+Token savings on your machine are not measured. A short pilot on the original setup found lower average input on one task, with quality edge cases in every candidate. Don't run a costly benchmark just to install this.
