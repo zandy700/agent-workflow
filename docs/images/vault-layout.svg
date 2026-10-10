@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="900" height="420" rx="16" fill="#f6f7f9"/>
+  <g transform="translate(30,24)">
+    <rect width="340" height="372" rx="10" fill="#262626"/>
+    <text x="16" y="30" font-size="12" font-weight="600" fill="#9a9a9a" letter-spacing="1">OBSIDIANVAULT</text>
+    <g font-size="14" fill="#dadada">
+      <text x="16" y="66">▾ chats</text>
+      <text x="38" y="94">▸ code</text>
+      <text x="38" y="122">▸ codex</text>
+      <text x="38" y="150">▸ cursor</text>
+      <text x="16" y="186">▾ my-project</text>
+      <rect x="32" y="198" width="296" height="26" rx="5" fill="#3d3566"/>
+      <text x="38" y="216" fill="#ffffff">status.md</text>
+      <text x="38" y="244">▸ decisions</text>
+      <text x="38" y="272">▸ briefs</text>
+      <text x="16" y="308">▸ knowledge</text>
+      <text x="16" y="344">Home.md</text>
+    </g>
+  </g>
+
+  <g font-size="14" fill="#1f2328">
+    <line x1="380" y1="118" x2="420" y2="118" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="104" font-weight="600">Your past chats, saved automatically</text>
+    <text x="430" y="126" fill="#57606a">code = Claude Code, then codex and cursor.</text>
+    <text x="430" y="146" fill="#57606a">Sorted into month folders. Don't edit these.</text>
+
+    <line x1="380" y1="235" x2="420" y2="235" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="214" font-weight="600">One folder per project</text>
+    <text x="430" y="236" fill="#57606a">status.md is the handoff note a new chat reads.</text>
+    <text x="430" y="256" fill="#57606a">decisions/ records why choices were made.</text>
+
+    <line x1="380" y1="328" x2="420" y2="328" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="324" font-weight="600">Lessons that apply to every project</text>
+    <text x="430" y="346" fill="#57606a">Home.md is a generated index of everything.</text>
+  </g>
+  <text x="870" y="408" text-anchor="end" font-size="11" fill="#8c959f">Illustration, not a screenshot</text>
+</svg>
