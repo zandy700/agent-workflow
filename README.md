@@ -78,13 +78,20 @@ After every agent turn, a hook runs the sync script in the background. It copies
 | Codex | read directly from `~/.codex/sessions` | Trust the hook (step 3) |
 | Cursor | read directly from `~/.cursor/projects` | Nothing; Cursor picks up the hook itself |
 
-**1. Install the Claude Code chat extractor:**
+**1. Install the Claude Code chat extractor.**
+
+If you installed Python from python.org or via `pyenv`/`nvm`:
 
 ```bash
 pip3 install claude-conversation-extractor
 ```
 
-If pip refuses with "externally managed environment" (Homebrew Python), use `brew install pipx` then `pipx install claude-conversation-extractor`.
+If `pip3` refuses with "externally managed environment" (common with Homebrew Python), use `pipx` instead:
+
+```bash
+brew install pipx
+pipx install claude-conversation-extractor
+```
 
 **2. Run the first full sync by hand.** This exports existing chats and builds the vault's `Home.md`:
 
@@ -165,7 +172,7 @@ Skip these until you want them. The rules work without them; the related steps a
 **Code graphs (Graphify).** Lets agents find code by asking a graph instead of reading whole folders.
 
 ```bash
-pip3 install graphifyy
+pip3 install graphifyy          # or: pipx install graphifyy
 ```
 
 Then, once per repository (not your home folder):
@@ -183,7 +190,7 @@ echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc
 **Document conversion (MarkItDown).** Lets agents turn PDFs, Word, and PowerPoint files into Markdown and read only the parts they need.
 
 ```bash
-pip3 install 'markitdown[all]'
+pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 ```
 
 ---
