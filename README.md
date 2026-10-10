@@ -1,23 +1,45 @@
 # Agent workflow (macOS)
 
-Rules, hooks, and scripts that make Claude Code, Codex, and Cursor read less, check more, and spend fewer tokens. Every agent chat is saved to an Obsidian vault, so a new session can pick up from a short note instead of a long transcript.
+Most of an agent's cost is wasted on context it doesn't need: large instruction files loaded on every turn, whole directories scanned to find one function, old transcripts re-sent just to carry forward one decision. This workflow cuts that out.
 
-- **How it works and where it saves tokens:** [docs/how-it-works.md](docs/how-it-works.md)
+Three things work together. **Short rules** keep what loads every session to routing only — templates and step-by-step workflows stay in a reference file the agent opens only when it actually needs them. **Ponytail** holds agents to the smallest change that works: reuse before writing, standard library before new dependencies, shortest diff. **Obsidian** catches every chat as a Markdown note, so the next session can start from a 10-line handoff note instead of re-sending a whole transcript.
+
+- **How it works in detail:** [docs/how-it-works.md](docs/how-it-works.md)
 - **Using the Obsidian notes day to day** (handoffs, decisions, saved lessons): [docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md)
+
+## Test results
+
+Two Claude Haiku agents ran the same 4-turn task side by side: build a cache class, add TTL expiry, add hit-rate stats, write 3 tests. One had no rules (bare); one had the workflow rules injected.
+
+**The workflow agent used ~49% fewer output tokens.** The gap widened each turn because the bare agent re-echoed the full growing class in every response. Those code blocks pile up in conversation history and are re-sent as input on every following turn. Over 4 turns, all-in savings (output + accumulated re-sent history) were ~24%, growing with session length.
+
+| Turn | Task | Bare | Workflow |
+|---|---|---|---|
+| 1 | KV store class | ~450 chars | ~395 chars |
+| 2 | Add TTL expiry | ~760 chars | ~480 chars |
+| 3 | Add hit-rate stats | ~1,030 chars | ~430 chars |
+| 4 | Write 3 tests | ~1,200 chars | ~450 chars |
+| **Total** | | **~3,440** | **~1,755** |
+
+*Chars are a proxy for tokens; no API token counter was used.*
+
+**The bare agent also fabricated results.** In Turn 4 it reported: *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."* Neither file existed. The workflow agent said *"I did not execute this"* when it hadn't run a check, and reported a pass only after actually running it. That's the editing-discipline rule: report verified outcomes, label anything untested.
+
+---
 
 ## Setup overview
 
 Do the parts in order. Only Parts 1 to 3 are needed for the core workflow; the rest add to it.
 
-| Part | What you get | Time |
-|---|---|---|
-| [1. Install the workflow](#part-1-install-the-workflow) | Rules and hooks for all three apps | 5 min |
-| [2. Set up Obsidian](#part-2-set-up-obsidian) | A vault to hold notes and chats | 5 min |
-| [3. Connect agent chats to Obsidian](#part-3-connect-agent-chats-to-obsidian) | Every chat saved to the vault automatically | 10 min |
-| [4. Add the rules to Cursor](#part-4-add-the-rules-to-cursor) | Cursor follows the same rules | 2 min |
-| [5. Install Ponytail](#part-5-install-ponytail) | Agents stick to the smallest working change | 5 min |
-| [6. Optional extras](#part-6-optional-extras) | Code graphs, document conversion | 5 min |
-| [7. Check that it works](#part-7-check-that-it-works) | Confidence each app loaded everything | 5 min |
+| Part | What you get |
+|---|---|
+| [1. Install the workflow](#part-1-install-the-workflow) | Rules and hooks for all three apps |
+| [2. Set up Obsidian](#part-2-set-up-obsidian) | A vault to hold notes and chats |
+| [3. Connect agent chats to Obsidian](#part-3-connect-agent-chats-to-obsidian) | Every chat saved to the vault automatically |
+| [4. Add the rules to Cursor](#part-4-add-the-rules-to-cursor) | Cursor follows the same rules |
+| [5. Install Ponytail](#part-5-install-ponytail) | Agents stick to the smallest working change |
+| [6. Optional extras](#part-6-optional-extras) | Code graphs, document conversion |
+| [7. Check that it works](#part-7-check-that-it-works) | Confidence each app loaded everything |
 
 **Before you start:** install and sign into the apps you use (Claude Code, Codex, Cursor). You need Python 3 (`python3 --version` in Terminal) and `git`.
 
@@ -214,32 +236,6 @@ You should hear about acceptance checks, small tool output, handoff notes in the
 | Claude Code chats missing | `claude-extract --help` works? If not, redo Part 3 step 1 |
 | Nightly sync not running | `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` |
 | Rules not followed | Start a new chat; rules load at session start |
-
----
-
-## Benchmark
-
-A 4-turn incremental coding task (build a cache class → add TTL → add stats → write tests) was run twice in parallel using Claude Haiku: one agent with no rules (bare), one with the workflow rules injected (Ponytail + editing discipline).
-
-**Output tokens (measured as response chars):**
-
-| Turn | Bare | Workflow | Savings |
-|---|---|---|---|
-| T1: KV store class | ~450 | ~395 | 12% |
-| T2: add TTL expiry | ~760 | ~480 | 37% |
-| T3: add hit-rate stats | ~1,030 | ~430 | 58% |
-| T4: write 3 tests | ~1,200 | ~450 | 63% |
-| **Total output** | **~3,440** | **~1,755** | **~49%** |
-
-The gap widens each turn because the bare agent re-echoes the full growing class inline. Those code blocks re-enter conversation history and are re-sent as input on every subsequent turn. All-in (output + accumulated history re-sent as input) savings over 4 turns: **~24%**, growing with session length.
-
-The workflow rule injection (~1,200 chars) is front-loaded on Turn 1 and pays for itself by Turn 2.
-
-**The bare agent lied about verification.** In Turn 4 it reported:
-
-> *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."*
-
-Neither file existed. The agent fabricated the file paths, the run, and the output. The workflow agent said *"I did not execute this"* on Turn 1 when it hadn't run a check, and reported an actual pass only after writing and running the file. This is the editing-discipline rule at work: **report verified outcomes; label anything untested.** Without it, an agent fills in plausible-sounding results that never happened.
 
 ---
 
