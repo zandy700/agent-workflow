@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="900" height="340" rx="16" fill="#f6f7f9"/>
+
+  <!-- Terminal window -->
+  <g transform="translate(30,30)">
+    <rect width="400" height="200" rx="10" fill="#1e1f24"/>
+    <rect width="400" height="30" rx="10" fill="#3a3b40"/>
+    <rect y="20" width="400" height="10" fill="#3a3b40"/>
+    <circle cx="18" cy="15" r="6" fill="#ff5f57"/>
+    <circle cx="38" cy="15" r="6" fill="#febc2e"/>
+    <circle cx="58" cy="15" r="6" fill="#28c840"/>
+    <text x="200" y="20" text-anchor="middle" font-size="13" fill="#d0d0d0">Terminal</text>
+    <g font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="14">
+      <text x="18" y="65" fill="#7ee787">$ <tspan fill="#f0f0f0">python3 install.py --install</tspan></text>
+      <text x="18" y="95" fill="#7ee787">$ <tspan fill="#f0f0f0">pip3 install claude-conversation-…</tspan></text>
+      <text x="18" y="125" fill="#7ee787">$ <tspan fill="#f0f0f0">codex plugin add ponytail@ponytail</tspan></text>
+      <text x="18" y="155" fill="#7ee787">$ <tspan fill="#f0f0f0">node ~/Scripts/ponytail/…</tspan></text>
+    </g>
+  </g>
+  <text x="230" y="268" text-anchor="middle" font-size="17" font-weight="600" fill="#1f2328">在“终端”里输入</text>
+  <text x="230" y="292" text-anchor="middle" font-size="14" fill="#57606a">以 python3、pip3、pipx、git、</text>
+  <text x="230" y="312" text-anchor="middle" font-size="14" fill="#57606a">codex、node、launchctl 开头的命令</text>
+
+  <!-- Agent chat window -->
+  <g transform="translate(470,30)">
+    <rect width="400" height="200" rx="10" fill="#ffffff" stroke="#d0d7de"/>
+    <rect width="400" height="30" rx="10" fill="#eaeef2"/>
+    <rect y="20" width="400" height="10" fill="#eaeef2"/>
+    <text x="200" y="20" text-anchor="middle" font-size="13" fill="#57606a">Claude Code · Codex · Cursor</text>
+    <rect x="16" y="46" width="300" height="34" rx="8" fill="#eef4ff"/>
+    <text x="28" y="68" font-size="14" fill="#1f2328">为这个仓库写交接笔记。</text>
+    <rect x="16" y="92" width="220" height="34" rx="8" fill="#eef4ff"/>
+    <text x="28" y="114" font-size="14" fill="#1f2328">查一下笔记：为什么选 X？</text>
+    <rect x="16" y="146" width="368" height="38" rx="8" fill="#ffffff" stroke="#8c959f"/>
+    <text x="28" y="170" font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#1f2328">&gt; /plugin install ponytail@ponytail</text>
+  </g>
+  <text x="670" y="268" text-anchor="middle" font-size="17" font-weight="600" fill="#1f2328">在智能体的聊天框里输入</text>
+  <text x="670" y="292" text-anchor="middle" font-size="14" fill="#57606a">以 / 开头的命令（如 /plugin、/hooks）</text>
+  <text x="670" y="312" text-anchor="middle" font-size="14" fill="#57606a">以及用自然语言提出的请求</text>
+</svg>

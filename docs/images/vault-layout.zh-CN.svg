@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="900" height="420" rx="16" fill="#f6f7f9"/>
+  <g transform="translate(30,24)">
+    <rect width="340" height="372" rx="10" fill="#262626"/>
+    <text x="16" y="30" font-size="12" font-weight="600" fill="#9a9a9a" letter-spacing="1">OBSIDIANVAULT</text>
+    <g font-size="14" fill="#dadada">
+      <text x="16" y="66">▾ chats</text>
+      <text x="38" y="94">▸ code</text>
+      <text x="38" y="122">▸ codex</text>
+      <text x="38" y="150">▸ cursor</text>
+      <text x="16" y="186">▾ my-project</text>
+      <rect x="32" y="198" width="296" height="26" rx="5" fill="#3d3566"/>
+      <text x="38" y="216" fill="#ffffff">status.md</text>
+      <text x="38" y="244">▸ decisions</text>
+      <text x="38" y="272">▸ briefs</text>
+      <text x="16" y="308">▸ knowledge</text>
+      <text x="16" y="344">Home.md</text>
+    </g>
+  </g>
+
+  <g font-size="14" fill="#1f2328">
+    <line x1="380" y1="118" x2="420" y2="118" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="104" font-weight="600">过往聊天，自动保存</text>
+    <text x="430" y="126" fill="#57606a">code 即 Claude Code，另有 codex 和 cursor。</text>
+    <text x="430" y="146" fill="#57606a">按月份分文件夹。请勿手动编辑。</text>
+
+    <line x1="380" y1="235" x2="420" y2="235" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="214" font-weight="600">每个项目一个文件夹</text>
+    <text x="430" y="236" fill="#57606a">status.md 是新聊天会读取的交接笔记。</text>
+    <text x="430" y="256" fill="#57606a">decisions/ 记录每个决定的理由。</text>
+
+    <line x1="380" y1="328" x2="420" y2="328" stroke="#8c959f" stroke-dasharray="4 4"/>
+    <text x="430" y="324" font-weight="600">适用于所有项目的经验</text>
+    <text x="430" y="346" fill="#57606a">Home.md 是自动生成的总索引。</text>
+  </g>
+  <text x="870" y="408" text-anchor="end" font-size="11" fill="#8c959f">示意图，非真实截图</text>
+</svg>
