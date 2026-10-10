@@ -480,9 +480,7 @@ To check the Windows output from a Mac, import the standard library first, then 
 <a id="credits"></a>
 ## 🙏 Credits
 
-Agent Workflow is made by [zandy700](https://github.com/zandy700): the rules, scripts, installer and guides, plus the ICM integration (the `/icm` skill and the fine-tuning that makes icm-architect and the ICM templates work together across Claude Code, Codex and Cursor).
-
-It connects tools made by others. They are installed from their own sources, not bundled here:
+This workflow connects tools made by others. They are installed from their own sources, not bundled here:
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail) by DietrichGebert (MIT)
 - [Obsidian](https://obsidian.md)

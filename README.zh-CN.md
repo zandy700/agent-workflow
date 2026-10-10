@@ -482,9 +482,7 @@ python3 install.py --home "$(mktemp -d)" --install
 <a id="credits"></a>
 ## 🙏 致谢
 
-Agent Workflow 由 [zandy700](https://github.com/zandy700) 制作：规则、脚本、安装程序和指南，以及 ICM 集成（`/icm` 技能，以及让 icm-architect 和 ICM 模板在 Claude Code、Codex、Cursor 中协同工作的精细调整）。
-
-它把其他人开发的工具串在一起。它们都从各自的官方来源安装，没有打包在这里：
+本工作流把其他人开发的工具串在一起。它们都从各自的官方来源安装，没有打包在这里：
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail)，作者 DietrichGebert（MIT 许可证）
 - [Obsidian](https://obsidian.md)
