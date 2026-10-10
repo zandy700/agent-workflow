@@ -20,9 +20,6 @@ Two Claude Haiku agents did the same 4-step coding task side by side (build a sm
 - **~49% fewer tokens in the agent's replies**, and **~24% fewer overall** across the 4 steps. The gap grew every step, so longer chats save more.
 - **The agent without rules made up its results.** It said: *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."* Neither file existed and nothing was run. The workflow agent said *"I did not execute this"* when it hadn't, and reported a pass only after really running the tests.
 
-<details>
-<summary>Turn-by-turn numbers</summary>
-
 | Step | Task | No rules | Workflow |
 |---|---|---|---|
 | 1 | Build a key-value store | ~450 chars | ~395 chars |
@@ -32,8 +29,6 @@ Two Claude Haiku agents did the same 4-step coding task side by side (build a sm
 | **Total** | | **~3,440** | **~1,755** |
 
 The no-rules agent pasted the whole, growing piece of code into every reply. Each reply is re-sent with every later message, so that cost piles up. Characters are used as a stand-in for tokens; no token counter was used. This was one small test, not a formal benchmark.
-
-</details>
 
 ---
 
@@ -135,6 +130,12 @@ Only matters if you later turn on Graphify (see [Optional extras](#optional-extr
 ## Step 3. Set up your apps
 
 Only do the sections for the apps you use.
+
+**Jump to your app:**
+
+- [3a. Claude Code](#3a-claude-code)
+- [3b. Codex](#3b-codex)
+- [3c. Cursor](#3c-cursor)
 
 | | Claude Code | Codex | Cursor |
 |---|---|---|---|
