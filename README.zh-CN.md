@@ -28,23 +28,16 @@
 一套现成的 **Claude Code、Codex 和 Cursor** 配置，支持 **Mac 和 Windows**：让智能体每次加载的指令保持精简，引导它做小改动、如实汇报，并把每次聊天保存到 Obsidian，下一次聊天就能接着上次继续。
 
 <a id="contents"></a>
-<details>
-<summary><strong>目录</strong></summary>
+## 🧭 目录
 
-- [适合你，如果](#for-you)
-- [功能](#features)
-- [解决的问题](#problems)
-- [测试结果](#results)
-- [快速开始](#quickstart)
-- [完整安装](#setup)：[开始之前](#before) · [第 1 步](#step-1) · [第 2 步](#step-2) · [第 3 步](#step-3)（[Claude Code](#app-claude) · [Codex](#app-codex) · [Cursor](#app-cursor)） · [第 4 步](#step-4)
-- [日常怎么用](#daily)
-- [可选扩展](#extras)
-- [常见问题](#faq)
-- [问题排查](#troubleshooting)
-- [仓库里有什么](#repo)
-- [延伸阅读](#reading) · [给贡献者](#contributors) · [致谢](#credits) · [许可证](#license)
-
-</details>
+| **从这里开始** | **安装** | **使用** | **参考** |
+|---|---|---|---|
+| [适合你，如果](#for-you) | [快速开始](#quickstart) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
+| [功能](#features) | [开始之前](#before) | [可选扩展](#extras) | [延伸阅读](#reading) |
+| [解决的问题](#problems) | [第 1 步：安装](#step-1) | [ICM](#icm) | [给贡献者](#contributors) |
+| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [常见问题](#faq) | [致谢](#credits) |
+|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) | [许可证](#license) |
+|  | [第 4 步：首次同步](#step-4) |  |  |
 
 ---
 
@@ -478,6 +471,7 @@ python -m pip install 'markitdown[all]'
 
 </details>
 
+<a id="icm"></a>
 <details>
 <summary><strong>ICM：让项目结构对智能体友好</strong></summary>
 
@@ -485,6 +479,8 @@ ICM（Interpretable Context Methodology，可解释上下文方法）把一个�
 
 - **icm-architect** 设计新的结构，或者为现有文件夹绘制“地图”，方便智能体找到东西。
 - **icm** 提供方法说明和现成模板。第 1 步已经装好了 `/icm` 技能，它会读取你在这里下载的模板。
+
+ICM 本身由 RinDig 开发。`/icm` 技能，以及 ICM 接入本工作流的方式（智能体何时用哪一个、两者如何配合、新工作区放在你的项目里而不是下载的副本里），由 [zandy700](https://github.com/zandy700) 编写和精细调整。
 
 下载这两个仓库。输入位置：终端（Mac 和 Windows 通用）
 
@@ -605,7 +601,9 @@ python3 install.py --home "$(mktemp -d)" --install
 <a id="credits"></a>
 ## 🙏 致谢
 
-本工作流把其他人开发的工具串在一起。它们都从各自的官方来源安装，没有打包在这里：
+Agent Workflow 由 [zandy700](https://github.com/zandy700) 制作：规则、脚本、安装程序和指南，以及 ICM 集成（`/icm` 技能，以及让 icm-architect 和 ICM 模板在 Claude Code、Codex、Cursor 中协同工作的精细调整）。
+
+它把其他人开发的工具串在一起。它们都从各自的官方来源安装，没有打包在这里：
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail)，作者 DietrichGebert（MIT 许可证）
 - [Obsidian](https://obsidian.md)

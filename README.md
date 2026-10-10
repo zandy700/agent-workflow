@@ -28,23 +28,16 @@
 A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**. It keeps the instructions agents load short, steers them toward small changes, makes them report honestly, and saves every chat to Obsidian so the next chat can pick up where the last one left off.
 
 <a id="contents"></a>
-<details>
-<summary><strong>Contents</strong></summary>
+## 🧭 Contents
 
-- [This is for you if](#for-you)
-- [Features](#features)
-- [Problems it solves](#problems)
-- [Test results](#results)
-- [Quickstart](#quickstart)
-- [Full setup](#setup): [Before you start](#before) · [Step 1](#step-1) · [Step 2](#step-2) · [Step 3](#step-3) ([Claude Code](#app-claude) · [Codex](#app-codex) · [Cursor](#app-cursor)) · [Step 4](#step-4)
-- [Day-to-day use](#daily)
-- [Optional extras](#extras)
-- [FAQ](#faq)
-- [Troubleshooting](#troubleshooting)
-- [What's in this repo](#repo)
-- [Further reading](#reading) · [For contributors](#contributors) · [Credits](#credits) · [License](#license)
-
-</details>
+| **Start here** | **Set up** | **Use it** | **Reference** |
+|---|---|---|---|
+| [This is for you if](#for-you) | [Quickstart](#quickstart) | [Day-to-day use](#daily) | [What's in this repo](#repo) |
+| [Features](#features) | [Before you start](#before) | [Optional extras](#extras) | [Further reading](#reading) |
+| [Problems it solves](#problems) | [Step 1. Install](#step-1) | [ICM](#icm) | [For contributors](#contributors) |
+| [Test results](#results) | [Step 2. Obsidian](#step-2) | [FAQ](#faq) | [Credits](#credits) |
+|  | [Step 3. Your apps](#step-3) | [Troubleshooting](#troubleshooting) | [License](#license) |
+|  | [Step 4. First sync](#step-4) |  |  |
 
 ---
 
@@ -478,6 +471,7 @@ python -m pip install 'markitdown[all]'
 
 </details>
 
+<a id="icm"></a>
 <details>
 <summary><strong>ICM: agent-ready project structures</strong></summary>
 
@@ -485,6 +479,8 @@ ICM (Interpretable Context Methodology) turns a recurring process, or a messy fo
 
 - **icm-architect** designs a new structure, or maps an existing folder so agents can find things.
 - **icm** holds the method and ready-made templates. Step 1 already installed the `/icm` skill; it reads the templates you download here.
+
+ICM itself is by RinDig. The `/icm` skill and the way ICM is wired into this workflow (which of the two the agent reaches for, how they work together, and keeping new workspaces in your project instead of the downloaded copies) were written and fine-tuned by [zandy700](https://github.com/zandy700).
 
 Download both. Type in: Terminal (same on Mac and Windows)
 
@@ -603,7 +599,9 @@ To check the Windows output from a Mac, import the standard library first, then 
 <a id="credits"></a>
 ## 🙏 Credits
 
-This workflow connects tools made by others. They are installed from their own sources, not bundled here:
+Agent Workflow is made by [zandy700](https://github.com/zandy700): the rules, scripts, installer and guides, plus the ICM integration (the `/icm` skill and the fine-tuning that makes icm-architect and the ICM templates work together across Claude Code, Codex and Cursor).
+
+It connects tools made by others. They are installed from their own sources, not bundled here:
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail) by DietrichGebert (MIT)
 - [Obsidian](https://obsidian.md)
