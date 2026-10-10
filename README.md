@@ -1,45 +1,119 @@
-# Agent workflow (macOS)
+<p align="center">
+  <img src="docs/images/banner.svg" alt="Agent Workflow: cheaper, more honest AI coding agents that remember your past work" width="820">
+</p>
 
-**English** | [简体中文](README.zh-CN.md)
+<p align="center">
+  <a href="#quickstart"><img src="https://img.shields.io/badge/Quick_Start-3_commands-blue?style=for-the-badge" alt="Quick Start"></a>
+  <a href="#setup"><img src="https://img.shields.io/badge/Setup_Guide-Step_by_step-7c5cff?style=for-the-badge" alt="Setup Guide"></a>
+  <a href="#results"><img src="https://img.shields.io/badge/Test_Results-49%25_fewer_tokens-brightgreen?style=for-the-badge" alt="Test Results"></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-red?style=for-the-badge" alt="中文 README"></a>
+</p>
 
-A setup for **Claude Code, Codex, and Cursor** that makes AI coding agents cheaper to run, more honest about what they did, and able to remember past work.
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple" alt="macOS">
+  <img src="https://img.shields.io/badge/Claude_Code-supported-D97757" alt="Claude Code">
+  <img src="https://img.shields.io/badge/Codex-supported-412991" alt="Codex">
+  <img src="https://img.shields.io/badge/Cursor-supported-000000" alt="Cursor">
+  <img src="https://img.shields.io/badge/notes-Obsidian-7C3AED?logo=obsidian&logoColor=white" alt="Obsidian">
+  <img src="https://img.shields.io/badge/background_hooks-0_AI_tokens-success" alt="Hooks use no AI tokens">
+</p>
 
-- **Lighter on every message.** The rules that load into every chat are kept short. Detailed instructions sit in a separate file the agent opens only when it needs them.
-- **Smaller, simpler changes.** [Ponytail](https://github.com/DietrichGebert/ponytail) steers agents toward the smallest change that works instead of over-building.
-- **Honest reporting.** Agents must say what they actually checked and flag anything they didn't test.
-- **Memory between chats.** Every chat is saved to Obsidian, a free notes app. A new chat can pick up from a short note instead of you re-explaining everything.
-- **Works quietly in the background.** Saving chats happens automatically after each message and costs no AI usage.
-- **One setup, three apps.** Claude Code, Codex, and Cursor follow the same rules.
+<h3 align="center">Your AI agent forgets everything when the chat ends.<br>This gives it a notebook, and a code of conduct.</h3>
+
+<p align="center">
+  <strong>English</strong> · <a href="README.zh-CN.md">简体中文</a>
+</p>
+
+A ready-made setup for **Claude Code, Codex, and Cursor**. It keeps the instructions agents load short, steers them toward small changes, makes them report honestly, and saves every chat to Obsidian so the next chat can pick up where the last one left off.
 
 <a id="contents"></a>
-## Contents
+<details>
+<summary><strong>Contents</strong></summary>
 
-1. **About**
-   - [Test results](#results)
-2. **Set up**
-   - [Before you start](#before)
-   - [Step 1. Install the workflow](#step-1)
-   - [Step 2. Set up Obsidian](#step-2)
-   - [Step 3. Set up your apps](#step-3): [Claude Code](#app-claude) · [Codex](#app-codex) · [Cursor](#app-cursor)
-   - [Step 4. First sync and check](#step-4)
-3. **Use**
-   - [Day-to-day use](#daily)
-   - [Optional extras](#extras)
-4. **Help**
-   - [Troubleshooting](#troubleshooting)
-   - [What's in this repo](#repo)
-   - [Further reading](#reading)
-   - [For contributors](#contributors)
+- [This is for you if](#for-you)
+- [Features](#features)
+- [Problems it solves](#problems)
+- [Test results](#results)
+- [Quickstart](#quickstart)
+- [Full setup](#setup): [Before you start](#before) · [Step 1](#step-1) · [Step 2](#step-2) · [Step 3](#step-3) ([Claude Code](#app-claude) · [Codex](#app-codex) · [Cursor](#app-cursor)) · [Step 4](#step-4)
+- [Day-to-day use](#daily)
+- [Optional extras](#extras)
+- [FAQ](#faq)
+- [Troubleshooting](#troubleshooting)
+- [What's in this repo](#repo)
+- [Further reading](#reading) · [For contributors](#contributors) · [Credits](#credits)
+
+</details>
 
 ---
 
+<a id="for-you"></a>
+## ✅ This is for you if
+
+- ✅ You use **Claude Code, Codex, or Cursor**, and long chats get **slow and expensive**
+- ✅ You're tired of **re-explaining your project** every time you start a new chat
+- ✅ Your agent says **"tests pass"** and you're not sure it actually ran them
+- ✅ Your agent **over-builds**: extra files, layers, and libraries you never asked for
+- ✅ You want **all your past chats saved and searchable** in one place
+
+<a id="features"></a>
+## ✨ Features
+
+<table>
+<tr>
+<td align="center" width="33%">
+<h3>📉 Lighter messages</h3>
+Rules that load into every chat are kept short. Detailed instructions are opened only when needed.
+</td>
+<td align="center" width="33%">
+<h3>🪶 Smaller changes</h3>
+<a href="https://github.com/DietrichGebert/ponytail">Ponytail</a> steers agents to the smallest change that works.
+</td>
+<td align="center" width="33%">
+<h3>🔍 Honest reporting</h3>
+Agents must say what they actually checked, and flag what they didn't test.
+</td>
+</tr>
+<tr>
+<td align="center">
+<h3>🧠 Memory between chats</h3>
+Every chat is saved to Obsidian. A new chat picks up from a short handoff note.
+</td>
+<td align="center">
+<h3>🔕 Runs in the background</h3>
+Chats are saved automatically after each message, using no AI tokens.
+</td>
+<td align="center">
+<h3>🔗 One setup, three apps</h3>
+Claude Code, Codex, and Cursor all follow the same rules.
+</td>
+</tr>
+</table>
+
+<a id="problems"></a>
+## 🤔 Problems it solves
+
+| Without this workflow | With this workflow |
+|---|---|
+| ❌ Every new chat starts from zero, so you re-explain the project. | ✅ The agent reads a 5–15 line handoff note and carries on. |
+| ❌ Long chats get slower and pricier as the whole history is re-sent. | ✅ Short rules and short replies keep each message light. |
+| ❌ The agent claims tests passed when nothing was run. | ✅ The agent must report what it verified and label what it didn't. |
+| ❌ The agent adds layers and libraries you didn't ask for. | ✅ Ponytail picks the smallest change that works. |
+| ❌ Why you made a decision is buried in some old chat. | ✅ Every chat is in Obsidian; ask *"why did we do X?"* |
+| ❌ The agent reads whole folders to find one function. | ✅ Optional code map (Graphify) lets it look things up instead. |
+
 <a id="results"></a>
-## Test results
+## 📊 Test results
 
 Two Claude Haiku agents did the same 4-step coding task side by side (build a small cache, add expiry, add stats, write tests). One had no rules; one used this workflow.
 
-- **~49% fewer tokens in the agent's replies**, and **~24% fewer overall** across the 4 steps. The gap grew every step, so longer chats save more.
-- **The agent without rules made up its results.** It said: *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."* Neither file existed and nothing was run. The workflow agent said *"I did not execute this"* when it hadn't, and reported a pass only after really running the tests.
+<table>
+<tr>
+<td align="center" width="33%"><h2>~49%</h2>fewer tokens in the agent's replies</td>
+<td align="center" width="33%"><h2>~24%</h2>fewer tokens overall across 4 steps</td>
+<td align="center" width="33%"><h2>0 vs 1</h2>made-up test results (workflow vs. no rules)</td>
+</tr>
+</table>
 
 | Step | Task | No rules | Workflow |
 |---|---|---|---|
@@ -49,29 +123,47 @@ Two Claude Haiku agents did the same 4-step coding task side by side (build a sm
 | 4 | Write 3 tests | ~1,200 chars | ~450 chars |
 | **Total** | | **~3,440** | **~1,755** |
 
-The no-rules agent pasted the whole, growing piece of code into every reply. Each reply is re-sent with every later message, so that cost piles up. Characters are used as a stand-in for tokens; no token counter was used. This was one small test, not a formal benchmark.
+> **The agent without rules made up its results.** It said: *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."* Neither file existed and nothing was run. The workflow agent said *"I did not execute this"* when it hadn't, and reported a pass only after really running the tests.
 
-<sub>[↑ Back to contents](#contents)</sub>
+The no-rules agent pasted the whole, growing piece of code into every reply, and each reply is re-sent with every later message, so the gap grows the longer a chat runs. Characters stand in for tokens; no token counter was used. One small test, not a formal benchmark.
+
+<sub>[↑ Back to top](#contents)</sub>
 
 ---
 
-<a id="before"></a>
-## Before you start
+<a id="quickstart"></a>
+## 🚀 Quickstart
 
-### What you need
+Three commands install the rules and helper scripts. **Type in: Terminal**
+
+```bash
+git clone https://github.com/zandy700/agent-workflow.git
+cd agent-workflow
+python3 install.py --install
+```
+
+That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full setup](#setup) from Step 2.
+
+---
+
+<a id="setup"></a>
+## 🛠️ Full setup
+
+<a id="before"></a>
+### Before you start
+
+**You need:**
 
 - [ ] A Mac
-- [ ] At least one of: **Claude Code**, **Codex**, or **Cursor**, installed and signed in
-- [ ] **Python 3** and **git**. Check by typing `python3 --version` and `git --version` in Terminal.
-- [ ] **Node** (for Ponytail). Check with `node --version`.
+- [ ] At least one of **Claude Code**, **Codex**, or **Cursor**, installed and signed in
+- [ ] **Python 3** and **git**: check with `python3 --version` and `git --version` in Terminal
+- [ ] **Node** (for Ponytail): check with `node --version`
 
-### Where to type each command
-
-Every command is labeled with where it goes. Terminal is the Mac app in Applications → Utilities.
+**Where to type each command.** Every command is labeled. Terminal is the Mac app in Applications → Utilities.
 
 <img src="docs/images/where-to-type.svg" alt="Left: Terminal window for commands like python3 and pip3. Right: the agent's chat box for commands starting with a slash and plain-English requests." width="760">
 
-### The setup at a glance
+**The setup at a glance.** Steps 1, 2 and 4 are for everyone. In Step 3, only do the apps you use.
 
 ```mermaid
 flowchart LR
@@ -84,91 +176,55 @@ flowchart LR
     C3 --> D
 ```
 
-Steps 1, 2 and 4 are for everyone. In Step 3, **only do the sections for the apps you use.**
-
-<sub>[↑ Back to contents](#contents)</sub>
-
----
-
 <a id="step-1"></a>
-## Step 1. Install the workflow
+### Step 1. Install the workflow
 
 The installer copies the rules and helper scripts into your home folder and connects them to each app. It shows what it will change before changing anything, and backs up any file it replaces.
 
-### 1.1 Download
-
-**Type in: Terminal**
+**1.1 Download.** Type in: Terminal
 
 ```bash
 git clone https://github.com/zandy700/agent-workflow.git
 cd agent-workflow
 ```
 
-### 1.2 Preview (changes nothing)
-
-**Type in: Terminal**
+**1.2 Preview (changes nothing).** Type in: Terminal
 
 ```bash
 python3 install.py
 ```
 
-You'll see a list of the files it would write.
-
-### 1.3 Install
-
-**Type in: Terminal**
+**1.3 Install.** Type in: Terminal
 
 ```bash
 python3 install.py --install
 ```
 
-Any file it replaces is backed up to `~/Scripts/agent-workflow-backups/`. Running it again is safe; it says "Already installed" if nothing changed.
-
-<sub>[↑ Back to contents](#contents)</sub>
-
----
+Replaced files are backed up to `~/Scripts/agent-workflow-backups/`. Running it again is safe; it says "Already installed" if nothing changed.
 
 <a id="step-2"></a>
-## Step 2. Set up Obsidian
+### Step 2. Set up Obsidian
 
-Obsidian is a free notes app. It keeps notes as plain text files in a folder on your Mac, with no account needed. This workflow uses it as the agents' memory: your chats land there automatically, and you can ask an agent to look things up in it later.
+Obsidian is a free notes app that keeps notes as plain text files in a folder on your Mac, with no account needed. This workflow uses it as the agents' memory.
 
-### 2.1 Install Obsidian
+**2.1 Install Obsidian** from [obsidian.md](https://obsidian.md) and open it.
 
-Download it from [obsidian.md](https://obsidian.md) and open it.
-
-### 2.2 Open the vault
-
-A "vault" is just the folder Obsidian shows. The installer already created one for you.
-
-On Obsidian's start screen, click **Open** next to **Open folder as vault**, then choose `ObsidianVault` inside the `Obsidian Sync` folder in your home folder.
+**2.2 Open the vault.** A "vault" is just the folder Obsidian shows; the installer already created it. On Obsidian's start screen, click **Open** next to **Open folder as vault**, then choose `ObsidianVault` inside the `Obsidian Sync` folder in your home folder.
 
 <img src="docs/images/obsidian-open-vault.svg" alt="Obsidian start screen with 'Open folder as vault' highlighted" width="760">
 
-> Can't find the folder? In the file picker, press `Cmd+Shift+G` and paste `~/Obsidian Sync/ObsidianVault`.
->
-> "Obsidian Sync" is only the folder's name. You don't need Obsidian's paid Sync service.
+> Can't find the folder? In the file picker, press `Cmd+Shift+G` and paste `~/Obsidian Sync/ObsidianVault`. "Obsidian Sync" is only the folder's name; you don't need Obsidian's paid Sync service.
 
-### 2.3 Hide generated notes in the graph (optional)
-
-Only matters if you turn on [Graphify](#extras) later. Open **Graph view**, click the gear icon in its top right, and type `-path:graphify` in the **Filters** search box.
+**2.3 Hide generated notes in the graph (optional).** Only matters if you turn on [Graphify](#extras). Open **Graph view**, click the gear icon in its top right, and type `-path:graphify` in the **Filters** search box.
 
 > Your vault will contain the text of your agent chats. Keep it on a personal machine.
 
-<sub>[↑ Back to contents](#contents)</sub>
-
----
-
 <a id="step-3"></a>
-## Step 3. Set up your apps
+### Step 3. Set up your apps
 
-Only do the sections for the apps you use. Each one has the same three parts: **Rules**, **Ponytail**, **Saving chats**.
+Only do the apps you use. Each has the same three parts: **Rules**, **Ponytail**, **Saving chats**.
 
-**Jump to your app:**
-
-- [3a. Claude Code](#app-claude)
-- [3b. Codex](#app-codex)
-- [3c. Cursor](#app-cursor)
+**Jump to:** [3a. Claude Code](#app-claude) · [3b. Codex](#app-codex) · [3c. Cursor](#app-cursor)
 
 | | Claude Code | Codex | Cursor |
 |---|---|---|---|
@@ -177,15 +233,12 @@ Only do the sections for the apps you use. Each one has the same three parts: **
 | Saving chats | Install one tool | Approve a hook | Nothing to do |
 
 <a id="app-claude"></a>
-### 3a. Claude Code
+<details open>
+<summary><strong>3a. Claude Code</strong></summary>
 
-#### Rules
+**Rules:** nothing to do. Step 1 installed them.
 
-Nothing to do. Step 1 installed them.
-
-#### Ponytail
-
-**Type in: Claude Code's chat box**, as two separate messages:
+**Ponytail:** type in Claude Code's chat box, as two separate messages:
 
 ```text
 /plugin marketplace add DietrichGebert/ponytail
@@ -195,11 +248,7 @@ Nothing to do. Step 1 installed them.
 /plugin install ponytail@ponytail
 ```
 
-#### Saving chats
-
-Claude Code chats are exported by a small tool called `claude-extract`. Install it:
-
-**Type in: Terminal**
+**Saving chats:** Claude Code chats are exported by a small tool called `claude-extract`. Type in: Terminal
 
 ```bash
 pip3 install claude-conversation-extractor
@@ -212,29 +261,22 @@ brew install pipx
 pipx install claude-conversation-extractor
 ```
 
-<sub>[↑ Back to Step 3](#step-3)</sub>
+</details>
 
 <a id="app-codex"></a>
-### 3b. Codex
+<details open>
+<summary><strong>3b. Codex</strong></summary>
 
-#### Rules
+**Rules:** nothing to do. Step 1 installed them.
 
-Nothing to do. Step 1 installed them.
-
-#### Ponytail
-
-**Type in: Terminal**
+**Ponytail:** type in: Terminal
 
 ```bash
 codex plugin marketplace add DietrichGebert/ponytail
 codex plugin add ponytail@ponytail
 ```
 
-#### Saving chats
-
-Codex won't run new hooks until you approve them. This one step turns on both chat saving and Ponytail.
-
-**Type in: Codex's chat box**
+**Saving chats:** Codex won't run new hooks until you approve them. This one step turns on both chat saving and Ponytail. Type in Codex's chat box:
 
 ```text
 /hooks
@@ -242,23 +284,18 @@ Codex won't run new hooks until you approve them. This one step turns on both ch
 
 Approve (trust) the hook that runs `agent_stop_hook.sh` (it saves your chats) and Ponytail's hooks. Then start a new thread.
 
-<sub>[↑ Back to Step 3](#step-3)</sub>
+</details>
 
 <a id="app-cursor"></a>
-### 3c. Cursor
+<details open>
+<summary><strong>3c. Cursor</strong></summary>
 
-#### Rules
-
-Cursor keeps its rules inside the app, so add them once:
+**Rules:** Cursor keeps its rules inside the app, so add them once:
 
 1. Open `payload/cursor/USER_RULES.md` from the folder you downloaded and copy everything in it.
-2. In Cursor, go to **Customize → Rules → User Rules**, paste, and save.
+2. In Cursor, go to **Customize → Rules → User Rules**, paste, and save. ([Cursor's guide to rules](https://cursor.com/docs/rules))
 
-([Cursor's guide to rules](https://cursor.com/docs/rules))
-
-#### Ponytail
-
-**Type in: Terminal**
+**Ponytail:** type in: Terminal
 
 ```bash
 git clone https://github.com/DietrichGebert/ponytail ~/Scripts/ponytail
@@ -267,67 +304,45 @@ node ~/Scripts/ponytail/scripts/cursor-hooks.js install
 
 Leave the `~/Scripts/ponytail` folder where it is; Cursor runs Ponytail from there.
 
-#### Saving chats
+**Saving chats:** nothing to do. Cursor picks up the chat-saving hook from Step 1 by itself.
 
-Nothing to do. Cursor picks up the chat-saving hook from Step 1 by itself.
-
-<sub>[↑ Back to Step 3](#step-3)</sub>
-
----
+</details>
 
 <a id="step-4"></a>
-## Step 4. First sync and check
+### Step 4. First sync and check
 
-### 4.1 Copy your existing chats into Obsidian
-
-From now on chats are saved automatically. This one-time command also copies the chats you already have.
-
-**Type in: Terminal**
+**4.1 Copy your existing chats into Obsidian.** From now on chats save automatically; this one-time command also copies the ones you already have. Type in: Terminal
 
 ```bash
 "$HOME/Obsidian Sync/sync_claude_obsidian.sh" --all
 ```
 
-### 4.2 Look in Obsidian
-
-You should see a `chats` folder and a `Home.md` note. Here's what the vault looks like once you've been using it:
+**4.2 Look in Obsidian.** You should see a `chats` folder and a `Home.md` note. Once you've used it for a while, it looks like this:
 
 <img src="docs/images/vault-layout.svg" alt="Obsidian sidebar: chats folder split by app, a project folder with status.md and decisions, a knowledge folder and Home.md" width="760">
 
-Nothing there? See [Troubleshooting](#troubleshooting).
-
-### 4.3 Check each app loaded everything
-
-In each app, **start a new chat** (rules load when a chat starts) and send:
-
-**Type in: the app's chat box**
+**4.3 Check each app loaded everything.** In each app, start a **new** chat (rules load when a chat starts) and send:
 
 ```text
 What workflow rules did you load from your global instructions? Is Ponytail active?
 ```
 
-It should mention checking its work, keeping output short, handoff notes in Obsidian, and Ponytail. Send one more message, wait a few seconds, and today's chat should appear under `chats/` in Obsidian.
+It should mention checking its work, keeping output short, handoff notes in Obsidian, and Ponytail. Send one more message, wait a few seconds, and today's chat should appear under `chats/`.
 
-### 4.4 Nightly full sync (optional)
-
-Re-syncs everything and refreshes the index notes every night at 10 pm.
-
-**Type in: Terminal**
+**4.4 Nightly full sync (optional).** Re-syncs everything and refreshes the index notes every night at 10 pm. Type in: Terminal
 
 ```bash
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
 
-<sub>[↑ Back to contents](#contents)</sub>
+<sub>[↑ Back to top](#contents)</sub>
 
 ---
 
 <a id="daily"></a>
-## Day-to-day use
+## 💬 Day-to-day use
 
-### What to say to the agent
-
-You mostly just talk to the agent. These requests cover most of it:
+You mostly just talk to the agent:
 
 | When | Say this to the agent |
 |---|---|
@@ -339,9 +354,9 @@ You mostly just talk to the agent. These requests cover most of it:
 
 The handoff note is a 5–15 line summary of what's done, what's broken, and what's next. The agent searches the vault only for what you ask about; it never loads all of it.
 
-### Ponytail settings
+**Ponytail settings** (type in the chat box):
 
-| Type in the chat box | What it does |
+| Command | What it does |
 |---|---|
 | `/ponytail lite` | Gentler |
 | `/ponytail full` | Default |
@@ -350,20 +365,15 @@ The handoff note is a 5–15 line summary of what's done, what's broken, and wha
 
 To remove it completely, see [Ponytail's uninstall steps](https://github.com/DietrichGebert/ponytail#uninstall).
 
-<sub>[↑ Back to contents](#contents)</sub>
-
----
-
 <a id="extras"></a>
-## Optional extras
+## 🧩 Optional extras
 
 Skip these until you want them. Everything works without them.
 
-### Graphify: find code faster
+<details>
+<summary><strong>Graphify: find code faster</strong></summary>
 
-Builds a map of a code project so agents can look things up instead of reading whole folders. Runs on your Mac with no AI cost.
-
-**Type in: Terminal**
+Builds a map of a code project so agents can look things up instead of reading whole folders. Runs on your Mac with no AI cost. Type in: Terminal
 
 ```bash
 pip3 install graphifyy          # or: pipx install graphifyy
@@ -377,22 +387,56 @@ Then once per project (not your home folder):
 
 To type just `graphify-bootstrap` in future, run `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc` and open a new Terminal window.
 
-### MarkItDown: read documents
+</details>
 
-Lets agents turn PDFs, Word, and PowerPoint files into text and read only the parts they need.
+<details>
+<summary><strong>MarkItDown: read documents</strong></summary>
 
-**Type in: Terminal**
+Lets agents turn PDFs, Word, and PowerPoint files into text and read only the parts they need. Type in: Terminal
 
 ```bash
 pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 ```
 
-<sub>[↑ Back to contents](#contents)</sub>
+</details>
+
+<sub>[↑ Back to top](#contents)</sub>
 
 ---
 
+<a id="faq"></a>
+## ❓ FAQ
+
+**Q: Does it cost anything?**
+
+**A:** No. Everything here is free, and the background scripts that save chats and build code maps use no AI tokens.
+
+**Q: Are my chats uploaded anywhere?**
+
+**A:** The scripts only copy chats into the vault folder on your Mac. They stay there unless you put that folder somewhere that syncs, like iCloud Drive.
+
+**Q: Do I need all three apps?**
+
+**A:** No. Set up only the apps you use in Step 3.
+
+**Q: Do I need Obsidian?**
+
+**A:** The rules and Ponytail work without it. The memory features need the vault folder, which the installer creates. Obsidian is just the nicest way to browse it; agents read the folder directly.
+
+**Q: Will it slow my agent down?**
+
+**A:** No. Chat saving runs in the background after each message, and the agent never waits for it.
+
+**Q: How do I undo it?**
+
+**A:** Every file the installer replaced is in `~/Scripts/agent-workflow-backups/<date-and-time>/`. Copy those back to restore your old setup. The preview in Step 1.2 lists every file it touches.
+
+**Q: Windows or Linux?**
+
+**A:** macOS only for now.
+
 <a id="troubleshooting"></a>
-## Troubleshooting
+## 🩺 Troubleshooting
 
 | Problem | What to try |
 |---|---|
@@ -402,12 +446,12 @@ pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 | Agent ignores the rules | Start a new chat; rules only load when a chat starts |
 | Nightly sync not running | In Terminal: `launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` |
 
-<sub>[↑ Back to contents](#contents)</sub>
+<sub>[↑ Back to top](#contents)</sub>
 
 ---
 
 <a id="repo"></a>
-## What's in this repo
+## 📁 What's in this repo
 
 ```
 agent-workflow/
@@ -424,13 +468,13 @@ agent-workflow/
 ```
 
 <a id="reading"></a>
-## Further reading
+## 📚 Further reading
 
 - [How it works](docs/how-it-works.md): diagrams of what loads when, and where tokens are saved
 - [Using the Obsidian notes](docs/obsidian-notes-guide.md): handoffs, decision records, saved lessons, reference briefs
 
 <a id="contributors"></a>
-## For contributors
+## 🤝 For contributors
 
 Checks that need no AI calls:
 
@@ -440,4 +484,13 @@ bash -n payload/obsidian/*.sh payload/scripts/*.sh
 python3 install.py --home "$(mktemp -d)" --install
 ```
 
-<sub>[↑ Back to contents](#contents)</sub>
+<a id="credits"></a>
+## 🙏 Credits
+
+This workflow connects tools made by others. They are installed from their own sources, not bundled here:
+
+- [Ponytail](https://github.com/DietrichGebert/ponytail) by DietrichGebert (MIT)
+- [Obsidian](https://obsidian.md)
+- [Graphify](https://pypi.org/project/graphifyy/), [MarkItDown](https://github.com/microsoft/markitdown), [claude-conversation-extractor](https://pypi.org/project/claude-conversation-extractor/)
+
+<p align="center"><sub><a href="#contents">↑ Back to top</a></sub></p>

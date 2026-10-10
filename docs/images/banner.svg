@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#161a33"/><stop offset="1" stop-color="#3b2a6b"/>
+    </linearGradient>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8f86ff"/></marker>
+  </defs>
+  <rect width="1280" height="360" rx="24" fill="url(#bg)"/>
+  <circle cx="1180" cy="40" r="140" fill="#8f86ff" opacity="0.08"/>
+  <circle cx="90" cy="330" r="120" fill="#ff8c1a" opacity="0.06"/>
+
+  <text x="72" y="140" font-size="64" font-weight="800" fill="#ffffff">Agent Workflow</text>
+  <text x="74" y="192" font-size="26" fill="#d6d3ff">Cheaper, more honest AI coding agents</text>
+  <text x="74" y="228" font-size="26" fill="#d6d3ff">that remember your past work.</text>
+  <rect x="74" y="262" width="360" height="40" rx="20" fill="#28c840" opacity="0.18"/>
+  <text x="94" y="289" font-size="18" font-weight="600" fill="#7ef0a0">~49% fewer output tokens in our test</text>
+
+  <g font-size="20" font-weight="600" fill="#ffffff">
+    <rect x="770" y="78" width="190" height="52" rx="12" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.25"/>
+    <text x="865" y="111" text-anchor="middle">Claude Code</text>
+    <rect x="770" y="154" width="190" height="52" rx="12" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.25"/>
+    <text x="865" y="187" text-anchor="middle">Codex</text>
+    <rect x="770" y="230" width="190" height="52" rx="12" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.25"/>
+    <text x="865" y="263" text-anchor="middle">Cursor</text>
+  </g>
+  <g stroke="#8f86ff" stroke-width="3" fill="none" marker-end="url(#ar)">
+    <path d="M 966 104 C 1005 104, 1005 150, 1042 150"/>
+    <path d="M 966 180 L 1042 180"/>
+    <path d="M 966 256 C 1005 256, 1005 210, 1042 210"/>
+  </g>
+  <g transform="translate(1052,96)">
+    <rect width="160" height="168" rx="14" fill="#ffffff"/>
+    <rect width="18" height="168" rx="6" fill="#7c5cff"/>
+    <g stroke="#c9ccd6" stroke-width="4" stroke-linecap="round">
+      <line x1="38" y1="40" x2="138" y2="40"/><line x1="38" y1="62" x2="128" y2="62"/>
+      <line x1="38" y1="84" x2="138" y2="84"/><line x1="38" y1="106" x2="110" y2="106"/>
+    </g>
+    <text x="88" y="146" text-anchor="middle" font-size="17" font-weight="700" fill="#2b2650">Obsidian notes</text>
+  </g>
+</svg>
