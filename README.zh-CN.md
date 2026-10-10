@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/Codex-supported-412991" alt="Codex">
   <img src="https://img.shields.io/badge/Cursor-supported-000000" alt="Cursor">
   <img src="https://img.shields.io/badge/notes-Obsidian-7C3AED?logo=obsidian&logoColor=white" alt="Obsidian">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/background_hooks-0_AI_tokens-success" alt="后台钩子不消耗 AI token">
 </p>
 
@@ -41,7 +42,7 @@
 - [常见问题](#faq)
 - [问题排查](#troubleshooting)
 - [仓库里有什么](#repo)
-- [延伸阅读](#reading) · [给贡献者](#contributors) · [致谢](#credits)
+- [延伸阅读](#reading) · [给贡献者](#contributors) · [致谢](#credits) · [许可证](#license)
 
 </details>
 
@@ -457,6 +458,7 @@ pip3 install 'markitdown[all]'  # 或：pipx install 'markitdown[all]'
 agent-workflow/
 ├── README.md            本说明（English）
 ├── README.zh-CN.md      本说明（简体中文）
+├── LICENSE              MIT 许可证
 ├── install.py           安装程序（第 1 步）
 ├── payload/             安装程序要复制的所有文件
 │   ├── claude/          Claude Code 的规则
@@ -494,5 +496,10 @@ python3 install.py --home "$(mktemp -d)" --install
 - [Ponytail](https://github.com/DietrichGebert/ponytail)，作者 DietrichGebert（MIT 许可证）
 - [Obsidian](https://obsidian.md)
 - [Graphify](https://pypi.org/project/graphifyy/)、[MarkItDown](https://github.com/microsoft/markitdown)、[claude-conversation-extractor](https://pypi.org/project/claude-conversation-extractor/)
+
+<a id="license"></a>
+## 📄 许可证
+
+[MIT](LICENSE)。可以免费使用、修改和分享（包括商业用途），只需保留版权声明。按“原样”提供，不附带任何担保。
 
 <p align="center"><sub><a href="#contents">↑ 回到顶部</a></sub></p>

@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/Codex-supported-412991" alt="Codex">
   <img src="https://img.shields.io/badge/Cursor-supported-000000" alt="Cursor">
   <img src="https://img.shields.io/badge/notes-Obsidian-7C3AED?logo=obsidian&logoColor=white" alt="Obsidian">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/background_hooks-0_AI_tokens-success" alt="Hooks use no AI tokens">
 </p>
 
@@ -41,7 +42,7 @@ A ready-made setup for **Claude Code, Codex, and Cursor**. It keeps the instruct
 - [FAQ](#faq)
 - [Troubleshooting](#troubleshooting)
 - [What's in this repo](#repo)
-- [Further reading](#reading) · [For contributors](#contributors) · [Credits](#credits)
+- [Further reading](#reading) · [For contributors](#contributors) · [Credits](#credits) · [License](#license)
 
 </details>
 
@@ -457,6 +458,7 @@ pip3 install 'markitdown[all]'  # or: pipx install 'markitdown[all]'
 agent-workflow/
 ├── README.md            this guide (English)
 ├── README.zh-CN.md      this guide (简体中文)
+├── LICENSE              MIT license
 ├── install.py           the installer (Step 1)
 ├── payload/             everything the installer copies
 │   ├── claude/          rules for Claude Code
@@ -492,5 +494,10 @@ This workflow connects tools made by others. They are installed from their own s
 - [Ponytail](https://github.com/DietrichGebert/ponytail) by DietrichGebert (MIT)
 - [Obsidian](https://obsidian.md)
 - [Graphify](https://pypi.org/project/graphifyy/), [MarkItDown](https://github.com/microsoft/markitdown), [claude-conversation-extractor](https://pypi.org/project/claude-conversation-extractor/)
+
+<a id="license"></a>
+## 📄 License
+
+[MIT](LICENSE). Free to use, change and share, including commercially, as long as you keep the copyright notice. Provided as is, with no warranty.
 
 <p align="center"><sub><a href="#contents">↑ Back to top</a></sub></p>
