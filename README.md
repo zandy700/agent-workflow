@@ -35,8 +35,8 @@ A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**
 | [This is for you if](#for-you) | [Quickstart](#quickstart) | [Day-to-day use](#daily) | [What's in this repo](#repo) |
 | [Features](#features) | [Before you start](#before) | [Optional extras](#extras) | [Further reading](#reading) |
 | [Problems it solves](#problems) | [Step 1. Install](#step-1) | [ICM](#icm) | [Checks (no AI calls)](#checks) |
-| [Test results](#results) | [Step 2. Obsidian](#step-2) | [FAQ](#faq) | [Credits](#credits) |
-|  | [Step 3. Your apps](#step-3) | [Troubleshooting](#troubleshooting) | [License](#license) |
+| [Test results](#results) | [Step 2. Obsidian](#step-2) | [Troubleshooting](#troubleshooting) | [Credits](#credits) |
+|  | [Step 3. Your apps](#step-3) |  | [License](#license) |
 |  | [Step 4. First sync](#step-4) |  |  |
 
 ---
@@ -510,37 +510,6 @@ Start a new chat and try *"/icm-architect map this repo"* or *"make this folder 
 <sub>[↑ Back to top](#contents)</sub>
 
 ---
-
-<a id="faq"></a>
-## ❓ FAQ
-
-**Q: Does it cost anything?**
-
-**A:** No. Everything here is free, and the background scripts that save chats and build code maps use no AI tokens.
-
-**Q: Are my chats uploaded anywhere?**
-
-**A:** The scripts only copy chats into the vault folder on your computer. They stay there unless you put that folder somewhere that syncs, like iCloud Drive or OneDrive.
-
-**Q: Do I need all three apps?**
-
-**A:** No. Set up only the apps you use in Step 3.
-
-**Q: Do I need Obsidian?**
-
-**A:** The rules and Ponytail work without it. The memory features need the vault folder, which the installer creates. Obsidian is just the nicest way to browse it; agents read the folder directly.
-
-**Q: Will it slow my agent down?**
-
-**A:** No. Chat saving runs in the background after each message, and the agent never waits for it.
-
-**Q: How do I undo it?**
-
-**A:** Every file the installer replaced is in `~/Scripts/agent-workflow-backups/<date-and-time>/`. Copy those back to restore your old setup. The preview in Step 1.2 lists every file it touches.
-
-**Q: Does it work on Windows? Linux?**
-
-**A:** Mac and Windows, yes. Windows support is new, so please report anything that breaks. Linux isn't supported yet.
 
 <a id="troubleshooting"></a>
 ## 🩺 Troubleshooting

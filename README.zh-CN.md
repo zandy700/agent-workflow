@@ -35,8 +35,8 @@
 | [适合你，如果](#for-you) | [快速开始](#quickstart) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
 | [功能](#features) | [开始之前](#before) | [可选扩展](#extras) | [延伸阅读](#reading) |
 | [解决的问题](#problems) | [第 1 步：安装](#step-1) | [ICM](#icm) | [检查（无需调用 AI）](#checks) |
-| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [常见问题](#faq) | [致谢](#credits) |
-|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) | [许可证](#license) |
+| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [问题排查](#troubleshooting) | [致谢](#credits) |
+|  | [第 3 步：你的应用](#step-3) |  | [许可证](#license) |
 |  | [第 4 步：首次同步](#step-4) |  |  |
 
 ---
@@ -510,37 +510,6 @@ foreach ($d in ".claude", ".agents", ".cursor") { New-Item -ItemType Directory -
 <sub>[↑ 回到顶部](#contents)</sub>
 
 ---
-
-<a id="faq"></a>
-## ❓ 常见问题
-
-**问：要花钱吗？**
-
-**答：** 不用。这里的一切都是免费的，保存聊天和生成代码地图的后台脚本也不消耗 AI token。
-
-**问：我的聊天会被上传吗？**
-
-**答：** 脚本只会把聊天复制到你电脑上的仓库文件夹里。除非你把这个文件夹放到 iCloud 云盘或 OneDrive 之类会同步的地方，否则它只留在本机。
-
-**问：三个应用都要装吗？**
-
-**答：** 不用。第 3 步只配置你在用的应用。
-
-**问：一定要用 Obsidian 吗？**
-
-**答：** 规则和 Ponytail 不需要它。记忆功能需要的是仓库文件夹，安装程序会自动创建；Obsidian 只是最方便的浏览方式，智能体是直接读取这个文件夹的。
-
-**问：会拖慢智能体吗？**
-
-**答：** 不会。保存聊天在每条消息之后于后台运行，智能体不会等它。
-
-**问：怎么撤销？**
-
-**答：** 安装程序替换过的文件都在 `~/Scripts/agent-workflow-backups/<日期时间>/`，复制回去即可恢复原来的配置。第 1.2 步的预览会列出它涉及的所有文件。
-
-**问：支持 Windows 吗？Linux 呢？**
-
-**答：** 支持 Mac 和 Windows。Windows 支持是新加的，遇到问题请反馈。暂不支持 Linux。
 
 <a id="troubleshooting"></a>
 ## 🩺 问题排查
