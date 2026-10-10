@@ -404,6 +404,7 @@ Windows：安装程序在第 1.3 步结束时打印了一行 `Register-Scheduled
 | 需要找以前的决定 | *“查一下笔记：我们为什么这样做 X？”* |
 | 你在几个可行方案中做了选择 | *“为这个决定写一份 ADR（架构决策记录）。”* |
 | 学到了值得保留的经验 | *“保存这个。”* |
+| 想为某个流程搭一套分步结构，或给杂乱的文件夹画张地图 | *“/icm-architect map this repo.”*（需要先装 [ICM](#extras)） |
 
 交接笔记是 5 到 15 行的摘要：做完了什么、哪里有问题、下一步做什么。智能体只搜索你问到的内容，从不把整个仓库都加载进来。
 
@@ -477,6 +478,39 @@ python -m pip install 'markitdown[all]'
 
 </details>
 
+<details>
+<summary><strong>ICM：让项目结构对智能体友好</strong></summary>
+
+ICM（Interpretable Context Methodology，可解释上下文方法）把一个反复执行的流程，或者一个杂乱的文件夹/代码仓库，变成按编号排列的纯 Markdown 文件夹，让智能体一步一步地走。它分两部分：
+
+- **icm-architect** 设计新的结构，或者为现有文件夹绘制“地图”，方便智能体找到东西。
+- **icm** 提供方法说明和现成模板。第 1 步已经装好了 `/icm` 技能，它会读取你在这里下载的模板。
+
+下载这两个仓库。输入位置：终端（Mac 和 Windows 通用）
+
+```bash
+git clone https://github.com/RinDig/Interpretable-Context-Methodology "$HOME/Scripts/icm"
+git clone https://github.com/RinDig/icm-architect "$HOME/Scripts/icm-architect"
+```
+
+然后让 icm-architect 在三个应用里都可用。
+
+Mac：
+
+```bash
+for d in .claude .agents .cursor; do mkdir -p "$HOME/$d/skills" && ln -sfn "$HOME/Scripts/icm-architect" "$HOME/$d/skills/icm-architect"; done
+```
+
+Windows（“junction”是一种文件夹快捷方式，不需要管理员权限）：
+
+```powershell
+foreach ($d in ".claude", ".agents", ".cursor") { New-Item -ItemType Directory -Force "$HOME\$d\skills" | Out-Null; New-Item -ItemType Junction -Force -Path "$HOME\$d\skills\icm-architect" -Target "$HOME\Scripts\icm-architect" | Out-Null }
+```
+
+开一个新聊天，试试 *“/icm-architect map this repo”* 或 *“把这个文件夹做成 ICM”*。以后要更新，运行 `git -C "$HOME/Scripts/icm-architect" pull`（`icm` 同理）。
+
+</details>
+
 <sub>[↑ 回到顶部](#contents)</sub>
 
 ---
@@ -543,6 +577,7 @@ agent-workflow/
 │   ├── codex/           Codex 的规则
 │   ├── cursor/          要粘贴到 Cursor 的规则
 │   ├── obsidian/        保存聊天和整理仓库的脚本
+│   ├── skills/          /icm 技能
 │   └── scripts/         按需读取的参考文件、文档扫描脚本
 └── docs/                详细指南和本页用到的图片
 ```
@@ -574,6 +609,7 @@ python3 install.py --home "$(mktemp -d)" --install
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail)，作者 DietrichGebert（MIT 许可证）
 - [Obsidian](https://obsidian.md)
+- [Interpretable Context Methodology](https://github.com/RinDig/Interpretable-Context-Methodology) 和 [icm-architect](https://github.com/RinDig/icm-architect)，作者 RinDig（MIT 许可证）
 - [Graphify](https://pypi.org/project/graphifyy/)、[MarkItDown](https://github.com/microsoft/markitdown)、[claude-conversation-extractor](https://pypi.org/project/claude-conversation-extractor/)
 
 <a id="license"></a>

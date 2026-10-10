@@ -25,6 +25,8 @@ FILES = {
     "payload/obsidian/vault_organize.py": "Obsidian Sync/vault_organize.py",
     "payload/obsidian/obsidian-organization.md": "Obsidian Sync/ObsidianVault/knowledge/obsidian-organization.md",
 }
+# The /icm skill, one copy per app: Claude Code, Codex (~/.agents), Cursor. Copies, not links: Windows restricts symlinks.
+ICM_SKILL = [f"{app}/skills/icm/SKILL.md" for app in (".claude", ".agents", ".cursor")]
 # Substrings that identify hook commands this installer owns, including the older bash versions.
 OURS = ("agent_stop_hook.", "markitdown_scan.", "sync_claude_obsidian.sh", 'graphify update . >> "$HOME/.cache/graphify-stop-hook.log"')
 TASK = "agent-workflow-obsidian-sync"
@@ -108,6 +110,7 @@ def schedule_command(home):
 
 def plan(home):
     items = {dest: (ROOT / source).read_bytes() for source, dest in FILES.items()}
+    items.update({dest: (ROOT / "payload/skills/icm/SKILL.md").read_bytes() for dest in ICM_SKILL})
     bootstrap = (home / "Obsidian Sync/graphify_bootstrap.py").as_posix()
     if WINDOWS:
         items["Scripts/graphify-bootstrap.cmd"] = f'@"{Path(sys.executable).as_posix()}" "{bootstrap}" %*\r\n'.encode()

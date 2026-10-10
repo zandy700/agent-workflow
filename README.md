@@ -404,6 +404,7 @@ You mostly just talk to the agent:
 | You need an old decision | *"Check the notes: why did we do X?"* |
 | You picked between real options | *"Write an ADR for this decision."* |
 | You learned something worth keeping | *"Save this."* |
+| You want a step-by-step structure for a process, or a map of a messy folder | *"/icm-architect map this repo."* (needs [ICM](#extras)) |
 
 The handoff note is a 5–15 line summary of what's done, what's broken, and what's next. The agent searches the vault only for what you ask about; it never loads all of it.
 
@@ -477,6 +478,39 @@ python -m pip install 'markitdown[all]'
 
 </details>
 
+<details>
+<summary><strong>ICM: agent-ready project structures</strong></summary>
+
+ICM (Interpretable Context Methodology) turns a recurring process, or a messy folder or repo, into numbered folders of plain Markdown that an agent can walk one step at a time. It has two parts:
+
+- **icm-architect** designs a new structure, or maps an existing folder so agents can find things.
+- **icm** holds the method and ready-made templates. Step 1 already installed the `/icm` skill; it reads the templates you download here.
+
+Download both. Type in: Terminal (same on Mac and Windows)
+
+```bash
+git clone https://github.com/RinDig/Interpretable-Context-Methodology "$HOME/Scripts/icm"
+git clone https://github.com/RinDig/icm-architect "$HOME/Scripts/icm-architect"
+```
+
+Then make icm-architect available in all three apps.
+
+Mac:
+
+```bash
+for d in .claude .agents .cursor; do mkdir -p "$HOME/$d/skills" && ln -sfn "$HOME/Scripts/icm-architect" "$HOME/$d/skills/icm-architect"; done
+```
+
+Windows (a "junction" is a folder shortcut that needs no admin rights):
+
+```powershell
+foreach ($d in ".claude", ".agents", ".cursor") { New-Item -ItemType Directory -Force "$HOME\$d\skills" | Out-Null; New-Item -ItemType Junction -Force -Path "$HOME\$d\skills\icm-architect" -Target "$HOME\Scripts\icm-architect" | Out-Null }
+```
+
+Start a new chat and try *"/icm-architect map this repo"* or *"make this folder an ICM"*. To update later, run `git -C "$HOME/Scripts/icm-architect" pull` (and the same for `icm`).
+
+</details>
+
 <sub>[↑ Back to top](#contents)</sub>
 
 ---
@@ -543,6 +577,7 @@ agent-workflow/
 │   ├── codex/           rules for Codex
 │   ├── cursor/          rules to paste into Cursor
 │   ├── obsidian/        chat-saving and vault scripts
+│   ├── skills/          the /icm skill
 │   └── scripts/         on-demand reference file, document scan
 └── docs/                deeper guides and the images used here
 ```
@@ -572,6 +607,7 @@ This workflow connects tools made by others. They are installed from their own s
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail) by DietrichGebert (MIT)
 - [Obsidian](https://obsidian.md)
+- [Interpretable Context Methodology](https://github.com/RinDig/Interpretable-Context-Methodology) and [icm-architect](https://github.com/RinDig/icm-architect) by RinDig (MIT)
 - [Graphify](https://pypi.org/project/graphifyy/), [MarkItDown](https://github.com/microsoft/markitdown), [claude-conversation-extractor](https://pypi.org/project/claude-conversation-extractor/)
 
 <a id="license"></a>
