@@ -32,57 +32,13 @@ A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**
 
 | **Start here** | **Set up** | **Use it** | **Reference** |
 |---|---|---|---|
-| [This is for you if](#for-you) | [Quickstart](#quickstart) | [Day-to-day use](#daily) | [What's in this repo](#repo) |
-| [Features](#features) | [Before you start](#before) | [Optional extras](#extras) | [Further reading](#reading) |
-| [Problems it solves](#problems) | [Step 1. Install](#step-1) | [ICM](#icm) | [Checks (no AI calls)](#checks) |
-| [Test results](#results) | [Step 2. Obsidian](#step-2) | [Troubleshooting](#troubleshooting) | [Credits](#credits) |
-|  | [Step 3. Your apps](#step-3) |  | [License](#license) |
-|  | [Step 4. First sync](#step-4) |  |  |
+| [Problems it solves](#problems) | [Before you start](#before) | [Day-to-day use](#daily) | [What's in this repo](#repo) |
+| [Test results](#results) | [Step 1. Install](#step-1) | [Optional extras](#extras) | [Further reading](#reading) |
+| [Quickstart](#quickstart) | [Step 2. Obsidian](#step-2) | [ICM](#icm) | [Checks (no AI calls)](#checks) |
+|  | [Step 3. Your apps](#step-3) | [Troubleshooting](#troubleshooting) | [Credits](#credits) |
+|  | [Step 4. First sync](#step-4) |  | [License](#license) |
 
 ---
-
-<a id="for-you"></a>
-## ✅ This is for you if
-
-- ✅ You use **Claude Code, Codex, or Cursor**, and long chats get **slow and expensive**
-- ✅ You're tired of **re-explaining your project** every time you start a new chat
-- ✅ Your agent says **"tests pass"** and you're not sure it actually ran them
-- ✅ Your agent **over-builds**: extra files, layers, and libraries you never asked for
-- ✅ You want **all your past chats saved and searchable** in one place
-
-<a id="features"></a>
-## ✨ Features
-
-<table>
-<tr>
-<td align="center" width="33%">
-<h3>📉 Lighter messages</h3>
-Rules that load into every chat are kept short. Detailed instructions are opened only when needed.
-</td>
-<td align="center" width="33%">
-<h3>🪶 Smaller changes</h3>
-<a href="https://github.com/DietrichGebert/ponytail">Ponytail</a> steers agents to the smallest change that works.
-</td>
-<td align="center" width="33%">
-<h3>🔍 Honest reporting</h3>
-Agents must say what they actually checked, and flag what they didn't test.
-</td>
-</tr>
-<tr>
-<td align="center">
-<h3>🧠 Memory between chats</h3>
-Every chat is saved to Obsidian. A new chat picks up from a short handoff note.
-</td>
-<td align="center">
-<h3>🔕 Runs in the background</h3>
-Chats are saved automatically after each message, using no AI tokens.
-</td>
-<td align="center">
-<h3>🔗 One setup, three apps</h3>
-Claude Code, Codex, and Cursor all follow the same rules.
-</td>
-</tr>
-</table>
 
 <a id="problems"></a>
 ## 🤔 Problems it solves
@@ -95,6 +51,8 @@ Claude Code, Codex, and Cursor all follow the same rules.
 | ❌ The agent adds layers and libraries you didn't ask for. | ✅ Ponytail picks the smallest change that works. |
 | ❌ Why you made a decision is buried in some old chat. | ✅ Every chat is in Obsidian; ask *"why did we do X?"* |
 | ❌ The agent reads whole folders to find one function. | ✅ Optional code map (Graphify) lets it look things up instead. |
+| ❌ Each app needs its own setup and its own rules. | ✅ Claude Code, Codex, and Cursor all follow the same rules. |
+| ❌ Saving chats by hand is easy to forget. | ✅ Chats save in the background after each message, using no AI tokens. |
 
 <a id="results"></a>
 ## 📊 Test results
@@ -171,60 +129,14 @@ That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full set
 
 <img src="docs/images/where-to-type.svg" alt="Left: Terminal window for commands like python3 and pip3. Right: the agent's chat box for commands starting with a slash and plain-English requests." width="760">
 
-**The setup at a glance.** Steps 1, 2 and 4 are for everyone. In Step 3, only do the apps you use.
-
-```mermaid
-flowchart LR
-    A["1. Install the workflow<br/>everyone"] --> B["2. Set up Obsidian<br/>everyone"]
-    B --> C1["3a. Claude Code"]
-    B --> C2["3b. Codex"]
-    B --> C3["3c. Cursor"]
-    C1 --> D["4. First sync and check<br/>everyone"]
-    C2 --> D
-    C3 --> D
-```
+**Which steps to do.** Steps 1, 2 and 4 are for everyone. In Step 3, only do the apps you use.
 
 <a id="step-1"></a>
 ### Step 1. Install the workflow
 
-The installer copies the rules and helper scripts into your home folder and connects them to each app. It shows what it will change before changing anything, and backs up any file it replaces.
+Run the three [Quickstart](#quickstart) commands, if you haven't already. The installer copies the rules and helper scripts into your home folder and connects them to each app. It backs up any file it replaces to `~/Scripts/agent-workflow-backups/`, and running it again is safe; it says "Already installed" if nothing changed.
 
-**1.1 Download.** Type in: Terminal
-
-```bash
-git clone https://github.com/zandy700/agent-workflow.git
-cd agent-workflow
-```
-
-**1.2 Preview (changes nothing).** Type in: Terminal
-
-Mac:
-
-```bash
-python3 install.py
-```
-
-Windows:
-
-```powershell
-python install.py
-```
-
-**1.3 Install.** Type in: Terminal
-
-Mac:
-
-```bash
-python3 install.py --install
-```
-
-Windows:
-
-```powershell
-python install.py --install
-```
-
-Replaced files are backed up to `~/Scripts/agent-workflow-backups/`. Running it again is safe; it says "Already installed" if nothing changed.
+To see what it would change before changing anything, run the last command without `--install` (Mac: `python3 install.py`, Windows: `python install.py`). This preview changes nothing.
 
 <a id="step-2"></a>
 ### Step 2. Set up Obsidian
@@ -379,7 +291,7 @@ Mac:
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
 
-Windows: the installer printed a `Register-ScheduledTask ...` line at the end of Step 1.3. Paste that line into PowerShell. To see it again, run `python install.py`.
+Windows: the installer printed a `Register-ScheduledTask ...` line at the end of Step 1. Paste that line into PowerShell. To see it again, run `python install.py`.
 
 <sub>[↑ Back to top](#contents)</sub>
 

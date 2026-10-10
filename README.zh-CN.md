@@ -32,57 +32,13 @@
 
 | **从这里开始** | **安装** | **使用** | **参考** |
 |---|---|---|---|
-| [适合你，如果](#for-you) | [快速开始](#quickstart) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
-| [功能](#features) | [开始之前](#before) | [可选扩展](#extras) | [延伸阅读](#reading) |
-| [解决的问题](#problems) | [第 1 步：安装](#step-1) | [ICM](#icm) | [检查（无需调用 AI）](#checks) |
-| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [问题排查](#troubleshooting) | [致谢](#credits) |
-|  | [第 3 步：你的应用](#step-3) |  | [许可证](#license) |
-|  | [第 4 步：首次同步](#step-4) |  |  |
+| [解决的问题](#problems) | [开始之前](#before) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
+| [测试结果](#results) | [第 1 步：安装](#step-1) | [可选扩展](#extras) | [延伸阅读](#reading) |
+| [快速开始](#quickstart) | [第 2 步：Obsidian](#step-2) | [ICM](#icm) | [检查（无需调用 AI）](#checks) |
+|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) | [致谢](#credits) |
+|  | [第 4 步：首次同步](#step-4) |  | [许可证](#license) |
 
 ---
-
-<a id="for-you"></a>
-## ✅ 适合你，如果
-
-- ✅ 你在用 **Claude Code、Codex 或 Cursor**，聊天一长就**又慢又贵**
-- ✅ 每开一个新聊天都得**把项目从头解释一遍**，你已经烦了
-- ✅ 智能体说**“测试通过了”**，但你不确定它真的跑过
-- ✅ 智能体**过度设计**：加了你没要的文件、层级和第三方库
-- ✅ 你希望**所有历史聊天都保存下来、随时可搜**
-
-<a id="features"></a>
-## ✨ 功能
-
-<table>
-<tr>
-<td align="center" width="33%">
-<h3>📉 消息更轻</h3>
-每次聊天都会加载的规则保持精简，详细说明需要时才打开。
-</td>
-<td align="center" width="33%">
-<h3>🪶 改动更小</h3>
-<a href="https://github.com/DietrichGebert/ponytail">Ponytail</a> 引导智能体做“能用的最小改动”。
-</td>
-<td align="center" width="33%">
-<h3>🔍 如实汇报</h3>
-智能体必须说明真正检查了什么，并标出没测试过的部分。
-</td>
-</tr>
-<tr>
-<td align="center">
-<h3>🧠 聊天之间有记忆</h3>
-每次聊天都存进 Obsidian，新聊天从一条简短的交接笔记接着做。
-</td>
-<td align="center">
-<h3>🔕 后台安静运行</h3>
-每条消息后自动保存聊天，不消耗任何 AI token。
-</td>
-<td align="center">
-<h3>🔗 一次配置，三个应用</h3>
-Claude Code、Codex 和 Cursor 遵守同一套规则。
-</td>
-</tr>
-</table>
 
 <a id="problems"></a>
 ## 🤔 解决的问题
@@ -95,6 +51,8 @@ Claude Code、Codex 和 Cursor 遵守同一套规则。
 | ❌ 智能体加了你没要的层级和库。 | ✅ Ponytail 选择能用的最小改动。 |
 | ❌ 当初为什么这样决定，埋在某个旧聊天里。 | ✅ 每次聊天都在 Obsidian 里，直接问*“我们为什么这样做 X？”* |
 | ❌ 为了找一个函数，智能体把整个文件夹都读一遍。 | ✅ 可选的代码地图（Graphify）让它直接查找。 |
+| ❌ 每个应用都要单独配置、单独写规则。 | ✅ Claude Code、Codex 和 Cursor 遵守同一套规则。 |
+| ❌ 手动保存聊天很容易忘。 | ✅ 每条消息后在后台自动保存聊天，不消耗任何 AI token。 |
 
 <a id="results"></a>
 ## 📊 测试结果
@@ -171,60 +129,14 @@ python install.py --install
 
 <img src="docs/images/where-to-type.zh-CN.svg" alt="左：终端窗口，用于 python3、pip3 等命令。右：智能体的聊天框，用于以斜杠开头的命令和自然语言请求。" width="760">
 
-**安装流程一览。** 第 1、2、4 步所有人都要做；第 3 步只做你在用的应用。
-
-```mermaid
-flowchart LR
-    A["1. 安装工作流<br/>所有人"] --> B["2. 设置 Obsidian<br/>所有人"]
-    B --> C1["3a. Claude Code"]
-    B --> C2["3b. Codex"]
-    B --> C3["3c. Cursor"]
-    C1 --> D["4. 首次同步并检查<br/>所有人"]
-    C2 --> D
-    C3 --> D
-```
+**要做哪些步骤。** 第 1、2、4 步所有人都要做；第 3 步只做你在用的应用。
 
 <a id="step-1"></a>
 ### 第 1 步：安装工作流
 
-安装程序会把规则和辅助脚本复制到你的个人文件夹，并接入每个应用。它会先告诉你要改什么再动手，并备份所有被替换的文件。
+如果还没运行过，先运行[快速开始](#quickstart)里的三条命令。安装程序会把规则和辅助脚本复制到你的个人文件夹，并接入每个应用。被替换的文件会备份到 `~/Scripts/agent-workflow-backups/`。重复运行是安全的；没有变化时会提示 "Already installed"（已安装）。
 
-**1.1 下载。** 输入位置：终端
-
-```bash
-git clone https://github.com/zandy700/agent-workflow.git
-cd agent-workflow
-```
-
-**1.2 预览（不会改动任何东西）。** 输入位置：终端
-
-Mac：
-
-```bash
-python3 install.py
-```
-
-Windows：
-
-```powershell
-python install.py
-```
-
-**1.3 安装。** 输入位置：终端
-
-Mac：
-
-```bash
-python3 install.py --install
-```
-
-Windows：
-
-```powershell
-python install.py --install
-```
-
-被替换的文件会备份到 `~/Scripts/agent-workflow-backups/`。重复运行是安全的；没有变化时会提示 "Already installed"（已安装）。
+想先看看会改什么，把最后一条命令去掉 `--install` 再运行（Mac：`python3 install.py`，Windows：`python install.py`）。这个预览不会改动任何东西。
 
 <a id="step-2"></a>
 ### 第 2 步：设置 Obsidian
@@ -379,7 +291,7 @@ Mac：
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
 ```
 
-Windows：安装程序在第 1.3 步结束时打印了一行 `Register-ScheduledTask ...`，把它粘贴到 PowerShell 运行即可。想再看一次，运行 `python install.py`。
+Windows：安装程序在第 1 步结束时打印了一行 `Register-ScheduledTask ...`，把它粘贴到 PowerShell 运行即可。想再看一次，运行 `python install.py`。
 
 <sub>[↑ 回到顶部](#contents)</sub>
 
