@@ -5,6 +5,7 @@ This package carries the same core workflow rules used with Claude Code and Code
 The installer copies files into **your** home directory. It previews changes by default, backs up each file it replaces, and merges only its hook commands into existing JSON settings. Inspect the preview and included files before installing. It does not sign into apps, download dependencies, start a Graphify scan, or activate the nightly schedule.
 
 **How it works and where it saves tokens:** see the diagrams in [docs/how-it-works.md](docs/how-it-works.md).
+**Using the Obsidian notes** (handing context to a new session, decisions, saved lessons): see [docs/obsidian-notes-guide.md](docs/obsidian-notes-guide.md).
 
 ## Install on your Mac
 

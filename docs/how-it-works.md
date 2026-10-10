@@ -99,4 +99,4 @@ flowchart LR
     DEL -->|"small or dependent steps"| SELF["Do it inline"]
 ```
 
-A handoff note of 5 to 15 lines replaces carrying a whole transcript forward. Subagents start cold, so they are used only when they keep large output out of the main context or run independent work in parallel.
+A handoff note of 5 to 15 lines replaces carrying a whole transcript forward. How to do this day to day: [Using the Obsidian notes](obsidian-notes-guide.md). Subagents start cold, so they are used only when they keep large output out of the main context or run independent work in parallel.
