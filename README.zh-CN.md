@@ -34,9 +34,9 @@
 |---|---|---|---|
 | [适合你，如果](#for-you) | [快速开始](#quickstart) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
 | [功能](#features) | [开始之前](#before) | [可选扩展](#extras) | [延伸阅读](#reading) |
-| [解决的问题](#problems) | [第 1 步：安装](#step-1) | [ICM](#icm) | [给贡献者](#contributors) |
-| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [常见问题](#faq) | [致谢](#credits) |
-|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) | [许可证](#license) |
+| [解决的问题](#problems) | [第 1 步：安装](#step-1) | [ICM](#icm) | [致谢](#credits) |
+| [测试结果](#results) | [第 2 步：Obsidian](#step-2) | [常见问题](#faq) | [许可证](#license) |
+|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) |   |
 |  | [第 4 步：首次同步](#step-4) |  |  |
 
 ---
@@ -585,18 +585,6 @@ agent-workflow/
 
 - [How it works](docs/how-it-works.md)：用图解说明什么时候加载什么、在哪里节省 token
 - [Using the Obsidian notes](docs/obsidian-notes-guide.md)：交接笔记、决策记录、经验沉淀、参考摘要
-
-<a id="contributors"></a>
-## 🤝 给贡献者
-
-不需要调用 AI 的检查：
-
-```bash
-python3 -m py_compile install.py payload/obsidian/*.py payload/scripts/*.py
-python3 install.py --home "$(mktemp -d)" --install
-```
-
-想在 Mac 上检查 Windows 的输出：先导入标准库，再设置 `sys.platform = "win32"`，然后用 `runpy` 对一个临时的 `--home` 运行 `install.py`。
 
 <a id="credits"></a>
 ## 🙏 致谢

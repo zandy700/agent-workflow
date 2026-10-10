@@ -34,9 +34,9 @@ A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**
 |---|---|---|---|
 | [This is for you if](#for-you) | [Quickstart](#quickstart) | [Day-to-day use](#daily) | [What's in this repo](#repo) |
 | [Features](#features) | [Before you start](#before) | [Optional extras](#extras) | [Further reading](#reading) |
-| [Problems it solves](#problems) | [Step 1. Install](#step-1) | [ICM](#icm) | [For contributors](#contributors) |
-| [Test results](#results) | [Step 2. Obsidian](#step-2) | [FAQ](#faq) | [Credits](#credits) |
-|  | [Step 3. Your apps](#step-3) | [Troubleshooting](#troubleshooting) | [License](#license) |
+| [Problems it solves](#problems) | [Step 1. Install](#step-1) | [ICM](#icm) | [Credits](#credits) |
+| [Test results](#results) | [Step 2. Obsidian](#step-2) | [FAQ](#faq) | [License](#license) |
+|  | [Step 3. Your apps](#step-3) | [Troubleshooting](#troubleshooting) |   |
 |  | [Step 4. First sync](#step-4) |  |  |
 
 ---
@@ -583,18 +583,6 @@ agent-workflow/
 
 - [How it works](docs/how-it-works.md): diagrams of what loads when, and where tokens are saved
 - [Using the Obsidian notes](docs/obsidian-notes-guide.md): handoffs, decision records, saved lessons, reference briefs
-
-<a id="contributors"></a>
-## 🤝 For contributors
-
-Checks that need no AI calls:
-
-```bash
-python3 -m py_compile install.py payload/obsidian/*.py payload/scripts/*.py
-python3 install.py --home "$(mktemp -d)" --install
-```
-
-To check the Windows output from a Mac, import the standard library first, then set `sys.platform = "win32"` and run `install.py` with `runpy` against a disposable `--home`.
 
 <a id="credits"></a>
 ## 🙏 Credits
