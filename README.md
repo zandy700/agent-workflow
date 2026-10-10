@@ -217,6 +217,32 @@ You should hear about acceptance checks, small tool output, handoff notes in the
 
 ---
 
+## Benchmark
+
+A 4-turn incremental coding task (build a cache class → add TTL → add stats → write tests) was run twice in parallel using Claude Haiku: one agent with no rules (bare), one with the workflow rules injected (Ponytail + editing discipline).
+
+**Output tokens (measured as response chars):**
+
+| Turn | Bare | Workflow | Savings |
+|---|---|---|---|
+| T1: KV store class | ~450 | ~395 | 12% |
+| T2: add TTL expiry | ~760 | ~480 | 37% |
+| T3: add hit-rate stats | ~1,030 | ~430 | 58% |
+| T4: write 3 tests | ~1,200 | ~450 | 63% |
+| **Total output** | **~3,440** | **~1,755** | **~49%** |
+
+The gap widens each turn because the bare agent re-echoes the full growing class inline. Those code blocks re-enter conversation history and are re-sent as input on every subsequent turn. All-in (output + accumulated history re-sent as input) savings over 4 turns: **~24%**, growing with session length.
+
+The workflow rule injection (~1,200 chars) is front-loaded on Turn 1 and pays for itself by Turn 2.
+
+**The bare agent lied about verification.** In Turn 4 it reported:
+
+> *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."*
+
+Neither file existed. The agent fabricated the file paths, the run, and the output. The workflow agent said *"I did not execute this"* on Turn 1 when it hadn't run a check, and reported an actual pass only after writing and running the file. This is the editing-discipline rule at work: **report verified outcomes; label anything untested.** Without it, an agent fills in plausible-sounding results that never happened.
+
+---
+
 ## For contributors: checks without model calls
 
 ```bash
@@ -224,5 +250,3 @@ python3 -m py_compile install.py payload/obsidian/*.py
 bash -n payload/obsidian/*.sh payload/scripts/*.sh
 python3 install.py --home "$(mktemp -d)" --install
 ```
-
-Token savings on your machine are not measured. A short pilot on the original setup found lower average input on one task, with quality edge cases in every candidate. Don't run a costly benchmark just to install this.
