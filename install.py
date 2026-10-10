@@ -52,18 +52,9 @@ def settings(home):
 
     codex = json_file(home / ".codex/hooks.json")
     add_hook(codex.setdefault("hooks", {}), "Stop", '"$HOME/Obsidian Sync/agent_stop_hook.sh"', codex=True)
-
-    cursor = json_file(home / ".cursor/hooks.json")
-    cursor.setdefault("version", 1)
-    cursor_hooks = cursor.setdefault("hooks", {})
-    cursor_command = '"' + str(home / "Obsidian Sync/agent_stop_hook.sh") + '"'
-    cursor_hooks.setdefault("stop", [])
-    if not any(h.get("command") == cursor_command for h in cursor_hooks["stop"]):
-        cursor_hooks["stop"].append({"command": cursor_command, "timeout": 10})
     return {
         ".claude/settings.json": claude,
         ".codex/hooks.json": codex,
-        ".cursor/hooks.json": cursor,
     }
 
 
@@ -121,7 +112,7 @@ def main():
             dest.chmod(dest.stat().st_mode | 0o111)
     (home / "Obsidian Sync/ObsidianVault").mkdir(parents=True, exist_ok=True)
     print(f"Installed {len(changed)} files. Backups of replaced files: {backup if backup.exists() else 'none needed'}")
-    print("Next: read README.md for dependencies, Cursor User Rules, and nightly schedule activation.")
+    print("Next: read README.md for dependencies and nightly schedule activation.")
 
 
 if __name__ == "__main__":
