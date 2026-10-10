@@ -4,6 +4,7 @@
 import argparse
 from datetime import datetime
 import json
+import os
 from pathlib import Path
 import plistlib
 import shutil
@@ -111,6 +112,21 @@ def schedule_command(home):
 def plan(home):
     items = {dest: (ROOT / source).read_bytes() for source, dest in FILES.items()}
     items.update({dest: (ROOT / "payload/skills/icm/SKILL.md").read_bytes() for dest in ICM_SKILL})
+    # Opt-in activation; preserve an existing explicit Ponytail preference.
+    config_dir = home / ("AppData/Roaming" if WINDOWS else ".config")
+    if home == Path.home().resolve():
+        config_dir = Path(os.environ.get("XDG_CONFIG_HOME") or
+                          (os.environ.get("APPDATA") if WINDOWS else "") or config_dir)
+    ponytail = config_dir / "ponytail/config.json"
+    try:
+        rel = str(ponytail.relative_to(home))
+    except ValueError:
+        print("Ponytail config is outside the target home; set defaultMode to off there if desired.")
+    else:
+        config = json_file(ponytail)
+        if "defaultMode" not in config:
+            config["defaultMode"] = "off"
+            items[rel] = (json.dumps(config, indent=2) + "\n").encode()
     bootstrap = (home / "Obsidian Sync/graphify_bootstrap.py").as_posix()
     if WINDOWS:
         items["Scripts/graphify-bootstrap.cmd"] = f'@"{Path(sys.executable).as_posix()}" "{bootstrap}" %*\r\n'.encode()

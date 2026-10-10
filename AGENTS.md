@@ -7,5 +7,6 @@ Scripts are Python, not bash, so one copy runs on macOS and Windows; hook comman
 Never bundle credentials, transcripts, personal vault notes, caches or backups.
 Safe edits: README.md, install.py and reviewed payload files. No model calls during checks.
 Check: python3 install.py --home <disposable-home>; repeat --install twice to test idempotence.
+Regression checks: python3 -m unittest discover -s tests -v (disposable homes only).
 Test with disposable settings to verify unrelated hooks survive. Never test by replacing live settings.
 No dependencies are installed and no schedule is activated by the installer.

@@ -1,6 +1,6 @@
 # How the workflow works
 
-The idea behind every piece: **keep what loads into every turn small, and fetch everything else only when a task needs it.** Each turn re-sends the whole conversation, so a line that is always loaded costs on every turn, and a file that is read only on demand costs once.
+The idea behind every piece: **keep what loads into every turn small, and fetch everything else only when a task needs it.** Each model call processes the conversation context it receives. Once a reference is read, its contents can remain in later calls too. Reading it only when needed avoids carrying it in unrelated work.
 
 These diagrams show where tokens are avoided. They are not measurements; the package makes no claim of a measured saving on your machine.
 
@@ -11,10 +11,10 @@ flowchart LR
     subgraph always["Loaded every session — kept short"]
         R["Global rules<br/>~/.claude/CLAUDE.md<br/>~/.codex/AGENTS.md<br/>Cursor User Rules"]
         P["Project CLAUDE.md / AGENTS.md<br/>under ~60 lines, routes only"]
-        PT["Ponytail ruleset<br/>smallest working change"]
         S["Session-start doc scan<br/>at most 10 file names"]
     end
     subgraph demand["Read only when a task needs it"]
+        PT["Optional Ponytail<br/>activate explicitly"]
         REF["agent-workflow-reference.md<br/>handoff, ADR, harvest templates"]
         G["graphify query / path / explain"]
         V["Vault notes: repo notebook<br/>and knowledge/"]
@@ -30,22 +30,22 @@ The rule files hold routing, not procedures. Templates and step-by-step workflow
 
 ```mermaid
 flowchart TD
-    T([Task]) --> H{"Handoff note<br/>for this repo?"}
+    T([Task]) --> H{"Missing prior context<br/>and a relevant handoff?"}
     H -->|yes| HN["Read status.md<br/>not old transcripts"]
     H -->|no| L
-    HN --> L{"graphify-out/graph.json<br/>exists?"}
+    HN --> L{"Unfamiliar relationships<br/>and an existing graph?"}
     L -->|yes| GQ["graphify query / path<br/>to locate code"]
     L -->|no| GR["Targeted grep -n<br/>signatures, headings"]
     GQ --> RD["Read only the code the change<br/>depends on: implementation,<br/>callers, tests"]
     GR --> RD
     RD --> AC["Name the acceptance checks<br/>before editing"]
-    AC --> E["Edit: Ponytail ladder<br/>reuse, stdlib, shortest diff"]
+    AC --> E["Edit: core rules<br/>reuse, stdlib, smallest complete change"]
     E --> RUN["Run checks<br/>long output saved to a log file,<br/>only summary + failing lines shown"]
     RUN -->|fail| RD
     RUN -->|pass| REP(["Report verified results<br/>label anything untested"])
 ```
 
-Locating with a graph or a targeted search replaces reading whole directories. Long test and build output goes to a file, and only the summary and the failing lines enter the conversation.
+Locating with a graph when relationships are unclear, or a targeted search, can avoid reading whole directories. Long test and build output goes to a file, and only the summary and the failing lines enter the conversation.
 
 ## 3. After every turn: chats and graph stay current
 
@@ -99,4 +99,4 @@ flowchart LR
     DEL -->|"small or dependent steps"| SELF["Do it inline"]
 ```
 
-A handoff note of 5 to 15 lines replaces carrying a whole transcript forward. How to do this day to day: [Using the Obsidian notes](obsidian-notes-guide.md). Subagents start cold, so they are used only when they keep large output out of the main context or run independent work in parallel.
+After a new chat or compaction, a 5 to 15 line handoff can support continuity. Writing the note alone does not remove existing history. How to do this day to day: [Using the Obsidian notes](obsidian-notes-guide.md). Subagents start cold, so they are used only when they keep large output out of the main context or run independent work in parallel.

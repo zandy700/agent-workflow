@@ -1,11 +1,9 @@
-<p align="center">
-  <img src="docs/images/banner.svg" alt="Agent Workflow: cheaper, more honest AI coding agents that remember your past work" width="820">
-</p>
+<h1 align="center">Agent Workflow</h1>
 
 <p align="center">
   <a href="#quickstart"><img src="https://img.shields.io/badge/Quick_Start-3_commands-blue?style=for-the-badge" alt="Quick Start"></a>
   <a href="#setup"><img src="https://img.shields.io/badge/Setup_Guide-Step_by_step-7c5cff?style=for-the-badge" alt="Setup Guide"></a>
-  <a href="#results"><img src="https://img.shields.io/badge/Test_Results-49%25_fewer_tokens-brightgreen?style=for-the-badge" alt="Test Results"></a>
+  <a href="#results"><img src="https://img.shields.io/badge/Test_Results-Measured-blue?style=for-the-badge" alt="Test Results"></a>
   <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-red?style=for-the-badge" alt="中文 README"></a>
 </p>
 
@@ -48,7 +46,7 @@ A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**
 | ❌ Every new chat starts from zero, so you re-explain the project. | ✅ The agent reads a 5–15 line handoff note and carries on. |
 | ❌ Long chats get slower and pricier as the whole history is re-sent. | ✅ Short rules and short replies keep each message light. |
 | ❌ The agent claims tests passed when nothing was run. | ✅ The agent must report what it verified and label what it didn't. |
-| ❌ The agent adds layers and libraries you didn't ask for. | ✅ Ponytail picks the smallest change that works. |
+| ❌ The agent adds layers and libraries you didn't ask for. | ✅ The core rules call for the smallest complete change. |
 | ❌ Why you made a decision is buried in some old chat. | ✅ Every chat is in Obsidian; ask *"why did we do X?"* |
 | ❌ The agent reads whole folders to find one function. | ✅ Optional code map (Graphify) lets it look things up instead. |
 | ❌ Each app needs its own setup and its own rules. | ✅ Claude Code, Codex, and Cursor all follow the same rules. |
@@ -57,27 +55,13 @@ A ready-made setup for **Claude Code, Codex, and Cursor** on **Mac and Windows**
 <a id="results"></a>
 ## 📊 Test results
 
-Two Claude Haiku agents did the same 4-step coding task side by side (build a small cache, add expiry, add stats, write tests). One had no rules; one used this workflow.
+The original 4-step cache pilot measured **characters**, not tokens: replies were about 49% shorter. That does not establish a reduction in total token usage.
 
-<table>
-<tr>
-<td align="center" width="33%"><h2>~49%</h2>fewer tokens in the agent's replies</td>
-<td align="center" width="33%"><h2>~24%</h2>fewer tokens overall across 4 steps</td>
-<td align="center" width="33%"><h2>0 vs 1</h2>made-up test results (workflow vs. no rules)</td>
-</tr>
-</table>
+A later test used real Claude Code counters: a 364-line Python shop, five successive coding prompts, three Haiku sessions per condition. The previous full workflow used **73.8% more total tokens** (1,604,721 vs. 923,168 per session), with **9/9 final checks in both conditions**. Most of the increase was cached input. Estimated list-price cost rose 24.4%; this is not a subscription bill.
 
-| Step | Task | No rules | Workflow |
-|---|---|---|---|
-| 1 | Build a key-value store | ~450 chars | ~395 chars |
-| 2 | Add expiry (TTL) | ~760 chars | ~480 chars |
-| 3 | Add hit-rate stats | ~1,030 chars | ~430 chars |
-| 4 | Write 3 tests | ~1,200 chars | ~450 chars |
-| **Total** | | **~3,440** | **~1,755** |
+**Revised setup, fresh rerun:** 4.5% fewer total tokens on average, all 9/9 final checks passed; estimated API cost was 2.5% higher. Three runs per condition on one small task, with substantial variation—this is not a general savings claim.
 
-> **The agent without rules made up its results.** It said: *"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."* Neither file existed and nothing was run. The workflow agent said *"I did not execute this"* when it hadn't, and reported a pass only after really running the tests.
-
-The no-rules agent pasted the whole, growing piece of code into every reply, and each reply is re-sent with every later message, so the gap grows the longer a chat runs. Characters stand in for tokens; no token counter was used. One small test, not a formal benchmark.
+The revised defaults shorten the core rules, load detailed guidance only when needed, keep Ponytail opt-in, and skip Graphify setup for directly readable tasks. Skills and chat sync remain available. See [the benchmark method and revision results](docs/token-benchmark.md). Savings depend on the task; no universal percentage is promised.
 
 <sub>[↑ Back to top](#contents)</sub>
 
@@ -104,7 +88,7 @@ cd agent-workflow
 python install.py --install
 ```
 
-That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full setup](#setup) from Step 2.
+That's the core. To finish (Obsidian and your apps), follow the [full setup](#setup) from Step 2.
 
 ---
 
@@ -121,7 +105,7 @@ That's the core. To finish (Obsidian, your apps, Ponytail), follow the [full set
 - [ ] **Python 3.9 or newer** and **git**
   - Mac: check with `python3 --version` and `git --version` in Terminal
   - Windows: install Python from [python.org](https://www.python.org/downloads/) and tick **"Add python.exe to PATH"** in the installer; install [Git for Windows](https://git-scm.com/download/win). Check with `python --version` and `git --version` in PowerShell.
-- [ ] **Node** (for Ponytail): check with `node --version`
+- [ ] **Node** (only for optional Ponytail): check with `node --version`
 
 > **Windows support is new.** It has been checked on a Mac by simulating Windows, but not yet on a real Windows PC. If something breaks, please [open an issue](https://github.com/zandy700/agent-workflow/issues).
 
@@ -158,6 +142,10 @@ Obsidian is a free notes app that keeps notes as plain text files in a folder on
 <a id="step-3"></a>
 ### Step 3. Set up your apps
 
+**Ponytail is optional.** New configurations default to off; use `/ponytail lite` or `/ponytail full` when useful. The installer preserves existing explicit preferences; to change an existing automatic mode, set `defaultMode` to `off` in Ponytail's config. See [configuration paths](payload/scripts/agent-workflow-reference.md#ponytail).
+
+**Already using mgrep or Superpowers?** Their startup hooks can add extra instructions. Follow the [optional plugin setup](payload/scripts/agent-workflow-reference.md#optional-plugin-startup-guidance) to disable automatic loading while keeping them installed. The installer preserves your existing plugin preferences; this additional change has not been benchmarked.
+
 Only do the apps you use. Each has the same three parts: **Rules**, **Ponytail**, **Saving chats**.
 
 **Jump to:** [3a. Claude Code](#app-claude) · [3b. Codex](#app-codex) · [3c. Cursor](#app-cursor)
@@ -165,7 +153,7 @@ Only do the apps you use. Each has the same three parts: **Rules**, **Ponytail**
 | | Claude Code | Codex | Cursor |
 |---|---|---|---|
 | Rules | Nothing to do | Nothing to do | Paste once |
-| Ponytail | 2 messages in the chat | 2 Terminal commands | 2 Terminal commands |
+| Ponytail (optional) | 2 messages in the chat | 2 Terminal commands | 2 Terminal commands |
 | Saving chats | Install one tool | Approve a hook | Nothing to do |
 
 <a id="app-claude"></a>
@@ -174,7 +162,7 @@ Only do the apps you use. Each has the same three parts: **Rules**, **Ponytail**
 
 **Rules:** nothing to do. Step 1 installed them.
 
-**Ponytail:** type in Claude Code's chat box, as two separate messages:
+**Ponytail (optional, activate on demand):** type in Claude Code's chat box, as two separate messages:
 
 ```text
 /plugin marketplace add DietrichGebert/ponytail
@@ -213,20 +201,20 @@ pipx install claude-conversation-extractor
 
 **Rules:** nothing to do. Step 1 installed them.
 
-**Ponytail:** type in: Terminal
+**Ponytail (optional, activate on demand):** type in: Terminal
 
 ```bash
 codex plugin marketplace add DietrichGebert/ponytail
 codex plugin add ponytail@ponytail
 ```
 
-**Saving chats:** Codex won't run new hooks until you approve them. This one step turns on both chat saving and Ponytail. Type in Codex's chat box:
+**Saving chats:** Codex won't run new hooks until you approve them. This step enables chat saving; approve Ponytail hooks only if you install the optional plugin. Type in Codex's chat box:
 
 ```text
 /hooks
 ```
 
-Approve (trust) the hook that runs `agent_stop_hook.py` (it saves your chats) and Ponytail's hooks. Then start a new thread.
+Approve (trust) the hook that runs `agent_stop_hook.py` (it saves your chats) and, if installed, Ponytail's hooks. Then start a new thread.
 
 </details>
 
@@ -239,7 +227,7 @@ Approve (trust) the hook that runs `agent_stop_hook.py` (it saves your chats) an
 1. Open `payload/cursor/USER_RULES.md` from the folder you downloaded and copy everything in it.
 2. In Cursor, go to **Customize → Rules → User Rules**, paste, and save. ([Cursor's guide to rules](https://cursor.com/docs/rules))
 
-**Ponytail:** type in: Terminal
+**Ponytail (optional, activate on demand):** type in: Terminal
 
 Works as-is on Mac and Windows:
 
@@ -278,10 +266,10 @@ python "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
 **4.3 Check each app loaded everything.** In each app, start a **new** chat (rules load when a chat starts) and send:
 
 ```text
-What workflow rules did you load from your global instructions? Is Ponytail active?
+What workflow rules did you load? Is Ponytail off unless explicitly activated?
 ```
 
-It should mention checking its work, keeping output short, handoff notes in Obsidian, and Ponytail. Send one more message, wait a few seconds, and today's chat should appear under `chats/`.
+It should mention checking its work, keeping output short, handoff notes in Obsidian. Ponytail should remain off unless you activate it. Send one more message, wait a few seconds, and today's chat should appear under `chats/`.
 
 **4.4 Nightly full sync (optional).** Re-syncs everything and refreshes the index notes every night at 10 pm. Type in: Terminal
 
@@ -318,7 +306,7 @@ The handoff note is a 5–15 line summary of what's done, what's broken, and wha
 | Command | What it does |
 |---|---|
 | `/ponytail lite` | Gentler |
-| `/ponytail full` | Default |
+| `/ponytail full` | Full guidance for this chat |
 | `/ponytail ultra` | Strictest |
 | `stop ponytail` | Turn it off |
 

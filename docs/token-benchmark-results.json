@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-10",
+  "model": "claude-haiku-5-5",
+  "cli": "2.1.296",
+  "method": "token-benchmark.md",
+  "runs": [
+    {
+      "label": "baseline-1",
+      "condition": "baseline",
+      "cumulative_tokens": {
+        "input": 40,
+        "cache_write": 63004,
+        "cache_read": 707221,
+        "output": 43912,
+        "cost_usd": 0.041633010000000005,
+        "processed_input": 770265,
+        "all_tokens": 814177
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 182.6
+    },
+    {
+      "label": "workflow-1",
+      "condition": "workflow",
+      "cumulative_tokens": {
+        "input": 36,
+        "cache_write": 65367,
+        "cache_read": 703836,
+        "output": 40750,
+        "cost_usd": 0.04049036,
+        "processed_input": 769239,
+        "all_tokens": 809989
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 173.6
+    },
+    {
+      "label": "workflow-2",
+      "condition": "workflow",
+      "cumulative_tokens": {
+        "input": 52,
+        "cache_write": 74943,
+        "cache_read": 1176057,
+        "output": 45093,
+        "cost_usd": 0.04930087,
+        "processed_input": 1251052,
+        "all_tokens": 1296145
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 294.7
+    },
+    {
+      "label": "baseline-2",
+      "condition": "baseline",
+      "cumulative_tokens": {
+        "input": 52,
+        "cache_write": 59042,
+        "cache_read": 1006735,
+        "output": 38649,
+        "cost_usd": 0.041205450000000005,
+        "processed_input": 1065829,
+        "all_tokens": 1104478
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 168.0
+    },
+    {
+      "label": "baseline-3",
+      "condition": "baseline",
+      "cumulative_tokens": {
+        "input": 58,
+        "cache_write": 65716,
+        "cache_read": 1183014,
+        "output": 41729,
+        "cost_usd": 0.045843640000000005,
+        "processed_input": 1248788,
+        "all_tokens": 1290517
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 182.2
+    },
+    {
+      "label": "workflow-3",
+      "condition": "workflow",
+      "cumulative_tokens": {
+        "input": 46,
+        "cache_write": 65776,
+        "cache_read": 852374,
+        "output": 40830,
+        "cost_usd": 0.04209854,
+        "processed_input": 918196,
+        "all_tokens": 959026
+      },
+      "final_checks": {
+        "p1_save10_no_double_bulk": true,
+        "p2_decimal_half_up": true,
+        "p2_decimal_persisted_as_strings": true,
+        "p2_legacy_float_orders_load": true,
+        "p3_partial_refund": true,
+        "p3_refund_guards_and_full_refund": true,
+        "p4_csv_report": true,
+        "p4_text_report_still_works": true,
+        "p5_own_test_suite": true
+      },
+      "wall_seconds": 177.0
+    }
+  ],
+  "means": {
+    "baseline": {
+      "all_tokens": 1069724,
+      "output": 41430,
+      "cost_usd": 0.04289403333333334
+    },
+    "workflow": {
+      "all_tokens": 1021720,
+      "output": 42224.333333333336,
+      "cost_usd": 0.043963256666666665
+    }
+  },
+  "source_results_sha256": "676d02c0c29708a40b77204c4175d7c9ece036a910ec39c8d366076b66d08f8e"
+}

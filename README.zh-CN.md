@@ -1,11 +1,9 @@
-<p align="center">
-  <img src="docs/images/banner.zh-CN.svg" alt="智能体工作流：更省、更诚实，还能记住过往工作的 AI 编程助手" width="820">
-</p>
+<h1 align="center">智能体工作流</h1>
 
 <p align="center">
   <a href="#quickstart"><img src="https://img.shields.io/badge/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B-3_%E6%9D%A1%E5%91%BD%E4%BB%A4-blue?style=for-the-badge" alt="快速开始"></a>
   <a href="#setup"><img src="https://img.shields.io/badge/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97-%E5%88%86%E6%AD%A5%E8%AF%B4%E6%98%8E-7c5cff?style=for-the-badge" alt="安装指南"></a>
-  <a href="#results"><img src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-token_%E5%87%8F%E5%B0%91_49%25-brightgreen?style=for-the-badge" alt="测试结果"></a>
+  <a href="#results"><img src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-Measured-blue?style=for-the-badge" alt="测试结果"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/English-README-red?style=for-the-badge" alt="English README"></a>
 </p>
 
@@ -48,7 +46,7 @@
 | ❌ 每个新聊天都从零开始，你得重新解释项目。 | ✅ 智能体读一条 5 到 15 行的交接笔记，接着干。 |
 | ❌ 聊天越长越慢越贵，因为整段历史都会被重新发送。 | ✅ 精简的规则和简短的回复让每条消息都很轻。 |
 | ❌ 什么都没运行，智能体却说测试通过了。 | ✅ 智能体必须汇报验证过什么，并标出没验证的部分。 |
-| ❌ 智能体加了你没要的层级和库。 | ✅ Ponytail 选择能用的最小改动。 |
+| ❌ 智能体加了你没要的层级和库。 | ✅ 核心规则要求完成任务所需的最小改动。 |
 | ❌ 当初为什么这样决定，埋在某个旧聊天里。 | ✅ 每次聊天都在 Obsidian 里，直接问*“我们为什么这样做 X？”* |
 | ❌ 为了找一个函数，智能体把整个文件夹都读一遍。 | ✅ 可选的代码地图（Graphify）让它直接查找。 |
 | ❌ 每个应用都要单独配置、单独写规则。 | ✅ Claude Code、Codex 和 Cursor 遵守同一套规则。 |
@@ -57,27 +55,13 @@
 <a id="results"></a>
 ## 📊 测试结果
 
-两个 Claude Haiku 智能体并排完成同一个分 4 步的编程任务（写一个小缓存、加过期时间、加统计、写测试）。一个没有任何规则，另一个使用本工作流。
+最初的 4 步缓存测试统计的是**字符数**，不是 token：回复约短了 49%。这不能证明总 token 用量降低。
 
-<table>
-<tr>
-<td align="center" width="33%"><h2>约 49%</h2>智能体回复中减少的 token</td>
-<td align="center" width="33%"><h2>约 24%</h2>4 步加起来总体减少的 token</td>
-<td align="center" width="33%"><h2>0 比 1</h2>编造的测试结果（工作流 比 无规则）</td>
-</tr>
-</table>
+后续测试读取 Claude Code 的真实用量计数：364 行 Python 订单程序、连续 5 条编程提示、每种配置各 3 次 Haiku 会话。旧版完整工作流的**总 token 用量高了 73.8%**（每次会话 1,604,721 比 923,168），两组最终均通过 **9/9 项检查**。增加的主要是缓存输入。按标价估算的成本增加 24.4%，不等于订阅实际账单。
 
-| 步骤 | 任务 | 无规则 | 使用工作流 |
-|---|---|---|---|
-| 1 | 写一个键值存储 | 约 450 字符 | 约 395 字符 |
-| 2 | 加过期时间（TTL） | 约 760 字符 | 约 480 字符 |
-| 3 | 加命中率统计 | 约 1,030 字符 | 约 430 字符 |
-| 4 | 写 3 个测试 | 约 1,200 字符 | 约 450 字符 |
-| **合计** | | **约 3,440** | **约 1,755** |
+**新配置复测：** 总 token 平均减少 4.5%，两组最终都通过 9/9 项检查；估算的 API 成本反而增加 2.5%。每组仅测试了 3 次、任务规模较小、结果波动明显，不能推广为通用节省比例。
 
-> **没有规则的智能体编造了结果。** 它说：*"Files are in the scratchpad: kvstore.py and test_kvstore.py. Running `python3 test_kvstore.py` prints '3 passed'."*（“文件在临时目录里：kvstore.py 和 test_kvstore.py。运行 `python3 test_kvstore.py` 输出 '3 passed'。”）实际上这两个文件都不存在，也什么都没运行过。使用工作流的智能体在没运行时会说 *"I did not execute this"*（“我没有运行这个”），只有真正跑过测试后才报告通过。
-
-无规则的智能体每次回复都把整段、越来越长的代码贴一遍，而每条回复都会随之后的每条消息重新发送，所以聊得越久差距越大。这里用字符数近似代替 token 数，没有使用 token 计数器。这只是一次小测试，不是正式的基准测试。
+新默认配置精简常驻规则、按需读取详细说明、将 Ponytail 改为主动开启，并在能直接读清的小任务中跳过 Graphify 初始化。技能与聊天同步仍可使用。方法与新结果见[基准测试说明](docs/token-benchmark.md)。是否节省取决于任务，不承诺通用节省比例。
 
 <sub>[↑ 回到顶部](#contents)</sub>
 
@@ -121,7 +105,7 @@ python install.py --install
 - [ ] **Python 3.9 或更新版本**和 **git**
   - Mac：在终端输入 `python3 --version` 和 `git --version` 检查
   - Windows：从 [python.org](https://www.python.org/downloads/) 安装 Python，安装时勾选 **“Add python.exe to PATH”**；再安装 [Git for Windows](https://git-scm.com/download/win)。在 PowerShell 里输入 `python --version` 和 `git --version` 检查。
-- [ ] **Node**（Ponytail 需要）：用 `node --version` 检查
+- [ ] **Node**（仅在安装可选 Ponytail 时需要）：用 `node --version` 检查
 
 > **Windows 支持是新加的。** 已在 Mac 上模拟 Windows 检查过，但还没有在真实的 Windows 电脑上测试。如果遇到问题，欢迎[提交 issue](https://github.com/zandy700/agent-workflow/issues)。
 
@@ -158,6 +142,10 @@ Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你电�
 <a id="step-3"></a>
 ### 第 3 步：配置你的应用
 
+**Ponytail 为可选项。** 新配置默认关闭自动启用；需要时在聊天框输入 `/ponytail lite` 或 `/ponytail full`。安装器保留已有的明确偏好；如已有自动开启配置，将 Ponytail 配置文件中的 `defaultMode` 改为 `off`。
+
+**已安装 mgrep 或 Superpowers？** 它们的启动钩子可能额外注入指令。参照[可选插件配置](payload/scripts/agent-workflow-reference.md#optional-plugin-startup-guidance)，关闭自动加载并保留安装，需要时再启用。安装器会保留已有插件偏好；这项额外调整尚未进行 token 基准测试。
+
 只做你在用的应用。每个应用都分三部分：**规则**、**Ponytail**、**保存聊天**。
 
 **跳转到：** [3a. Claude Code](#app-claude) · [3b. Codex](#app-codex) · [3c. Cursor](#app-cursor)
@@ -165,7 +153,7 @@ Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你电�
 | | Claude Code | Codex | Cursor |
 |---|---|---|---|
 | 规则 | 无需操作 | 无需操作 | 粘贴一次 |
-| Ponytail | 在聊天框发 2 条消息 | 在终端运行 2 条命令 | 在终端运行 2 条命令 |
+| Ponytail（可选） | 在聊天框发 2 条消息 | 在终端运行 2 条命令 | 在终端运行 2 条命令 |
 | 保存聊天 | 安装一个工具 | 批准一个钩子（hook） | 无需操作 |
 
 <a id="app-claude"></a>
@@ -174,7 +162,7 @@ Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你电�
 
 **规则：** 无需操作，第 1 步已经装好了。
 
-**Ponytail：** 在 Claude Code 的聊天框里分两条消息发送：
+**Ponytail（可选，按需开启）：** 在 Claude Code 的聊天框里分两条消息发送：
 
 ```text
 /plugin marketplace add DietrichGebert/ponytail
@@ -213,20 +201,20 @@ pipx install claude-conversation-extractor
 
 **规则：** 无需操作，第 1 步已经装好了。
 
-**Ponytail：** 输入位置：终端
+**Ponytail（可选，按需开启）：** 输入位置：终端
 
 ```bash
 codex plugin marketplace add DietrichGebert/ponytail
 codex plugin add ponytail@ponytail
 ```
 
-**保存聊天：** Codex 在你批准之前不会运行新的钩子。这一步会同时开启聊天保存和 Ponytail。在 Codex 的聊天框输入：
+**保存聊天：** Codex 在你批准之前不会运行新的钩子。这一步开启聊天保存；只有安装了可选 Ponytail 才需要批准其钩子。在 Codex 的聊天框输入：
 
 ```text
 /hooks
 ```
 
-批准（trust）运行 `agent_stop_hook.py` 的钩子（它负责保存聊天）以及 Ponytail 的钩子，然后开一个新对话。
+批准（trust）运行 `agent_stop_hook.py` 的钩子（它负责保存聊天）；如果安装了 Ponytail，也批准它的钩子，然后开一个新对话。
 
 </details>
 
@@ -239,7 +227,7 @@ codex plugin add ponytail@ponytail
 1. 打开下载文件夹里的 `payload/cursor/USER_RULES.md`，复制全部内容。
 2. 在 Cursor 中进入 **Customize → Rules → User Rules**，粘贴并保存。（[Cursor 规则说明](https://cursor.com/docs/rules)）
 
-**Ponytail：** 输入位置：终端
+**Ponytail（可选，按需开启）：** 输入位置：终端
 
 Mac 和 Windows 通用：
 
@@ -278,10 +266,10 @@ python "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
 **4.3 检查每个应用都加载成功。** 在每个应用里开一个**新**聊天（规则在聊天开始时加载），发送：
 
 ```text
-你从全局指令里加载了哪些工作流规则？Ponytail 开启了吗？
+你从全局指令里加载了哪些工作流规则？Ponytail 是否仅在主动开启后才启用？
 ```
 
-它应该会提到：检查自己的工作、保持输出简短、在 Obsidian 写交接笔记，以及 Ponytail。再发一条消息，等几秒钟，今天的聊天应该会出现在 `chats/` 下面。
+它应该会提到：检查自己的工作、保持输出简短、在 Obsidian 写交接笔记。Ponytail 应保持关闭，除非你主动开启。再发一条消息，等几秒钟，今天的聊天应该会出现在 `chats/` 下面。
 
 **4.4 每晚自动全量同步（可选）。** 每天晚上 10 点重新同步所有内容并刷新索引笔记。输入位置：终端
 
@@ -318,7 +306,7 @@ Windows：安装程序在第 1 步结束时打印了一行 `Register-ScheduledTa
 | 命令 | 作用 |
 |---|---|
 | `/ponytail lite` | 宽松一些 |
-| `/ponytail full` | 默认 |
+| `/ponytail full` | 在当前聊天开启完整指导 |
 | `/ponytail ultra` | 最严格 |
 | `stop ponytail` | 关闭 |
 
