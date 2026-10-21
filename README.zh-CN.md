@@ -1,7 +1,7 @@
 <h1 align="center">智能体工作流</h1>
 
 <p align="center">
-  <a href="#quickstart"><img src="https://img.shields.io/badge/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B-3_%E6%9D%A1%E5%91%BD%E4%BB%A4-blue?style=for-the-badge" alt="快速开始"></a>
+  <a href="#quickstart"><img src="https://img.shields.io/badge/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B-1_%E6%9D%A1%E5%91%BD%E4%BB%A4-blue?style=for-the-badge" alt="快速开始"></a>
   <a href="#setup"><img src="https://img.shields.io/badge/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97-%E5%88%86%E6%AD%A5%E8%AF%B4%E6%98%8E-7c5cff?style=for-the-badge" alt="安装指南"></a>
   <a href="#results"><img src="https://img.shields.io/badge/%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C-Measured-blue?style=for-the-badge" alt="测试结果"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/English-README-red?style=for-the-badge" alt="English README"></a>
@@ -28,13 +28,12 @@
 <a id="contents"></a>
 ## 🧭 目录
 
-| **从这里开始** | **安装** | **使用** | **参考** |
-|---|---|---|---|
-| [解决的问题](#problems) | [开始之前](#before) | [日常怎么用](#daily) | [仓库里有什么](#repo) |
-| [测试结果](#results) | [第 1 步：安装](#step-1) | [可选扩展](#extras) | [延伸阅读](#reading) |
-| [快速开始](#quickstart) | [第 2 步：Obsidian](#step-2) | [ICM](#icm) | [检查（无需调用 AI）](#checks) |
-|  | [第 3 步：你的应用](#step-3) | [问题排查](#troubleshooting) | [致谢](#credits) |
-|  | [第 4 步：首次同步](#step-4) |  | [许可证](#license) |
+| **开始** | **使用** | **参考** |
+|---|---|---|
+| [一条命令安装](#quickstart) | [日常使用](#daily) | [设置选项](docs/setup-options.md) |
+| [安装内容](#setup) | [内置工具](#extras) | [仓库结构](#repo) |
+| [测试结果](#results) | [ICM](#icm) | [检查](#checks) |
+| [解决的问题](#problems) | [问题排查](#troubleshooting) | [致谢](#credits) |
 
 ---
 
@@ -68,220 +67,52 @@
 ---
 
 <a id="quickstart"></a>
-## 🚀 快速开始
+## 🚀 一条命令安装
 
-三条命令装好规则和辅助脚本。**输入位置：终端**（Windows 上用 PowerShell）
+需要 **Python 3.10–3.14**、网络连接，以及至少一个已安装并登录的编程智能体应用。不用手动克隆仓库、安装 pip 包、创建技能链接，也不用往 Cursor 粘贴规则。
 
-Mac：
+**Mac：粘贴到终端：**
 
 ```bash
-git clone https://github.com/zandy700/agent-workflow.git
-cd agent-workflow
-python3 install.py --install
+python3 -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/zandy700/agent-workflow/main/bootstrap.py').read())"
 ```
 
-Windows：
+**Windows：粘贴到 PowerShell：**
 
 ```powershell
-git clone https://github.com/zandy700/agent-workflow.git
-cd agent-workflow
-python install.py --install
+py -3 -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/zandy700/agent-workflow/main/bootstrap.py').read())"
 ```
 
-核心部分就装好了。剩下的（Obsidian、你的应用、Ponytail）请从[完整安装](#setup)的第 2 步继续。
+没有 Python 时，先从 [python.org](https://www.python.org/downloads/) 安装。Windows 没有 Python 启动器时，可以把 `py -3` 换成 `python`。
 
----
+**已经下载仓库？** 运行 `python3 setup.py --install`（Windows：`py -3 setup.py --install`）。去掉 `--install` 就是预览，不修改文件、不联网。在线引导脚本也支持 `--preview`。
 
 <a id="setup"></a>
-## 🛠️ 完整安装
+## 这条命令会做什么
 
-<a id="before"></a>
-### 开始之前
+| 内容 | 自动完成的设置 |
+|---|---|
+| 统一规则 | 将托管规则块写入 Claude Code 和 Codex 的全局指令；Cursor 通过会话启动钩子加载同样的规则。 |
+| 聊天记录 | 安装本地聊天同步钩子，并首次同步已有的 Claude Code、Codex、Cursor 记录。 |
+| Python 工具 | 在独立环境中安装固定版本的聊天导出工具、Graphify 和 MarkItDown，不混入系统 Python 包。 |
+| ICM | 下载并校验模板和 `icm-architect`，将技能连接到三个应用。 |
+| 笔记库 | 创建 `~/Obsidian Sync/ObsidianVault` 和 Home 笔记。没有 Obsidian 也可以保存笔记；它只是查看工具。 |
 
-**你需要：**
-
-- [ ] 一台 **Mac** 或 **Windows** 电脑
-- [ ] 至少安装并登录 **Claude Code**、**Codex** 或 **Cursor** 之一
-- [ ] **Python 3.9 或更新版本**和 **git**
-  - Mac：在终端输入 `python3 --version` 和 `git --version` 检查
-  - Windows：从 [python.org](https://www.python.org/downloads/) 安装 Python，安装时勾选 **“Add python.exe to PATH”**；再安装 [Git for Windows](https://git-scm.com/download/win)。在 PowerShell 里输入 `python --version` 和 `git --version` 检查。
-- [ ] **Node**（仅在安装可选 Ponytail 时需要）：用 `node --version` 检查
-
-> **Windows 支持是新加的。** 已在 Mac 上模拟 Windows 检查过，但还没有在真实的 Windows 电脑上测试。如果遇到问题，欢迎[提交 issue](https://github.com/zandy700/agent-workflow/issues)。
-
-**每条命令在哪里输入。** 每条命令都标明了位置。Mac 上的“终端”（Terminal）在“应用程序 → 实用工具”里。Windows 上，本指南说“终端”的地方请使用 **PowerShell**（在开始菜单里搜索）。Mac 和 Windows 命令不同时，两种都会列出。
-
-<img src="docs/images/where-to-type.zh-CN.svg" alt="左：终端窗口，用于 python3、pip3 等命令。右：智能体的聊天框，用于以斜杠开头的命令和自然语言请求。" width="760">
-
-**要做哪些步骤。** 第 1、2、4 步所有人都要做；第 3 步只做你在用的应用。
-
-<a id="step-1"></a>
-### 第 1 步：安装工作流
-
-如果还没运行过，先运行[快速开始](#quickstart)里的三条命令。安装程序会把规则和辅助脚本复制到你的个人文件夹，并接入每个应用。被替换的文件会备份到 `~/Scripts/agent-workflow-backups/`。重复运行是安全的；没有变化时会提示 "Already installed"（已安装）。
-
-想先看看会改什么，把最后一条命令去掉 `--install` 再运行（Mac：`python3 install.py`，Windows：`python install.py`）。这个预览不会改动任何东西。
-
-<a id="step-2"></a>
-### 第 2 步：设置 Obsidian
-
-Obsidian 是一款免费笔记软件，把笔记以纯文本文件存在你电脑上的一个文件夹里，不需要注册账号。本工作流把它当作智能体的“记忆”。
-
-**2.1 安装 Obsidian：** 从 [obsidian.md](https://obsidian.md) 下载并打开。
-
-**2.2 打开仓库（vault）。** 在 Obsidian 里，“仓库”就是它显示的那个文件夹，安装程序已经建好了。在启动界面点击 **Open folder as vault**（中文界面为“打开本地仓库”）旁边的 **Open**（打开），然后选择个人文件夹中 `Obsidian Sync` 文件夹里的 `ObsidianVault`。
-
-<img src="docs/images/obsidian-open-vault.zh-CN.svg" alt="Obsidian 启动界面，高亮显示“打开本地仓库”" width="760">
-
-> 找不到这个文件夹？Mac 上在文件选择窗口按 `Cmd+Shift+G`，粘贴 `~/Obsidian Sync/ObsidianVault`；Windows 上把 `%USERPROFILE%\Obsidian Sync\ObsidianVault` 粘贴到选择窗口的地址栏。“Obsidian Sync”只是文件夹的名字，不需要购买 Obsidian 的付费同步服务。
-
-**2.3 在关系图谱中隐藏自动生成的笔记（可选）。** 只有开启 [Graphify](#extras) 后才需要。打开 **Graph view**（关系图谱），点击右上角的齿轮图标，在 **Filters**（筛选）搜索框输入 `-path:graphify`。
-
-> 你的仓库里会保存智能体聊天的文字内容，请只放在个人电脑上。
-
-<a id="step-3"></a>
-### 第 3 步：配置你的应用
-
-**Ponytail 为可选项。** 新配置默认关闭自动启用；需要时在聊天框输入 `/ponytail lite` 或 `/ponytail full`。安装器保留已有的明确偏好；如已有自动开启配置，将 Ponytail 配置文件中的 `defaultMode` 改为 `off`。
-
-**已安装 mgrep 或 Superpowers？** 它们的启动钩子可能额外注入指令。参照[可选插件配置](payload/scripts/agent-workflow-reference.md#optional-plugin-startup-guidance)，关闭自动加载并保留安装，需要时再启用。安装器会保留已有插件偏好；这项额外调整尚未进行 token 基准测试。
-
-只做你在用的应用。每个应用都分三部分：**规则**、**Ponytail**、**保存聊天**。
-
-**跳转到：** [3a. Claude Code](#app-claude) · [3b. Codex](#app-codex) · [3c. Cursor](#app-cursor)
-
-| | Claude Code | Codex | Cursor |
-|---|---|---|---|
-| 规则 | 无需操作 | 无需操作 | 粘贴一次 |
-| Ponytail（可选） | 在聊天框发 2 条消息 | 在终端运行 2 条命令 | 在终端运行 2 条命令 |
-| 保存聊天 | 安装一个工具 | 批准一个钩子（hook） | 无需操作 |
+再次运行同一命令即可修复或更新托管设置。保留自定义全局指令、其他钩子、笔记和插件偏好；替换的文件备份到 `~/Scripts/agent-workflow-backups/`。已有的 ICM 文件夹和 architect 技能（包括本地修改）也会保留。
 
 <a id="app-claude"></a>
-<details open>
-<summary><strong>3a. Claude Code</strong></summary>
-
-**规则：** 无需操作，第 1 步已经装好了。
-
-**Ponytail（可选，按需开启）：** 在 Claude Code 的聊天框里分两条消息发送：
-
-```text
-/plugin marketplace add DietrichGebert/ponytail
-```
-
-```text
-/plugin install ponytail@ponytail
-```
-
-**保存聊天：** Claude Code 的聊天由一个叫 `claude-extract` 的小工具导出。输入位置：终端
-
-Mac：
-
-```bash
-pip3 install claude-conversation-extractor
-```
-
-Windows：
-
-```powershell
-python -m pip install claude-conversation-extractor
-```
-
-Mac 上如果提示 "externally managed environment"（外部管理的环境）而失败，改用：
-
-```bash
-brew install pipx
-pipx install claude-conversation-extractor
-```
-
-</details>
-
 <a id="app-codex"></a>
-<details open>
-<summary><strong>3b. Codex</strong></summary>
-
-**规则：** 无需操作，第 1 步已经装好了。
-
-**Ponytail（可选，按需开启）：** 输入位置：终端
-
-```bash
-codex plugin marketplace add DietrichGebert/ponytail
-codex plugin add ponytail@ponytail
-```
-
-**保存聊天：** Codex 在你批准之前不会运行新的钩子。这一步开启聊天保存；只有安装了可选 Ponytail 才需要批准其钩子。在 Codex 的聊天框输入：
-
-```text
-/hooks
-```
-
-批准（trust）运行 `agent_stop_hook.py` 的钩子（它负责保存聊天）；如果安装了 Ponytail，也批准它的钩子，然后开一个新对话。
-
-</details>
-
 <a id="app-cursor"></a>
-<details open>
-<summary><strong>3c. Cursor</strong></summary>
+### 在应用内完成
 
-**规则：** Cursor 把规则保存在应用内部，需要手动添加一次：
+- 开始一个**新聊天**以加载规则。应用提示时批准工作流钩子；Codex 中用 `/hooks` 查看。安装器不会代替你授予信任。
+- 想查看笔记时，在 Obsidian 选择 **Open folder as vault**，打开 `~/Obsidian Sync/ObsidianVault`。文件夹名称不表示需要付费的 Obsidian Sync 服务。
 
-1. 打开下载文件夹里的 `payload/cursor/USER_RULES.md`，复制全部内容。
-2. 在 Cursor 中进入 **Customize → Rules → User Rules**，粘贴并保存。（[Cursor 规则说明](https://cursor.com/docs/rules)）
+Cursor 通过[官方 sessionStart 钩子](https://cursor.com/docs/hooks#sessionstart)自动加载规则。如果以前粘贴过工作流规则，可以从 User Rules 中删除旧副本，避免重复。本安装面向本地应用，云端智能体需要自己的环境。
 
-**Ponytail（可选，按需开启）：** 输入位置：终端
+Ponytail 和夜间定时同步仍为可选功能，见[设置选项](docs/setup-options.md)。聊天钩子已经会在智能体完成回复后同步。
 
-Mac 和 Windows 通用：
-
-```bash
-git clone https://github.com/DietrichGebert/ponytail "$HOME/Scripts/ponytail"
-node "$HOME/Scripts/ponytail/scripts/cursor-hooks.js" install
-```
-
-不要移动 `~/Scripts/ponytail` 文件夹，Cursor 从这里运行 Ponytail。
-
-**保存聊天：** 无需操作。Cursor 会自动使用第 1 步装好的聊天保存钩子。
-
-</details>
-
-<a id="step-4"></a>
-### 第 4 步：首次同步并检查
-
-**4.1 把已有的聊天复制到 Obsidian。** 从现在起聊天会自动保存；这条只需运行一次的命令会把已有的聊天也复制过去。输入位置：终端
-
-Mac：
-
-```bash
-python3 "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
-```
-
-Windows：
-
-```powershell
-python "$HOME/Obsidian Sync/sync_claude_obsidian.py" --all
-```
-
-**4.2 在 Obsidian 里查看。** 你应该能看到 `chats` 文件夹和 `Home.md` 笔记。用了一段时间后大致是这样：
-
-<img src="docs/images/vault-layout.zh-CN.svg" alt="Obsidian 侧边栏：按应用分类的 chats 文件夹、包含 status.md 和 decisions 的项目文件夹、knowledge 文件夹和 Home.md" width="760">
-
-**4.3 检查每个应用都加载成功。** 在每个应用里开一个**新**聊天（规则在聊天开始时加载），发送：
-
-```text
-你从全局指令里加载了哪些工作流规则？Ponytail 是否仅在主动开启后才启用？
-```
-
-它应该会提到：检查自己的工作、保持输出简短、在 Obsidian 写交接笔记。Ponytail 应保持关闭，除非你主动开启。再发一条消息，等几秒钟，今天的聊天应该会出现在 `chats/` 下面。
-
-**4.4 每晚自动全量同步（可选）。** 每天晚上 10 点重新同步所有内容并刷新索引笔记。输入位置：终端
-
-Mac：
-
-```bash
-launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"
-```
-
-Windows：安装程序在第 1 步结束时打印了一行 `Register-ScheduledTask ...`，把它粘贴到 PowerShell 运行即可。想再看一次，运行 `python install.py`。
-
-<sub>[↑ 回到顶部](#contents)</sub>
+**Windows：** 已在 macOS 上测试生成的配置，尚未在真实 Windows 电脑上验证完整安装。
 
 ---
 
@@ -292,6 +123,7 @@ Windows：安装程序在第 1 步结束时打印了一行 `Register-ScheduledTa
 
 | 什么时候 | 对智能体说 |
 |---|---|
+| 出现不需要当前聊天上下文的独立任务 | 为它开启新聊天，即使属于同一项目。 |
 | 关闭一段很长的聊天之前 | *“为这个项目写交接笔记。”* |
 | 在同一个项目开新聊天时 | *“读一下交接笔记，然后继续。”* |
 | 需要找以前的决定 | *“查一下笔记：我们为什么这样做 X？”* |
@@ -313,101 +145,21 @@ Windows：安装程序在第 1 步结束时打印了一行 `Register-ScheduledTa
 如需彻底卸载，请看 [Ponytail 的卸载步骤](https://github.com/DietrichGebert/ponytail#uninstall)。
 
 <a id="extras"></a>
-## 🧩 可选扩展
+## 🧩 内置工具
 
-需要时再装，不装也完全能用。
+完整安装会准备好这些工具，只在需要时运行。安装 Graphify 不会自动创建项目地图。
 
-<details>
-<summary><strong>Graphify：更快找到代码</strong></summary>
-
-为代码项目建一张“地图”，让智能体直接查找，而不用整个文件夹逐个读。在你的电脑本地运行，不消耗 AI 用量。输入位置：终端
-
-Mac：
-
-```bash
-pip3 install graphifyy          # 或：pipx install graphifyy
-```
-
-Windows：
-
-```powershell
-python -m pip install graphifyy
-```
-
-然后每个项目运行一次（不要在个人文件夹根目录运行）：
-
-Mac：
-
-```bash
-~/Scripts/graphify-bootstrap /path/to/your/project
-```
-
-Windows：
-
-```powershell
-& "$HOME/Scripts/graphify-bootstrap.cmd" C:\path\to\your\project
-```
-
-Mac 上如果想以后直接输入 `graphify-bootstrap`，运行 `echo 'export PATH="$HOME/Scripts:$PATH"' >> ~/.zshrc`，再打开一个新的终端窗口。
-
-</details>
-
-<details>
-<summary><strong>MarkItDown：读取文档</strong></summary>
-
-让智能体把 PDF、Word 和 PowerPoint 文件转成文本，只读需要的部分。输入位置：终端
-
-Mac：
-
-```bash
-pip3 install 'markitdown[all]'  # 或：pipx install 'markitdown[all]'
-```
-
-Windows：
-
-```powershell
-python -m pip install 'markitdown[all]'
-```
-
-</details>
+- **Graphify：** 需要代码地图时运行 `~/Scripts/graphify-bootstrap /path/to/project`。Windows：`& "$HOME/Scripts/graphify-bootstrap.cmd" C:\path\to\project`。每个仓库保留独立的图谱和笔记命名空间。
+- **MarkItDown：** 使用 `~/Scripts/markitdown document.pdf`；Windows：`& "$HOME/Scripts/markitdown.cmd" document.pdf`。
 
 <a id="icm"></a>
-<details>
-<summary><strong>ICM：让项目结构对智能体友好</strong></summary>
+### ICM
 
-ICM（Interpretable Context Methodology，可解释上下文方法）把一个反复执行的流程，或者一个杂乱的文件夹/代码仓库，变成按编号排列的纯 Markdown 文件夹，让智能体一步一步地走。它分两部分：
+`/icm` 提供方法和可复用工作区，`/icm-architect` 设计新结构或映射已有文件夹。新聊天中输入 *“/icm-architect map this repo”* 即可。地图仍需你批准，新工作区放在自己的项目中。
 
-- **icm-architect** 设计新的结构，或者为现有文件夹绘制“地图”，方便智能体找到东西。
-- **icm** 提供方法说明和现成模板。第 1 步已经装好了 `/icm` 技能，它会读取你在这里下载的模板。
+安装器下载固定版本到 `~/Scripts/icm` 和 `~/Scripts/icm-architect`，校验 SHA-256，并把 architect 技能复制到三个应用。已有文件夹和技能会保留。版本和来源见 [bundle.json](bundle.json)。
 
-ICM 本身由 RinDig 开发。`/icm` 技能，以及 ICM 接入本工作流的方式（智能体何时用哪一个、两者如何配合、新工作区放在你的项目里而不是下载的副本里），由 [zandy700](https://github.com/zandy700) 编写和精细调整。
-
-下载这两个仓库。输入位置：终端（Mac 和 Windows 通用）
-
-```bash
-git clone https://github.com/RinDig/Interpretable-Context-Methodology "$HOME/Scripts/icm"
-git clone https://github.com/RinDig/icm-architect "$HOME/Scripts/icm-architect"
-```
-
-然后让 icm-architect 在三个应用里都可用。
-
-Mac：
-
-```bash
-for d in .claude .agents .cursor; do mkdir -p "$HOME/$d/skills" && ln -sfn "$HOME/Scripts/icm-architect" "$HOME/$d/skills/icm-architect"; done
-```
-
-Windows（“junction”是一种文件夹快捷方式，不需要管理员权限）：
-
-```powershell
-foreach ($d in ".claude", ".agents", ".cursor") { New-Item -ItemType Directory -Force "$HOME\$d\skills" | Out-Null; New-Item -ItemType Junction -Force -Path "$HOME\$d\skills\icm-architect" -Target "$HOME\Scripts\icm-architect" | Out-Null }
-```
-
-开一个新聊天，试试 *“/icm-architect map this repo”* 或 *“把这个文件夹做成 ICM”*。以后要更新，运行 `git -C "$HOME/Scripts/icm-architect" pull`（`icm` 同理）。
-
-</details>
-
-<sub>[↑ 回到顶部](#contents)</sub>
+ICM 由 RinDig 创建，`/icm` 集成和工作流路由由 [zandy700](https://github.com/zandy700) 编写。
 
 ---
 
@@ -417,12 +169,12 @@ foreach ($d in ".claude", ".agents", ".cursor") { New-Item -ItemType Directory -
 | 问题 | 怎么办 |
 |---|---|
 | Obsidian 里没有聊天记录 | 查看日志最后几行。Mac：`tail -20 "$HOME/Obsidian Sync/claude_obsidian_sync.log"` · Windows：`Get-Content "$HOME/Obsidian Sync/claude_obsidian_sync.log" -Tail 20` |
-| 缺少 Claude Code 的聊天 | 在终端运行 `claude-extract --help`。如果报错，重做 [Claude Code 的保存聊天](#app-claude) |
+| 缺少 Claude Code 的聊天 | 查看 `~/Scripts/agent-workflow-setup.log`，然后重新运行安装命令。 |
 | 缺少 Codex 的聊天 | 你在 `/hooks` 里批准钩子了吗？见 [Codex](#app-codex) |
 | 智能体不遵守规则 | 开一个新聊天；规则只在聊天开始时加载 |
 | 每晚同步没有运行 | Mac：`launchctl print "gui/$(id -u)/local.agent-workflow.obsidian-sync"` · Windows：`Get-ScheduledTask agent-workflow-obsidian-sync` |
 | Windows：输入 `python` 却打开了 Microsoft Store | 从 [python.org](https://www.python.org/downloads/) 重新安装 Python 并勾选“Add python.exe to PATH”，然后重新运行安装程序 |
-| 在 Windows 上移动或升级了 Python | 再运行一次 `python install.py --install`，让钩子指向新的 Python |
+| 在 Windows 上移动或升级了 Python | 重新运行完整安装命令，检查运行环境并重新生成钩子 |
 
 <sub>[↑ 回到顶部](#contents)</sub>
 
@@ -436,11 +188,14 @@ agent-workflow/
 ├── README.md            本说明（English）
 ├── README.zh-CN.md      本说明（简体中文）
 ├── LICENSE              MIT 许可证
-├── install.py           安装程序（第 1 步）
+├── bootstrap.py         下载并启动安装
+├── setup.py             完整安装：工具、ICM、钩子、同步
+├── bundle.json          固定工具版本和 ICM 校验值
+├── install.py           核心文件安装器
 ├── payload/             安装程序要复制的所有文件
 │   ├── claude/          Claude Code 的规则
 │   ├── codex/           Codex 的规则
-│   ├── cursor/          要粘贴到 Cursor 的规则
+│   ├── cursor/          规则和自动会话启动加载器
 │   ├── obsidian/        保存聊天和整理仓库的脚本
 │   ├── skills/          /icm 技能
 │   └── scripts/         按需读取的参考文件、文档扫描脚本
@@ -461,16 +216,16 @@ agent-workflow/
 下面的命令检查脚本有没有错误，并把安装程序装到一个临时文件夹里试运行，全程不调用任何 AI 模型：
 
 ```bash
-python3 -m py_compile install.py payload/obsidian/*.py payload/scripts/*.py
-python3 install.py --home "$(mktemp -d)" --install
+python3 -m unittest discover -s tests -v
+python3 -m py_compile bootstrap.py setup.py install.py payload/cursor/*.py payload/obsidian/*.py payload/scripts/*.py
 ```
 
-想在 Mac 上检查 Windows 的输出：先导入标准库，再设置 `sys.platform = "win32"`，然后用 `runpy` 对一个临时的 `--home` 运行 `install.py`。
+测试覆盖生成的 Windows 配置、重复安装、自定义设置、下载校验和引导预览；这不等于在真实 Windows 电脑上测试过。
 
 <a id="credits"></a>
 ## 🙏 致谢
 
-本工作流把其他人开发的工具串在一起。它们都从各自的官方来源安装，没有打包在这里：
+本工作流从上游来源安装这些工具。ICM 快照保留上游许可证，工具版本和快照校验值记录在 bundle 清单中：
 
 - [Ponytail](https://github.com/DietrichGebert/ponytail)，作者 DietrichGebert（MIT 许可证）
 - [Obsidian](https://obsidian.md)

@@ -3,10 +3,12 @@
 
 import argparse
 from datetime import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
 import plistlib
+import shlex
 import shutil
 import sys
 
@@ -16,6 +18,8 @@ WINDOWS = sys.platform == "win32"
 FILES = {
     "payload/claude/CLAUDE.md": ".claude/CLAUDE.md",
     "payload/codex/AGENTS.md": ".codex/AGENTS.md",
+    "payload/cursor/USER_RULES.md": ".cursor/USER_RULES.md",
+    "payload/cursor/workflow_context.py": ".cursor/workflow_context.py",
     "payload/scripts/agent-workflow-reference.md": "Scripts/agent-workflow-reference.md",
     "payload/scripts/markitdown_scan.py": "Scripts/markitdown_scan.py",
     "payload/obsidian/agent_stop_hook.py": "Obsidian Sync/agent_stop_hook.py",
@@ -29,20 +33,19 @@ FILES = {
 # The /icm skill, one copy per app: Claude Code, Codex (~/.agents), Cursor. Copies, not links: Windows restricts symlinks.
 ICM_SKILL = [f"{app}/skills/icm/SKILL.md" for app in (".claude", ".agents", ".cursor")]
 # Substrings that identify hook commands this installer owns, including the older bash versions.
-OURS = ("agent_stop_hook.", "markitdown_scan.", "sync_claude_obsidian.sh", 'graphify update . >> "$HOME/.cache/graphify-stop-hook.log"')
+OURS = ("agent_stop_hook.", "markitdown_scan.", "workflow_context.py", "sync_claude_obsidian.sh", 'graphify update . >> "$HOME/.cache/graphify-stop-hook.log"')
 TASK = "agent-workflow-obsidian-sync"
-
-
-def python():
-    """First word of every hook command. Unquoted, so it runs the same in bash, cmd and PowerShell."""
-    if not WINDOWS:
-        return "python3"  # survives Homebrew/python.org upgrades, unlike a versioned path
-    exe = Path(sys.executable).as_posix()  # apps started from the Start menu may not have python on PATH
-    return "python" if " " in exe else exe
+RULE_FILES = {".claude/CLAUDE.md", ".codex/AGENTS.md", ".cursor/USER_RULES.md"}
+START, END = "<!-- agent-workflow:start -->", "<!-- agent-workflow:end -->"
+# Exact unmarked rules shipped at d3f634f; customized files are never replaced wholesale.
+LEGACY_RULE_HASH = "826ddb94647b96ddc5ee88ab73a58ba8e1804b2e95ae489803c208e0e958cddf"
 
 
 def command(home, rel):
-    return f'{python()} "{(home / rel).as_posix()}"'
+    runtime = home / "Scripts/agent-workflow-runtime" / ("Scripts/python.exe" if WINDOWS else "bin/python")
+    executable = str(runtime) if runtime.is_file() else sys.executable
+    args = [executable, str(home / rel)]
+    return ' '.join(f'"{arg}"' for arg in args) if WINDOWS else shlex.join(args)
 
 
 def ours(cmd):
@@ -80,6 +83,8 @@ def settings(home):
     cursor_hooks = cursor.setdefault("hooks", {})
     cursor_hooks["stop"] = [h for h in cursor_hooks.get("stop", []) if not ours(h.get("command", ""))]
     cursor_hooks["stop"].append({"command": stop, "timeout": 10})
+    cursor_hooks["sessionStart"] = [h for h in cursor_hooks.get("sessionStart", []) if not ours(h.get("command", ""))]
+    cursor_hooks["sessionStart"].append({"command": command(home, ".cursor/workflow_context.py"), "timeout": 10})
     return {
         ".claude/settings.json": claude,
         ".codex/hooks.json": codex,
@@ -109,9 +114,36 @@ def schedule_command(home):
             f"-Action (New-ScheduledTaskAction -Execute '{quiet if quiet.exists() else exe}' -Argument '\"{script}\" --all')")
 
 
+def merge_rules(existing, body):
+    """Replace only our marked block; keep custom global instructions."""
+    block = f"{START}\n{body.rstrip()}\n{END}"
+    if START in existing or END in existing:
+        if existing.count(START) != 1 or existing.count(END) != 1 or existing.index(START) > existing.index(END):
+            raise ValueError("Invalid agent-workflow markers; fix the global rules file before installing")
+        before, rest = existing.split(START, 1)
+        _, after = rest.split(END, 1)
+        return before + block + after
+    if (not existing.strip() or existing.strip() == body.strip()
+            or hashlib.sha256(existing.strip().encode()).hexdigest() == LEGACY_RULE_HASH):
+        return block + "\n"
+    return existing.rstrip() + "\n\n" + block + "\n"
+
+
 def plan(home):
     items = {dest: (ROOT / source).read_bytes() for source, dest in FILES.items()}
-    items.update({dest: (ROOT / "payload/skills/icm/SKILL.md").read_bytes() for dest in ICM_SKILL})
+    for rel in RULE_FILES:
+        path = home / rel
+        existing = path.read_text(encoding="utf-8") if path.exists() else ""
+        items[rel] = merge_rules(existing, items[rel].decode()).encode()
+    skill = (ROOT / "payload/skills/icm/SKILL.md").read_bytes()
+    for dest in ICM_SKILL:
+        path = home / dest
+        if path.exists() and path.read_bytes() != skill:
+            print(f"Keeping existing custom skill: {path}")
+        elif (path.is_symlink() or path.parent.is_symlink()) and not path.exists():
+            raise ValueError(f"Repair the existing skill symlink before installing: {path.parent}")
+        else:
+            items[dest] = skill
     # Opt-in activation; preserve an existing explicit Ponytail preference.
     config_dir = home / ("AppData/Roaming" if WINDOWS else ".config")
     if home == Path.home().resolve():
@@ -127,35 +159,27 @@ def plan(home):
         if "defaultMode" not in config:
             config["defaultMode"] = "off"
             items[rel] = (json.dumps(config, indent=2) + "\n").encode()
-    bootstrap = (home / "Obsidian Sync/graphify_bootstrap.py").as_posix()
     if WINDOWS:
-        items["Scripts/graphify-bootstrap.cmd"] = f'@"{Path(sys.executable).as_posix()}" "{bootstrap}" %*\r\n'.encode()
+        items["Scripts/graphify-bootstrap.cmd"] = f'@{command(home, "Obsidian Sync/graphify_bootstrap.py")} %*\r\n'.encode()
     else:
-        items["Scripts/graphify-bootstrap"] = f'#!/bin/bash\nexec python3 "{bootstrap}" "$@"\n'.encode()
+        items["Scripts/graphify-bootstrap"] = f'#!/bin/sh\nexec {command(home, "Obsidian Sync/graphify_bootstrap.py")} "$@"\n'.encode()
         items["Library/LaunchAgents/local.agent-workflow.obsidian-sync.plist"] = launch_agent(home)
     for dest, obj in settings(home).items():
         items[dest] = (json.dumps(obj, indent=2, ensure_ascii=False) + "\n").encode()
     return items
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Preview by default; --install writes with backups.")
-    parser.add_argument("--install", action="store_true")
-    parser.add_argument("--home", type=Path, default=Path.home(), help="target home (also useful for a disposable test)")
-    args = parser.parse_args()
-    home = args.home.expanduser().resolve()
-    if not home.is_dir():
-        parser.error(f"home directory does not exist: {home}")
-    items = plan(home)
+def apply(home, items, write=False):
+    """Apply a prepared plan, retaining the standalone installer's backup behavior."""
     changed = [(rel, data) for rel, data in items.items() if not (home / rel).exists() or (home / rel).read_bytes() != data]
     for rel, _ in changed:
-        print(("WRITE " if args.install else "WOULD WRITE ") + str(home / rel))
+        print(("WRITE " if write else "WOULD WRITE ") + str(home / rel))
     if not changed:
         print("Already installed; no changes.")
-    elif not args.install:
+    elif not write:
         print(f"{len(changed)} files would change. Review this list, then run with --install.")
     else:
-        backup = home / "Scripts/agent-workflow-backups" / datetime.now().strftime("%Y%m%d-%H%M%S")
+        backup = home / "Scripts/agent-workflow-backups" / datetime.now().strftime("%Y%m%d-%H%M%S-%f")
         for rel, data in changed:
             dest = home / rel
             if dest.exists():
@@ -168,7 +192,20 @@ def main():
                 dest.chmod(dest.stat().st_mode | 0o111)
         (home / "Obsidian Sync/ObsidianVault").mkdir(parents=True, exist_ok=True)
         print(f"Installed {len(changed)} files. Backups of replaced files: {backup if backup.exists() else 'none needed'}")
-        print("Next: follow README.md from Step 2.")
+    return len(changed)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Preview core files by default; use setup.py --install for the full bundle.")
+    parser.add_argument("--install", action="store_true")
+    parser.add_argument("--home", type=Path, default=Path.home(), help="target home (also useful for a disposable test)")
+    args = parser.parse_args()
+    home = args.home.expanduser().resolve()
+    if not home.is_dir():
+        parser.error(f"home directory does not exist: {home}")
+    apply(home, plan(home), args.install)
+    if args.install:
+        print("Core files installed. Use setup.py --install for dependencies, ICM, and the first sync.")
     if WINDOWS:
         print("\nOptional nightly sync: paste this into PowerShell once:\n" + schedule_command(home))
 

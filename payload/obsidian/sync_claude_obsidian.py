@@ -6,6 +6,7 @@ with --all (launchd on macOS, Task Scheduler on Windows). Chats land in
 <vault>/chats/{code,codex,cursor}/.
 """
 import os
+import hashlib
 import shutil
 import subprocess
 import sys
@@ -19,17 +20,18 @@ HERE = Path(__file__).resolve().parent
 VAULT = Path(os.environ.get("OBSIDIAN_VAULT", Path.home() / "Obsidian Sync/ObsidianVault"))
 EXPORT = HERE / ".staging"
 LOG = HERE / "claude_obsidian_sync.log"
-LOCK = Path(tempfile.gettempdir()) / "claude_obsidian_sync.lock"
+LOCK = Path(tempfile.gettempdir()) / ("claude_obsidian_sync-" + hashlib.sha256(str(VAULT.resolve()).encode()).hexdigest()[:16] + ".lock")
 # Windows Python writes redirected output in the legacy code page; the helpers print ✓ and ═.
 os.environ.setdefault("PYTHONUTF8", "1")
 
 
 def find_tool(name):
     # Scheduled runs get a bare PATH, and pip often puts tools in a Scripts folder that isn't on it.
-    extra = [sysconfig.get_path("scripts"), str(Path.home() / ".local/bin"), "/opt/homebrew/bin", "/usr/local/bin"]
+    runtime = Path.home() / "Scripts/agent-workflow-runtime" / ("Scripts" if os.name == "nt" else "bin")
+    extra = [str(runtime), sysconfig.get_path("scripts"), str(Path.home() / ".local/bin"), "/opt/homebrew/bin", "/usr/local/bin"]
     if hasattr(sysconfig, "get_preferred_scheme"):
         extra.append(sysconfig.get_path("scripts", sysconfig.get_preferred_scheme("user")))
-    return shutil.which(name, path=os.pathsep.join([os.environ.get("PATH", ""), *extra]))
+    return shutil.which(name, path=os.pathsep.join([*extra, os.environ.get("PATH", "")]))
 
 
 def run(full, log):
@@ -46,15 +48,15 @@ def run(full, log):
     extract = find_tool("claude-extract")
     if extract:
         scope = ["--all"] if full else ["--recent", "10"]
-        subprocess.run([extract, *scope, "--output", str(EXPORT / "code")], stdout=subprocess.DEVNULL, stderr=log)
+        subprocess.run([extract, *scope, "--output", str(EXPORT / "code")], stdout=subprocess.DEVNULL, stderr=log, check=True)
     else:
         note("claude-extract missing: pip install claude-conversation-extractor")
 
     # 2. Codex and Cursor
-    subprocess.run([py, str(HERE / "agent_chats_to_md.py"), *common], stderr=log)
+    subprocess.run([py, str(HERE / "agent_chats_to_md.py"), *common], stdout=log, stderr=log, check=True)
 
     # 3. Frontmatter + tags + wikilinks, then into the vault
-    subprocess.run([py, str(HERE / "claude_to_obsidian.py"), *common, "--move"], stdout=log, stderr=subprocess.STDOUT)
+    subprocess.run([py, str(HERE / "claude_to_obsidian.py"), *common, "--move"], stdout=log, stderr=subprocess.STDOUT, check=True)
 
     # 4. Nightly: refresh each bootstrapped repo's graph notes, then the vault Home
     if full:
@@ -62,8 +64,8 @@ def run(full, log):
             repo = Path(origin.read_text(encoding="utf-8").strip())
             graph, canvas = repo / "graphify-out/graph.json", origin.parent / "graph.canvas"
             if graph.is_file() and (not canvas.exists() or graph.stat().st_mtime > canvas.stat().st_mtime):
-                subprocess.run([py, str(HERE / "vault_organize.py"), "graph", str(repo), origin.parent.name], stderr=log)
-        subprocess.run([py, str(HERE / "vault_organize.py"), "home"], stderr=log)
+                subprocess.run([py, str(HERE / "vault_organize.py"), "graph", str(repo), origin.parent.name], stdout=log, stderr=log, check=True)
+        subprocess.run([py, str(HERE / "vault_organize.py"), "home"], stdout=log, stderr=log, check=True)
     note("Sync completed")
 
 
@@ -77,13 +79,15 @@ def main(full=False):
     try:
         LOCK.mkdir()
     except FileExistsError:
-        return
+        return False
     try:
         with LOG.open("a", encoding="utf-8") as log:
             run(full, log)
     finally:
         LOCK.rmdir()
+    return True
 
 
 if __name__ == "__main__":
-    main("--all" in sys.argv[1:])
+    if not main("--all" in sys.argv[1:]):
+        sys.exit("Sync already running for this vault; retry after it completes.")

@@ -9,7 +9,7 @@ These diagrams show where tokens are avoided. They are not measurements; the pac
 ```mermaid
 flowchart LR
     subgraph always["Loaded every session — kept short"]
-        R["Global rules<br/>~/.claude/CLAUDE.md<br/>~/.codex/AGENTS.md<br/>Cursor User Rules"]
+        R["Global rules<br/>~/.claude/CLAUDE.md<br/>~/.codex/AGENTS.md<br/>Cursor sessionStart context"]
         P["Project CLAUDE.md / AGENTS.md<br/>under ~60 lines, routes only"]
         S["Session-start doc scan<br/>at most 10 file names"]
     end

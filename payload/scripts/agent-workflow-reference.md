@@ -4,10 +4,11 @@ Read only the section you need. Global rules that point here: `~/.claude/CLAUDE.
 
 ## Graphify
 Use an existing graph for unfamiliar structural questions. Bootstrap only when repeated exploration warrants it or the user requests it; skip small tasks whose relevant files can be read directly. No arbitrary repository-size cutoff. For setup:
-1. `graphify-bootstrap` (refuses `$HOME`).
-2. `graphify-out/graph.json` exists and `graphify query "<one question about the repo>"` returns nodes.
+1. `~/Scripts/graphify-bootstrap` (refuses `$HOME`).
+2. `graphify-out/graph.json` exists and `~/Scripts/graphify query "<one question about the repo>"` returns nodes.
 3. `graphify-out/.repo-id` exists, and so does `<vault>/graphify/<repo-id>/`.
 If a check fails, report it and continue with grep/reads unless the task needs the graph. A near-empty graph on a docs-only repo is expected.
+The bundle installs command wrappers under `~/Scripts`; use those absolute paths even when generated tool instructions say just `graphify`. On Windows invoke the `.cmd` wrappers with PowerShell's `&` operator. No PATH edit is required.
 
 ## Handoff note
 `<vault>/<repo-id>/status.md` (sequential work) or `<vault>/<repo-id>/handoffs/<branch-or-worktree>.md` (concurrent). Overwrite in place.
@@ -65,7 +66,7 @@ Convert task-relevant PDF/Office/EPUB/MSG documents with ~/Scripts/markitdown to
 
 ## Context, caching and recall
 Search only the current repo's vault namespace for missing prior context; search knowledge/ separately for reusable guidance. Read matching notes, not chat archives. If no note matches, use current code and say so.
-Before reset, overwrite status.md (or a per-worktree handoff for concurrent work), then suggest a new chat for unrelated work or compaction for heavy/stale related context. Check the client's context indicator, not fixed turn counts. Claude uses /context and /compact; Codex uses /status and /compact. Preserve goal/constraints, decisions and why, changed files, verification results, exact unresolved errors and next action. Cached tokens still occupy context; cache discounts, context occupancy and cumulative usage are different metrics. Do not claim a note, conversion, or shorter rules automatically saves total tokens.
+Before reset, overwrite status.md (or a per-worktree handoff for concurrent work). Start a new chat for an independent task, even in the same repo; use compaction for heavy/stale context when continuing related work. Check the client's context indicator, not fixed turn counts. Claude uses /context and /compact; Codex uses /status and /compact. Preserve goal/constraints, decisions and why, changed files, verification results, exact unresolved errors and next action. Cached tokens still occupy context; cache discounts, context occupancy and cumulative usage are different metrics. Do not claim a note, conversion, or shorter rules automatically saves total tokens.
 Repo ID is graphify-out/.repo-id when present, otherwise repo name; use owner--repo on a clash. Project notes live in <vault>/<repo-id>/ and graph notes in <vault>/graphify/<repo-id>/. Never merge namespaces without explicit authorization.
 
 ## ICM

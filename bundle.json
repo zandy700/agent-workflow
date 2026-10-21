@@ -1,0 +1,35 @@
+{
+  "packages": [
+    "claude-conversation-extractor==1.1.2",
+    "graphifyy==0.9.93",
+    "markitdown[all]==0.1.8"
+  ],
+  "assets": [
+    {
+      "name": "icm",
+      "repository": "https://github.com/RinDig/Interpretable-Context-Methodology",
+      "revision": "02ba5d85c7871b75c7c702a2d8da6524723d53d4",
+      "url": "https://codeload.github.com/RinDig/Interpretable-Context-Methodology/zip/02ba5d85c7871b75c7c702a2d8da6524723d53d4",
+      "sha256": "dd645d41cad34c5dbb89c5d1cb4afe0817286ae03b39dd194e1d7a4503376e0c",
+      "destination": "Scripts/icm",
+      "required": [
+        "_core/CONVENTIONS.md",
+        "workspaces",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "icm-architect",
+      "repository": "https://github.com/RinDig/icm-architect",
+      "revision": "e16cafe6a664dcf6d787a726b452adba77d913f4",
+      "url": "https://codeload.github.com/RinDig/icm-architect/zip/e16cafe6a664dcf6d787a726b452adba77d913f4",
+      "sha256": "34ddd0ee0cfc2dff2c03940af5cd75f4581d278c652ca2f0ac45730c4413d388",
+      "destination": "Scripts/icm-architect",
+      "required": [
+        "SKILL.md",
+        "references",
+        "LICENSE"
+      ]
+    }
+  ]
+}

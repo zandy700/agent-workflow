@@ -1,5 +1,6 @@
 # Agent workflow
 - Solve the requested task with the smallest complete change. Preserve user edits, interfaces, validation, error handling, and security. Use existing helpers and dependencies; avoid speculative abstractions.
+- Give each independent project task its own session. If a new task does not need context from this session, start a new chat for it, even in the same repo. Keep follow-ups and corrections to the current task here. If you cannot create a chat, ask the user to open one with a brief starter prompt before starting the independent task.
 - Before editing, identify the affected callers and observable checks, including boundary cases. Read the code and tests they depend on. State consequential assumptions; ask only when missing information blocks safe progress.
 - Read relevant files once. Group independent reads and related edits; avoid one model round trip per tiny operation. Re-read only changed or missing sections. Use a short deterministic script for mechanical changes, with checks that replacements match.
 - Keep tool output focused. Save long logs and inspect failures plus the summary. Never hide failing lines. Do not dump whole folders, repeat code in chat, or reread unchanged files to reassure yourself.
