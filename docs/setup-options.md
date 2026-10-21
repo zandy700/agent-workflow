@@ -62,6 +62,30 @@ $workflowScript = "$HOME\Obsidian Sync\sync_claude_obsidian.py"
 Register-ScheduledTask -TaskName 'AgentWorkflowObsidianSync' -Trigger (New-ScheduledTaskTrigger -Daily -At 10pm) -Action (New-ScheduledTaskAction -Execute $workflowPython -Argument ('"' + $workflowScript + '" --all'))
 ```
 
+## Using the included tools
+
+These commands use the installed wrappers, so no PATH edit is needed. Run them only when the project needs them; each repo keeps its own graph and vault namespace.
+
+| Tool | Mac — Terminal | Windows — PowerShell |
+|---|---|---|
+| Graphify | `~/Scripts/graphify-bootstrap /path/to/project` | `& "$HOME/Scripts/graphify-bootstrap.cmd" C:\path\to\project` |
+| MarkItDown | `~/Scripts/markitdown document.pdf` | `& "$HOME/Scripts/markitdown.cmd" document.pdf` |
+
+In an agent chat, `/icm` supplies reusable workflows and `/icm-architect` designs structures or maps an existing folder. Maps require approval; create new workspaces in your project. The installer verifies downloaded ICM snapshots against SHA-256 checksums in [bundle.json](../bundle.json).
+
+Cursor loads the rules through its [sessionStart hook](https://cursor.com/docs/hooks#sessionstart). If you previously pasted workflow rules into Cursor's User Rules, you can remove that old copy to avoid duplication.
+
+## Troubleshooting
+
+| Problem | What to check |
+|---|---|
+| Setup failed | Read `~/Scripts/agent-workflow-setup.log`, fix the reported issue, and rerun setup. |
+| Missing chats | Read `~/Obsidian Sync/claude_obsidian_sync.log`. In Codex, also review `/hooks`. |
+| Rules not loaded | Start a new chat and check the app's hook status or errors. |
+| Windows opens Microsoft Store instead of Python | Install Python from [python.org](https://www.python.org/downloads/) and enable its PATH option. |
+| Python was moved or upgraded | Rerun full setup to check the runtime and regenerate hooks. |
+| Nightly sync not running | Confirm you enabled the optional schedule above; it is off by default. |
+
 ## Verification
 
 ```bash
